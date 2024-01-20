@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'net.neoforged.gradle' version '[6.0.13, 6.2)'
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id 'org.spongepowered.mixin' version '0.7.+'
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+forgeVersion = "1.20.1"
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {}
+
+dependencies {
+    minecraft "net.neoforged:forge:1.20.1-47.1.70"
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    implementation("curse.maven:ftb-quests-forge-289412:4872462")
+    implementation("curse.maven:ftb-library-forge-404465:4720056")
+    implementation("curse.maven:ftb-teams-forge-404468:4623116")
+    implementation("curse.maven:item-filters-309674:4838266")
+}
+
+mixin {
+    add sourceSets.main, 'extraquests.refmap.json'
+    config 'extraquests.mixins.json'
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    setArchiveClassifier('')
+    setArchiveBaseName("${rootProject.name}-Forge")
+}
+
+jar.finalizedBy('shadowJar')
+shadowJar.finalizedBy('reobfJar')
+build.finalizedBy('versionedRelease')

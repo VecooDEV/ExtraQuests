@@ -1,0 +1,41 @@
+subprojects {
+    apply plugin: 'java'
+    group = 'com.vecoo.extraquests'
+    version = '1.0.0'
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    ext {
+        forgeVersion = "none"
+    }
+
+    jar {
+        setArchiveBaseName("${rootProject.name}-Forge")
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url = "https://repo.lucko.me/" }
+        maven { url = "https://repo.aikar.co/content/groups/aikar/" }
+        maven { url = "https://jitpack.io" }
+        maven { url = "https://repo.spongepowered.org/maven" }
+        maven { url = "https://cursemaven.com" }
+    }
+
+    task versionedRelease(type: Copy) {
+        dependsOn('shadowJar')
+        delete fileTree('../release/') {
+            include '**/*.jar'
+        }
+        group "build"
+        from("./build/libs/${rootProject.name}-Forge-${version}.jar")
+        into('../release/')
+        include '*.jar'
+        rename { String filename ->
+            filename.replace("-${version}.jar", "-${project.version}-${forgeVersion}.jar")
+        }
+    }
+}
