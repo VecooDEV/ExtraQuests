@@ -4,10 +4,11 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="extraquests"
-version="1.0.0"
+version="1.0.1"
 displayName="ExtraQuests"
+logoFile ="logo.png"
 authors="Vecoo"
-description="Addition to FTBQuests"
+description="Addition to FTB Quests"
 
 [[dependencies.extraquests]]
 modId="forge"

@@ -18,9 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeyValueReward extends Reward {
     public static RewardType TYPE;
 
-    private String key;
-    private long value;
-    private boolean ignore;
+    private String key = "key";
+    private long value = 5L;
+    private boolean ignore = false;
 
     public KeyValueReward(long id, Quest quest) {
         super(id, quest);
@@ -34,11 +34,9 @@ public class KeyValueReward extends Reward {
     @Override
     public void writeData(CompoundTag nbt) {
         super.writeData(nbt);
-        nbt.putString("key", "key");
-        nbt.putLong("value", 5L);
-        if (ignore) {
-            nbt.putBoolean("ignore", true);
-        }
+        nbt.putString("key", key);
+        nbt.putLong("value", value);
+        nbt.putBoolean("ignore", ignore);
     }
 
     @Override
@@ -79,7 +77,7 @@ public class KeyValueReward extends Reward {
         super.fillConfigGroup(config);
         config.addString("key", key, v -> key = v, key).setNameKey("extraquests.key_value.key");
         config.addLong("value", value, v -> value = v, 5L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");;
-        config.addBool("ignore", ignore, v -> ignore = v, true).setNameKey("extraquests.key_value.ignore");
+        config.addBool("ignore", ignore, v -> ignore = v, false).setNameKey("extraquests.key_value.ignore");
     }
 
     @Override

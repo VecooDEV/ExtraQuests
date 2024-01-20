@@ -15,8 +15,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeyValueTask extends Task {
     public static TaskType TYPE;
 
-    private String key;
-    private long value;
+    private String key = "key";
+    private long value = 100L;
 
     public KeyValueTask(long id, Quest quest) {
         super(id, quest);
@@ -35,8 +35,8 @@ public class KeyValueTask extends Task {
     @Override
     public void writeData(CompoundTag nbt) {
         super.writeData(nbt);
-        nbt.putString("key", "key");
-        nbt.putLong("value", 100L);
+        nbt.putString("key", key);
+        nbt.putLong("value", value);
     }
 
     @Override
@@ -75,17 +75,11 @@ public class KeyValueTask extends Task {
     }
 
     @Override
-    public boolean consumesResources() {
-        return true;
-    }
-
-    @Override
     @OnlyIn(Dist.CLIENT)
     public void fillConfigGroup(ConfigGroup config) {
         super.fillConfigGroup(config);
         config.addString("key", key, v -> key = v, key).setNameKey("extraquests.key_value.key");
         config.addLong("value", value, v -> value = v, 100L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
-        ;
     }
 
     public void progress(TeamData teamData, String key, long value) {

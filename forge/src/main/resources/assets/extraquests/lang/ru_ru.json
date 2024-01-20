@@ -7,8 +7,15 @@
   "extraquests.key_value.value": "Значение",
   "extraquests.key_value.value.tooltip": "Значение для ключа",
   "extraquests.key_value.ignore": "Игнорирование",
-  "extraquests.key_value.ignore.tooltip": "Будут ли не начатые задания проигнорированы?",
+  "extraquests.key_value.ignore.tooltip": "Будут ли не начатые задания проигнорированы? \nЕсли включено, то не выдавайте награду для зависимого задания выше его значения",
 
   "extraquests.reward.mixins.console": "Консоль",
-  "extraquests.reward.mixins.console.tooltip": "Запуск команды от консоли"
+  "extraquests.reward.mixins.console.tooltip": "Запуск команды от консоли",
+
+  "extraquests.reward.mixins.command": "Команда-1",
+  "extraquests.reward.mixins.command.tooltip": "Первая команда, которую необходимо выполнить",
+  "extraquests.reward.mixins.command_two": "Команда-2",
+  "extraquests.reward.mixins.command_two.tooltip": "Вторая команда, которую необходимо выполнить \nОставьте поле пустым для пропуска команды",
+  "extraquests.reward.mixins.command_three": "Команда-3",
+  "extraquests.reward.mixins.command_three.tooltip": "Третья команда, которую необходимо выполнить \nОставьте поле пустым для пропуска команды"
 }

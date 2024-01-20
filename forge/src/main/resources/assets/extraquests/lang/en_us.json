@@ -7,8 +7,15 @@
   "extraquests.key_value.value": "Value",
   "extraquests.key_value.value.tooltip": "Key value",
   "extraquests.key_value.ignore": "Ignore",
-  "extraquests.key_value.ignore.tooltip": "Will unstarted tasks be ignored?",
+  "extraquests.key_value.ignore.tooltip": "Will unstarted tasks be ignored? \nIf true, do not issue a reward for a dependent task higher than its value",
 
   "extraquests.reward.mixins.console": "Console",
-  "extraquests.reward.mixins.console.tooltip": "Execute a command from the console"
+  "extraquests.reward.mixins.console.tooltip": "Execute a command from the console",
+
+  "extraquests.reward.mixins.command":"Command-1",
+  "extraquests.reward.mixins.command.tooltip":"The first command to be executed",
+  "extraquests.reward.mixins.command_two":"Command-2",
+  "extraquests.reward.mixins.command_two.tooltip":"The second command to be executed \nLeave the field blank to skip the command",
+  "extraquests.reward.mixins.command_three":"Command-3",
+  "extraquests.reward.mixins.command_three.tooltip":"The third command to be executed \nLeave the field blank to skip the command"
 }
