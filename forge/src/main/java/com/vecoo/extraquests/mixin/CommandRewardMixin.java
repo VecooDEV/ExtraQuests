@@ -21,7 +21,7 @@ import java.util.Map;
 @Mixin(CommandReward.class)
 public abstract class CommandRewardMixin extends Reward {
     @Shadow(remap = false)
-    private String command;
+    private String command = "";
     private String command_two = "";
     private String command_three = "";
     @Shadow(remap = false)
@@ -135,10 +135,10 @@ public abstract class CommandRewardMixin extends Reward {
         for (Map.Entry<String, Object> entry : overrides.entrySet()) {
             if (entry.getValue() != null) {
                 cmd = cmd.replace("{" + entry.getKey() + "}", entry.getValue().toString());
-                if (!cmdTwo.equals("")) {
+                if (!cmdTwo.isEmpty()) {
                     cmdTwo = cmdTwo.replace("{" + entry.getKey() + "}", entry.getValue().toString());
                 }
-                if (!cmdThree.equals("")) {
+                if (!cmdThree.isEmpty()) {
                     cmdThree = cmdThree.replace("{" + entry.getKey() + "}", entry.getValue().toString());
                 }
             }
@@ -152,19 +152,22 @@ public abstract class CommandRewardMixin extends Reward {
             source = source.withSuppressedOutput();
         }
         if (console) {
-            player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmd);
-            if (!cmdTwo.equals("")) {
-                player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmdTwo);
+            String cmdConsole = cmd.replace("@p", player.getName().getString());
+            player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmdConsole);
+            if (!cmdTwo.isEmpty()) {
+                String cmdTwoConsole = cmd.replace("@p", player.getName().getString());
+                player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmdTwoConsole);
             }
-            if (!cmdTwo.equals("")) {
-                player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmdThree);
+            if (!cmdThree.isEmpty()) {
+                String cmdThreeConsole = cmd.replace("@p", player.getName().getString());
+                player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmdThreeConsole);
             }
         } else {
             player.server.getCommands().performPrefixedCommand(source, cmd);
-            if (!cmdTwo.equals("")) {
+            if (!cmdTwo.isEmpty()) {
                 player.server.getCommands().performPrefixedCommand(source, cmdTwo);
             }
-            if (!cmdThree.equals("")) {
+            if (!cmdThree.isEmpty()) {
                 player.server.getCommands().performPrefixedCommand(source, cmdThree);
             }
         }
