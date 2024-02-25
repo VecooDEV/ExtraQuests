@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "Құлпы-мән",
+  "ftbquests.reward.extraquests.key_value": "Құлпы-мән",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "Құлпы",
+  "extraquests.key_value.key.tooltip": "Мәндерді сақтау үшін құлпы",
+  "extraquests.key_value.value": "Мән",
+  "extraquests.key_value.value.tooltip": "Құлпы мәні",
+  "extraquests.key_value.ignore": "Елемеу",
+  "extraquests.key_value.ignore.tooltip": "Басталмаған тапсырмалар елемесе болады ма? \nЕгер мысалда, болса, құлаған мәнінен жоғары болмаған қолжетімді тапсырма үшін марапат бермеңіз",
+
+  "extraquests.reward.mixins.console": "Консоль",
+  "extraquests.reward.mixins.console.tooltip": "Консолдан команда іске асыру",
+
+  "extraquests.reward.mixins.command": "Команда-1",
+  "extraquests.reward.mixins.command.tooltip": "Орындалатын бірінші команда",
+  "extraquests.reward.mixins.command_two": "Команда-2",
+  "extraquests.reward.mixins.command_two.tooltip": "Орындалатын екінші команда\nКоманданы өту үшін өрікті қалдырыңыз",
+  "extraquests.reward.mixins.command_three": "Команда-3",
+  "extraquests.reward.mixins.command_three.tooltip": "Орындалатын үшінші команда\nКоманданы өту үшін өрікті қалдырыңыз"
+}

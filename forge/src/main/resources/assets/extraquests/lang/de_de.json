@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "Schlüssel-Wert",
+  "ftbquests.reward.extraquests.key_value": "Schlüssel-Wert",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "Schlüssel",
+  "extraquests.key_value.key.tooltip": "Schlüssel zum Speichern von Werten",
+  "extraquests.key_value.value": "Wert",
+  "extraquests.key_value.value.tooltip": "Wert des Schlüssels",
+  "extraquests.key_value.ignore": "Ignorieren",
+  "extraquests.key_value.ignore.tooltip": "Werden nicht gestartete Aufgaben ignoriert? \nWenn wahr, geben Sie keine Belohnung für eine abhängige Aufgabe aus, die höher ist als ihr Wert",
+
+  "extraquests.reward.mixins.console": "Konsole",
+  "extraquests.reward.mixins.console.tooltip": "Führen Sie einen Befehl von der Konsole aus",
+
+  "extraquests.reward.mixins.command":"Befehl-1",
+  "extraquests.reward.mixins.command.tooltip":"Der erste auszuführende Befehl",
+  "extraquests.reward.mixins.command_two":"Befehl-2",
+  "extraquests.reward.mixins.command_two.tooltip":"Der zweite auszuführende Befehl \nLassen Sie das Feld leer, um den Befehl zu überspringen",
+  "extraquests.reward.mixins.command_three":"Befehl-3",
+  "extraquests.reward.mixins.command_three.tooltip":"Der dritte auszuführende Befehl \nLassen Sie das Feld leer, um den Befehl zu überspringen"
+}

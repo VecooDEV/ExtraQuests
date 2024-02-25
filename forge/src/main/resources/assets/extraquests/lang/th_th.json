@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "คีย์-ค่า",
+  "ftbquests.reward.extraquests.key_value": "คีย์-ค่า",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "คีย์",
+  "extraquests.key_value.key.tooltip": "คีย์สำหรับเก็บค่า",
+  "extraquests.key_value.value": "ค่า",
+  "extraquests.key_value.value.tooltip": "ค่าของคีย์",
+  "extraquests.key_value.ignore": "ละเว้น",
+  "extraquests.key_value.ignore.tooltip": "จะมีการละเว้นงานที่ยังไม่เริ่มต้นหรือไม่? \nหากเป็นจริง อย่ามอบรางวัลให้กับงานที่ขึ้นอยู่กับงานที่ยังไม่เริ่มต้นที่มีค่าสูงกว่าค่าของมัน",
+
+  "extraquests.reward.mixins.console": "คอนโซล",
+  "extraquests.reward.mixins.console.tooltip": "ดำเนินการคำสั่งจากคอนโซล",
+
+  "extraquests.reward.mixins.command":"คำสั่ง-1",
+  "extraquests.reward.mixins.command.tooltip":"คำสั่งแรกที่จะดำเนินการ",
+  "extraquests.reward.mixins.command_two":"คำสั่ง-2",
+  "extraquests.reward.mixins.command_two.tooltip":"คำสั่งที่สองที่จะดำเนินการ \nปล่อยช่องว่างเพื่อข้ามคำสั่ง",
+  "extraquests.reward.mixins.command_three":"คำสั่ง-3",
+  "extraquests.reward.mixins.command_three.tooltip":"คำสั่งที่สามที่จะดำเนินการ \nปล่อยช่องว่างเพื่อข้ามคำสั่ง"
+}

@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "Avain-arvo",
+  "ftbquests.reward.extraquests.key_value": "Avain-arvo",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "Avain",
+  "extraquests.key_value.key.tooltip": "Avain arvojen tallentamiseen",
+  "extraquests.key_value.value": "Arvo",
+  "extraquests.key_value.value.tooltip": "Avaimen arvo",
+  "extraquests.key_value.ignore": "Ohita",
+  "extraquests.key_value.ignore.tooltip": "Jätetäänkö aloittamattomat tehtävät huomiotta? \nJos tosi, älä anna palkintoa riippuvasta tehtävästä, joka on arvoltaan suurempi kuin sen arvo",
+
+  "extraquests.reward.mixins.console": "Konsoli",
+  "extraquests.reward.mixins.console.tooltip": "Suorita komento konsolista",
+
+  "extraquests.reward.mixins.command":"Komento-1",
+  "extraquests.reward.mixins.command.tooltip":"Ensimmäinen suoritettava komento",
+  "extraquests.reward.mixins.command_two":"Komento-2",
+  "extraquests.reward.mixins.command_two.tooltip":"Toinen suoritettava komento \nJätä kenttä tyhjäksi ohittaaksesi komennon",
+  "extraquests.reward.mixins.command_three":"Komento-3",
+  "extraquests.reward.mixins.command_three.tooltip":"Kolmas suoritettava komento \nJätä kenttä tyhjäksi ohittaaksesi komennon"
+}
