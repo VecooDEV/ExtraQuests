@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "Raktas-vertė",
+  "ftbquests.reward.extraquests.key_value": "Raktas-vertė",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "Raktas",
+  "extraquests.key_value.key.tooltip": "Raktas reikšmėms saugoti",
+  "extraquests.key_value.value": "Vertė",
+  "extraquests.key_value.value.tooltip": "Rakto vertė",
+  "extraquests.key_value.ignore": "Ignoruoti",
+  "extraquests.key_value.ignore.tooltip": "Ar nepradėtos užduotys bus ignoruojamos? \nJei taip, neatlikusiems užduočių netaikoma premija už priklausomą užduotį, kuri yra aukštesnė nei jos vertė.",
+
+  "extraquests.reward.mixins.console": "Konsolė",
+  "extraquests.reward.mixins.console.tooltip": "Vykdyti komandą iš konsolės",
+
+  "extraquests.reward.mixins.command":"Komanda-1",
+  "extraquests.reward.mixins.command.tooltip":"Pirmoji vykdoma komanda",
+  "extraquests.reward.mixins.command_two":"Komanda-2",
+  "extraquests.reward.mixins.command_two.tooltip":"Antra vykdoma komanda \nPalikite lauką tuščią, jei norite praleisti komandą",
+  "extraquests.reward.mixins.command_three":"Komanda-3",
+  "extraquests.reward.mixins.command_three.tooltip":"Trečioji vykdoma komanda \nPalikite lauką tuščią, jei norite praleisti komandą"
+}

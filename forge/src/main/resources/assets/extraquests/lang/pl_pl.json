@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "Klucz-wartość",
+  "ftbquests.reward.extraquests.key_value": "Klucz-wartość",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "Klucz",
+  "extraquests.key_value.key.tooltip": "Klucz do przechowywania wartości",
+  "extraquests.key_value.value": "Wartość",
+  "extraquests.key_value.value.tooltip": "Wartość klucza",
+  "extraquests.key_value.ignore": "Ignoruj",
+  "extraquests.key_value.ignore.tooltip": "Czy nieuruchomione zadania mają być ignorowane? \nJeśli tak, nie przyznawaj nagrody za zadanie zależne o wyższej wartości niż jego wartość.",
+
+  "extraquests.reward.mixins.console": "Konsola",
+  "extraquests.reward.mixins.console.tooltip": "Wykonaj polecenie z konsoli",
+
+  "extraquests.reward.mixins.command":"Polecenie-1",
+  "extraquests.reward.mixins.command.tooltip":"Pierwsze polecenie do wykonania",
+  "extraquests.reward.mixins.command_two":"Polecenie-2",
+  "extraquests.reward.mixins.command_two.tooltip":"Drugie polecenie do wykonania \nZostaw pole puste, aby pominąć polecenie",
+  "extraquests.reward.mixins.command_three":"Polecenie-3",
+  "extraquests.reward.mixins.command_three.tooltip":"Trzecie polecenie do wykonania \nZostaw pole puste, aby pominąć polecenie"
+}

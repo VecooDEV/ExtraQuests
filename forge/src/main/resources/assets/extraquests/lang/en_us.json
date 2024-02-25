@@ -9,6 +9,12 @@
   "extraquests.key_value.ignore": "Ignore",
   "extraquests.key_value.ignore.tooltip": "Will unstarted tasks be ignored? \nIf true, do not issue a reward for a dependent task higher than its value",
 
+  "ftbquests.task.extraquests.economy": "Economy",
+  "ftbquests.reward.extraquests.economy": "Economy",
+  "extraquests.economy.title": "Money: %s",
+  "extraquests.economy.money": "Money",
+  "extraquests.economy.money.tooltip": "Number of money consumed",
+
   "extraquests.reward.mixins.console": "Console",
   "extraquests.reward.mixins.console.tooltip": "Execute a command from the console",
 

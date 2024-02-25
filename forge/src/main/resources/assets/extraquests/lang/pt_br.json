@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "Chave-valor",
+  "ftbquests.reward.extraquests.key_value": "Chave-valor",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "Chave",
+  "extraquests.key_value.key.tooltip": "Chave para armazenar valores",
+  "extraquests.key_value.value": "Valor",
+  "extraquests.key_value.value.tooltip": "Valor da chave",
+  "extraquests.key_value.ignore": "Ignorar",
+  "extraquests.key_value.ignore.tooltip": "As tarefas não iniciadas serão ignoradas? \nSe verdadeiro, não emita uma recompensa para uma tarefa dependente com um valor mais alto do que o seu.",
+
+  "extraquests.reward.mixins.console": "Console",
+  "extraquests.reward.mixins.console.tooltip": "Executar um comando do console",
+
+  "extraquests.reward.mixins.command":"Comando-1",
+  "extraquests.reward.mixins.command.tooltip":"O primeiro comando a ser executado",
+  "extraquests.reward.mixins.command_two":"Comando-2",
+  "extraquests.reward.mixins.command_two.tooltip":"O segundo comando a ser executado \nDeixe o campo em branco para pular o comando",
+  "extraquests.reward.mixins.command_three":"Comando-3",
+  "extraquests.reward.mixins.command_three.tooltip":"O terceiro comando a ser executado \nDeixe o campo em branco para pular o comando"
+}

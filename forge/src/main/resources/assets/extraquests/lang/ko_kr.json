@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "키-값",
+  "ftbquests.reward.extraquests.key_value": "키-값",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "키",
+  "extraquests.key_value.key.tooltip": "값을 저장하기 위한 키",
+  "extraquests.key_value.value": "값",
+  "extraquests.key_value.value.tooltip": "키 값",
+  "extraquests.key_value.ignore": "무시",
+  "extraquests.key_value.ignore.tooltip": "시작되지 않은 작업을 무시할 것인가요? \n참이면, 종속 작업의 보상을 그 값보다 높게 발행하지 마십시오.",
+
+  "extraquests.reward.mixins.console": "콘솔",
+  "extraquests.reward.mixins.console.tooltip": "콘솔에서 명령 실행",
+
+  "extraquests.reward.mixins.command":"명령어-1",
+  "extraquests.reward.mixins.command.tooltip":"실행할 첫 번째 명령어",
+  "extraquests.reward.mixins.command_two":"명령어-2",
+  "extraquests.reward.mixins.command_two.tooltip":"실행할 두 번째 명령어 \n명령을 건너 뛰려면 필드를 비워두세요",
+  "extraquests.reward.mixins.command_three":"명령어-3",
+  "extraquests.reward.mixins.command_three.tooltip":"실행할 세 번째 명령어 \n명령을 건너 뛰려면 필드를 비워두세요"
+}

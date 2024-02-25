@@ -9,6 +9,12 @@
   "extraquests.key_value.ignore": "Игнорирование",
   "extraquests.key_value.ignore.tooltip": "Будут ли не начатые задания проигнорированы? \nЕсли включено, то не выдавайте награду для зависимого задания выше его значения",
 
+  "ftbquests.task.extraquests.economy": "Экономика",
+  "ftbquests.reward.extraquests.economy": "Экономика",
+  "extraquests.economy.title": "Монеты: %s",
+  "extraquests.economy.money": "Монеты",
+  "extraquests.economy.money.tooltip": "Потребляемое оличество монет",
+
   "extraquests.reward.mixins.console": "Консоль",
   "extraquests.reward.mixins.console.tooltip": "Запуск команды от консоли",
 

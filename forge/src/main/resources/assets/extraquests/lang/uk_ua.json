@@ -1,0 +1,22 @@
+{
+  "ftbquests.task.extraquests.key_value": "Ключ-значення",
+  "ftbquests.reward.extraquests.key_value": "Ключ-значення",
+
+  "extraquests.key_value.title": "%s: %s",
+  "extraquests.key_value.key": "Ключ",
+  "extraquests.key_value.key.tooltip": "Ключ для зберігання значень",
+  "extraquests.key_value.value": "Значення",
+  "extraquests.key_value.value.tooltip": "Значення для ключа",
+  "extraquests.key_value.ignore": "Ігнорувати",
+  "extraquests.key_value.ignore.tooltip": "Чи ігнорувати незапущені завдання? \nЯкщо true, то не видається нагорода за залежне завдання вище його значення",
+
+  "extraquests.reward.mixins.console": "Консоль",
+  "extraquests.reward.mixins.console.tooltip": "Виконання команди з консолі",
+
+  "extraquests.reward.mixins.command": "Команда-1",
+  "extraquests.reward.mixins.command.tooltip": "Перша команда для виконання",
+  "extraquests.reward.mixins.command_two": "Команда-2",
+  "extraquests.reward.mixins.command_two.tooltip": "Друга команда для виконання \nЗалиште поле порожнім, щоб пропустити команду",
+  "extraquests.reward.mixins.command_three": "Команда-3",
+  "extraquests.reward.mixins.command_three.tooltip": "Третя команда для виконання \nЗалиште поле порожнім, щоб пропустити команду"
+}

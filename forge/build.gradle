@@ -37,6 +37,8 @@ dependencies {
     implementation("curse.maven:ftb-library-forge-404465:4720056")
     implementation("curse.maven:ftb-teams-forge-404468:4623116")
     implementation("curse.maven:item-filters-309674:4838266")
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 mixin {
