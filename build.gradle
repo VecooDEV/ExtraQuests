@@ -1,7 +1,7 @@
 subprojects {
     apply plugin: 'java'
     group = 'com.vecoo.extraquests'
-    version = '1.0.1'
+    version = '1.0.3'
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
