@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "المفتاح لتخزين القيم",
   "extraquests.key_value.value": "القيمة",
   "extraquests.key_value.value.tooltip": "قيمة المفتاح",
-  "extraquests.key_value.ignore": "تجاهل",
-  "extraquests.key_value.ignore.tooltip": "هل سيتم تجاهل المهام غير المبدأة؟\nإذا كانت القيمة صحيحة، فلا تصدر مكافأة لمهمة تابعة أعلى من قيمتها",
 
   "extraquests.reward.mixins.console": "وحدة التحكم",
   "extraquests.reward.mixins.console.tooltip": "تنفيذ أمر من وحدة التحكم",

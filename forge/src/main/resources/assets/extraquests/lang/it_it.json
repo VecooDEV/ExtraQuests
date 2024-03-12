@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Chiave per memorizzare i valori",
   "extraquests.key_value.value": "Valore",
   "extraquests.key_value.value.tooltip": "Valore della chiave",
-  "extraquests.key_value.ignore": "Ignora",
-  "extraquests.key_value.ignore.tooltip": "Le attività non avviate saranno ignorate? \nSe vero, non emettere una ricompensa per un'attività dipendente con un valore superiore al suo valore",
 
   "extraquests.reward.mixins.console": "Console",
   "extraquests.reward.mixins.console.tooltip": "Esegui un comando dalla console",

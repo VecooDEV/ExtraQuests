@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Clé pour stocker des valeurs",
   "extraquests.key_value.value": "Valeur",
   "extraquests.key_value.value.tooltip": "Valeur de la clé",
-  "extraquests.key_value.ignore": "Ignorer",
-  "extraquests.key_value.ignore.tooltip": "Les tâches non démarrées seront-elles ignorées ? \nSi vrai, ne pas délivrer de récompense pour une tâche dépendante dont la valeur est supérieure à celle de la tâche dépendante.",
 
   "extraquests.reward.mixins.console": "Console",
   "extraquests.reward.mixins.console.tooltip": "Exécuter une commande depuis la console",

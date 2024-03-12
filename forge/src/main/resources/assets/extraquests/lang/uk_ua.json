@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Ключ для зберігання значень",
   "extraquests.key_value.value": "Значення",
   "extraquests.key_value.value.tooltip": "Значення для ключа",
-  "extraquests.key_value.ignore": "Ігнорувати",
-  "extraquests.key_value.ignore.tooltip": "Чи ігнорувати незапущені завдання? \nЯкщо true, то не видається нагорода за залежне завдання вище його значення",
 
   "extraquests.reward.mixins.console": "Консоль",
   "extraquests.reward.mixins.console.tooltip": "Виконання команди з консолі",

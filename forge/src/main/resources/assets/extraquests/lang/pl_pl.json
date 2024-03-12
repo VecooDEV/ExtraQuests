@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Klucz do przechowywania wartości",
   "extraquests.key_value.value": "Wartość",
   "extraquests.key_value.value.tooltip": "Wartość klucza",
-  "extraquests.key_value.ignore": "Ignoruj",
-  "extraquests.key_value.ignore.tooltip": "Czy nieuruchomione zadania mają być ignorowane? \nJeśli tak, nie przyznawaj nagrody za zadanie zależne o wyższej wartości niż jego wartość.",
 
   "extraquests.reward.mixins.console": "Konsola",
   "extraquests.reward.mixins.console.tooltip": "Wykonaj polecenie z konsoli",

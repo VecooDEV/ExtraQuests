@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Кључ за чување вредности",
   "extraquests.key_value.value": "Вредност",
   "extraquests.key_value.value.tooltip": "Вредност кључа",
-  "extraquests.key_value.ignore": "Игнорисати",
-  "extraquests.key_value.ignore.tooltip": "Да ли ће незапочети задаци бити игнорисани? \nАко је тачно, не издавати награду за зависни задатак већи од његове вредности",
 
   "extraquests.reward.mixins.console": "Конзола",
   "extraquests.reward.mixins.console.tooltip": "Изврши команду из конзоле",

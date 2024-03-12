@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Değerleri saklamak için anahtar",
   "extraquests.key_value.value": "Değer",
   "extraquests.key_value.value.tooltip": "Anahtar değeri",
-  "extraquests.key_value.ignore": "Yok say",
-  "extraquests.key_value.ignore.tooltip": "Başlatılmamış görevler yok sayılsın mı? \nEğer doğruysa, bir görevin değerinden daha yüksek olan bağımlı bir göreve ödül verme",
 
   "extraquests.reward.mixins.console": "Konsol",
   "extraquests.reward.mixins.console.tooltip": "Konsoldan bir komut çalıştır",

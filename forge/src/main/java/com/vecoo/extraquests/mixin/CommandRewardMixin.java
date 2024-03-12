@@ -155,11 +155,11 @@ public abstract class CommandRewardMixin extends Reward {
             String cmdConsole = cmd.replace("@p", player.getName().getString());
             player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmdConsole);
             if (!cmdTwo.isEmpty()) {
-                String cmdTwoConsole = cmd.replace("@p", player.getName().getString());
+                String cmdTwoConsole = cmdTwo.replace("@p", player.getName().getString());
                 player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmdTwoConsole);
             }
             if (!cmdThree.isEmpty()) {
-                String cmdThreeConsole = cmd.replace("@p", player.getName().getString());
+                String cmdThreeConsole = cmdThree.replace("@p", player.getName().getString());
                 player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmdThreeConsole);
             }
         } else {

@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "คีย์สำหรับเก็บค่า",
   "extraquests.key_value.value": "ค่า",
   "extraquests.key_value.value.tooltip": "ค่าของคีย์",
-  "extraquests.key_value.ignore": "ละเว้น",
-  "extraquests.key_value.ignore.tooltip": "จะมีการละเว้นงานที่ยังไม่เริ่มต้นหรือไม่? \nหากเป็นจริง อย่ามอบรางวัลให้กับงานที่ขึ้นอยู่กับงานที่ยังไม่เริ่มต้นที่มีค่าสูงกว่าค่าของมัน",
 
   "extraquests.reward.mixins.console": "คอนโซล",
   "extraquests.reward.mixins.console.tooltip": "ดำเนินการคำสั่งจากคอนโซล",

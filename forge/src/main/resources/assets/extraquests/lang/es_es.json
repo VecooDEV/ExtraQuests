@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Clave para almacenar valores",
   "extraquests.key_value.value": "Valor",
   "extraquests.key_value.value.tooltip": "Valor de la clave",
-  "extraquests.key_value.ignore": "Ignorar",
-  "extraquests.key_value.ignore.tooltip": "¿Se ignorarán las tareas no iniciadas? \nSi es verdadero, no emita una recompensa para una tarea dependiente mayor que su valor",
 
   "extraquests.reward.mixins.console": "Consola",
   "extraquests.reward.mixins.console.tooltip": "Ejecutar un comando desde la consola",

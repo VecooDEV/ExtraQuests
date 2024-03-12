@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "用于存储值的键",
   "extraquests.key_value.value": "值",
   "extraquests.key_value.value.tooltip": "键值",
-  "extraquests.key_value.ignore": "忽略",
-  "extraquests.key_value.ignore.tooltip": "未开始的任务是否被忽略？\n如果为true，则不会为依赖任务发放高于其值的奖励",
 
   "extraquests.reward.mixins.console": "控制台",
   "extraquests.reward.mixins.console.tooltip": "从控制台执行命令",

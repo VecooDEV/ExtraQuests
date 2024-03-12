@@ -1,7 +1,7 @@
 subprojects {
     apply plugin: 'java'
     group = 'com.vecoo.extraquests'
-    version = '1.0.3'
+    version = '1.1.0'
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
@@ -17,10 +17,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
-        maven { url = "https://repo.lucko.me/" }
-        maven { url = "https://repo.aikar.co/content/groups/aikar/" }
-        maven { url = "https://jitpack.io" }
         maven { url = "https://repo.spongepowered.org/maven" }
         maven { url = "https://cursemaven.com" }
     }

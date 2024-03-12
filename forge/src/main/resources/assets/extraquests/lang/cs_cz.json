@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Klíč pro ukládání hodnot",
   "extraquests.key_value.value": "Hodnota",
   "extraquests.key_value.value.tooltip": "Hodnota klíče",
-  "extraquests.key_value.ignore": "Ignorovat",
-  "extraquests.key_value.ignore.tooltip": "Budou ignorovány nezahájené úkoly? \nPokud je pravda, nedávejte odměnu za závislý úkol vyšší než jeho hodnota",
 
   "extraquests.reward.mixins.console": "Konsole",
   "extraquests.reward.mixins.console.tooltip": "Spusťte příkaz z konzole",

@@ -6,8 +6,11 @@
   "extraquests.key_value.key.tooltip": "Ключ для хранение значений",
   "extraquests.key_value.value": "Значение",
   "extraquests.key_value.value.tooltip": "Значение для ключа",
-  "extraquests.key_value.ignore": "Игнорирование",
-  "extraquests.key_value.ignore.tooltip": "Будут ли не начатые задания проигнорированы? \nЕсли включено, то не выдавайте награду для зависимого задания выше его значения",
+
+  "ftbquests.reward.extraquests.timer": "Таймер",
+  "extraquests.timer.title": "Сброс раз в %s минут",
+  "extraquests.timer.time": "Время",
+  "extraquests.timer.time.tooltip": "Количество минут до сброса квеста",
 
   "extraquests.reward.mixins.console": "Консоль",
   "extraquests.reward.mixins.console.tooltip": "Запуск команды от консоли",

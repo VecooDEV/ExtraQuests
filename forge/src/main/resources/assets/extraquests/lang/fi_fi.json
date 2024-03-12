@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Avain arvojen tallentamiseen",
   "extraquests.key_value.value": "Arvo",
   "extraquests.key_value.value.tooltip": "Avaimen arvo",
-  "extraquests.key_value.ignore": "Ohita",
-  "extraquests.key_value.ignore.tooltip": "Jätetäänkö aloittamattomat tehtävät huomiotta? \nJos tosi, älä anna palkintoa riippuvasta tehtävästä, joka on arvoltaan suurempi kuin sen arvo",
 
   "extraquests.reward.mixins.console": "Konsoli",
   "extraquests.reward.mixins.console.tooltip": "Suorita komento konsolista",

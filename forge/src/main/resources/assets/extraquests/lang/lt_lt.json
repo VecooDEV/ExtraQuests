@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Raktas reikšmėms saugoti",
   "extraquests.key_value.value": "Vertė",
   "extraquests.key_value.value.tooltip": "Rakto vertė",
-  "extraquests.key_value.ignore": "Ignoruoti",
-  "extraquests.key_value.ignore.tooltip": "Ar nepradėtos užduotys bus ignoruojamos? \nJei taip, neatlikusiems užduočių netaikoma premija už priklausomą užduotį, kuri yra aukštesnė nei jos vertė.",
 
   "extraquests.reward.mixins.console": "Konsolė",
   "extraquests.reward.mixins.console.tooltip": "Vykdyti komandą iš konsolės",

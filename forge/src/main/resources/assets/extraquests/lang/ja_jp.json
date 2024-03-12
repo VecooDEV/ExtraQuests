@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "値を保存するためのキー",
   "extraquests.key_value.value": "値",
   "extraquests.key_value.value.tooltip": "キーの値",
-  "extraquests.key_value.ignore": "無視する",
-  "extraquests.key_value.ignore.tooltip": "未着手のタスクは無視されますか？\nTrueの場合、その値よりも高い依存タスクに対して報酬を発行しないでください",
 
   "extraquests.reward.mixins.console": "コンソール",
   "extraquests.reward.mixins.console.tooltip": "コンソールからコマンドを実行する",

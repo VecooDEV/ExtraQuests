@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "Мәндерді сақтау үшін құлпы",
   "extraquests.key_value.value": "Мән",
   "extraquests.key_value.value.tooltip": "Құлпы мәні",
-  "extraquests.key_value.ignore": "Елемеу",
-  "extraquests.key_value.ignore.tooltip": "Басталмаған тапсырмалар елемесе болады ма? \nЕгер мысалда, болса, құлаған мәнінен жоғары болмаған қолжетімді тапсырма үшін марапат бермеңіз",
 
   "extraquests.reward.mixins.console": "Консоль",
   "extraquests.reward.mixins.console.tooltip": "Консолдан команда іске асыру",

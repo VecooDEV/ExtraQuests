@@ -6,6 +6,7 @@ Sidemode for [FTB Quests](https://www.curseforge.com/minecraft/mc-mods/ftb-quest
 * Reward with a key-value for task of the same type.
 * Additional option to run a command from the console in the command reward.
 * Additional two command lines in command reward (multiple command run).
+* Ability to add a timer for tasks as a task.
 * For a preview, check out the [gallery](https://modrinth.com/mod/extraquests/gallery).
 
 ## FAQ:

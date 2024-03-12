@@ -7,8 +7,6 @@
   "extraquests.key_value.key.tooltip": "값을 저장하기 위한 키",
   "extraquests.key_value.value": "값",
   "extraquests.key_value.value.tooltip": "키 값",
-  "extraquests.key_value.ignore": "무시",
-  "extraquests.key_value.ignore.tooltip": "시작되지 않은 작업을 무시할 것인가요? \n참이면, 종속 작업의 보상을 그 값보다 높게 발행하지 마십시오.",
 
   "extraquests.reward.mixins.console": "콘솔",
   "extraquests.reward.mixins.console.tooltip": "콘솔에서 명령 실행",
