@@ -16,6 +16,9 @@ A: Yes.
 **Q: My players are getting kicked from the server with weird error messages when they try to join.**  
 A: Ask them if they have this mod installed. If not, they won't be able to join the server.
 
+**Q: Where can I report a bug or suggest my idea for a mod?**
+A: Write to me on the Vecoo#2843 discord.
+
 ## Download
 * [Modrinth](https://modrinth.com/mod/extraquests)
 * [CurseForge](https://www.curseforge.com/minecraft/mc-mods/extraquests)
