@@ -1,5 +1,7 @@
 ftbquests.task.extraquests.key_value=Ключ-значение
+ftbquests.reward.extraquests.timer=Таймер
 ftbquests.reward.extraquests.key_value=Ключ-значение
+
 extraquests.key_value.title=%s: %s
 extraquests.key_value.key=Ключ
 extraquests.key_value.key.tooltip=Ключ для хранение значений
@@ -8,7 +10,6 @@ extraquests.key_value.value.tooltip=Значение для ключ,
 extraquests.key_value.ignore=Игнорировать?
 extraquests.key_value.ignore.tooltip=Будет ли награда игнорировать прогресс заданий?
 
-ftbquests.reward.extraquests.timer=Таймер
-extraquests.timer.title=Сброс раз в %s минут
-extraquests.timer.time="Время
-extraquests.timer.time.tooltip=Количество минут до сброса квеста
+extraquests.timer.title=Сброс раз в %s секунд.
+extraquests.timer.time="Время до сброса
+extraquests.timer.time.tooltip=Количество секунд до сброса квеста.

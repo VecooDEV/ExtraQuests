@@ -1,7 +1,6 @@
 package com.vecoo.extraquests.reward;
 
 import com.feed_the_beast.ftblib.lib.config.ConfigGroup;
-import com.feed_the_beast.ftblib.lib.data.TeamData;
 import com.feed_the_beast.ftblib.lib.io.DataIn;
 import com.feed_the_beast.ftblib.lib.io.DataOut;
 import com.feed_the_beast.ftbquests.quest.Quest;
@@ -10,6 +9,7 @@ import com.feed_the_beast.ftbquests.quest.ServerQuestFile;
 import com.feed_the_beast.ftbquests.quest.reward.Reward;
 import com.feed_the_beast.ftbquests.quest.reward.RewardType;
 import com.feed_the_beast.ftbquests.quest.task.TaskData;
+import com.vecoo.extraquests.integration.ExtraIntegration;
 import com.vecoo.extraquests.task.KeyValueTask;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,8 +21,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public class KeyValueReward extends Reward {
-    public static RewardType TYPE;
-
     private String key = "key";
     private long value = 5L;
     private boolean ignore = false;
@@ -33,7 +31,7 @@ public class KeyValueReward extends Reward {
 
     @Override
     public RewardType getType() {
-        return TYPE;
+        return ExtraIntegration.KEY_VALUE_REWARD;
     }
 
     @Override

@@ -5,7 +5,7 @@ import dev.ftb.mods.ftbquests.quest.QuestObjectBase;
 import java.util.Date;
 import java.util.UUID;
 
-public class QuestTimerListing implements Listing {
+public class QuestTimerListing {
 
     private final UUID playerUUID;
 
@@ -16,20 +16,17 @@ public class QuestTimerListing implements Listing {
     public QuestTimerListing(UUID playerUUID, QuestObjectBase questObject, long time) {
         this.playerUUID = playerUUID;
         this.questID = questObject.id;
-        this.endTime = new Date().getTime() + (time * 60000L);
+        this.endTime = new Date().getTime() + (time * 1000L);
     }
 
-    @Override
     public UUID getPlayerUUID() {
         return this.playerUUID;
     }
 
-    @Override
     public long getQuestID() {
         return this.questID;
     }
 
-    @Override
     public long getEndTime() {
         return this.endTime;
     }

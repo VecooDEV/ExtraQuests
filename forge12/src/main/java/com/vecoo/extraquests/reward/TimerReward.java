@@ -7,6 +7,7 @@ import com.feed_the_beast.ftbquests.quest.*;
 import com.feed_the_beast.ftbquests.quest.reward.Reward;
 import com.feed_the_beast.ftbquests.quest.reward.RewardType;
 import com.vecoo.extraquests.ExtraQuests;
+import com.vecoo.extraquests.integration.ExtraIntegration;
 import com.vecoo.extraquests.timer.QuestTimerListing;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,9 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TimerReward extends Reward {
-    public static RewardType TYPE;
-
-    private long time = 5L;
+    private long time = 300L;
 
     public TimerReward(Quest quest) {
         super(quest);
@@ -26,7 +25,7 @@ public class TimerReward extends Reward {
 
     @Override
     public RewardType getType() {
-        return TYPE;
+        return ExtraIntegration.TIMER;
     }
 
     @Override
@@ -61,13 +60,13 @@ public class TimerReward extends Reward {
     @SideOnly(Side.CLIENT)
     public void getConfig(ConfigGroup config) {
         super.getConfig(config);
-        config.addLong("time", () -> time, v -> time = v, 5L, 1L, Long.MAX_VALUE).setDisplayName(new TextComponentTranslation("extraquests.timer.time"));
+        config.addLong("time", () -> time, v -> time = v, 300L, 1L, Long.MAX_VALUE).setDisplayName(new TextComponentTranslation("extraquests.timer.time"));
     }
 
     @Override
     public void claim(EntityPlayerMP player, boolean notify) {
         QuestTimerListing listing = new QuestTimerListing(player.getUniqueID(), quest.getCodeString(), time);
-        ExtraQuests.getListingsProvider().addListing(listing);
+        ExtraQuests.getInstance().getListingsProvider().addListing(listing);
     }
 
     @Override

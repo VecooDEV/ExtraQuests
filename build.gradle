@@ -1,18 +1,16 @@
 subprojects {
     apply plugin: 'java'
-    group = 'com.vecoo.extraquests'
-    version = '1.1.1'
+    apply plugin: 'idea'
 
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
+    group = 'com.vecoo.extraquests'
+    version = '1.2.0'
 
     ext {
         forgeVersion = "none"
     }
 
     jar {
-        setArchiveBaseName("${rootProject.name}-Forge")
+        setArchiveBaseName("${rootProject.name}-forge")
     }
 
     repositories {
@@ -21,13 +19,17 @@ subprojects {
         maven { url = "https://cursemaven.com" }
     }
 
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
     task versionedRelease(type: Copy) {
         dependsOn('shadowJar')
         delete fileTree('../release/') {
             include '**/*.jar'
         }
         group "build"
-        from("./build/libs/${rootProject.name}-Forge-${version}.jar")
+        from("./build/libs/${rootProject.name}-forge-${version}.jar")
         into('../release/')
         include '*.jar'
         rename { String filename ->

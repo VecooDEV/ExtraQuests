@@ -3,8 +3,7 @@ package com.vecoo.extraquests.timer;
 import java.util.Date;
 import java.util.UUID;
 
-public class QuestTimerListing implements Listing {
-
+public class QuestTimerListing {
     private final UUID playerUUID;
 
     private final String questID;
@@ -14,20 +13,17 @@ public class QuestTimerListing implements Listing {
     public QuestTimerListing(UUID playerUUID, String quest, long time) {
         this.playerUUID = playerUUID;
         this.questID = quest;
-        this.endTime = new Date().getTime() + (time * 60000L);
+        this.endTime = new Date().getTime() + (time * 1000L);
     }
 
-    @Override
     public UUID getPlayerUUID() {
         return this.playerUUID;
     }
 
-    @Override
     public String getQuestID() {
         return this.questID;
     }
 
-    @Override
     public long getEndTime() {
         return this.endTime;
     }

@@ -8,17 +8,10 @@
   "extraquests.key_value.value.tooltip": "Key value",
 
   "ftbquests.reward.extraquests.timer": "Timer",
-  "extraquests.timer.title": "Reset every %s minutes",
-  "extraquests.timer.time": "Time",
-  "extraquests.timer.time.tooltip": "Number of minutes until the quest resets",
+  "extraquests.timer.title": "Reset every %s second",
+  "extraquests.timer.time": "Time to quest reset",
+  "extraquests.timer.time.tooltip": "Number of second until the quest resets",
 
   "extraquests.reward.mixins.console": "Console",
-  "extraquests.reward.mixins.console.tooltip": "Execute a command from the console",
-
-  "extraquests.reward.mixins.command":"Command-1",
-  "extraquests.reward.mixins.command.tooltip":"The first command to be executed",
-  "extraquests.reward.mixins.command_two":"Command-2",
-  "extraquests.reward.mixins.command_two.tooltip":"The second command to be executed \nLeave the field blank to skip the command",
-  "extraquests.reward.mixins.command_three":"Command-3",
-  "extraquests.reward.mixins.command_three.tooltip":"The third command to be executed \nLeave the field blank to skip the command"
+  "extraquests.reward.mixins.console.tooltip": "Execute a command from the console"
 }

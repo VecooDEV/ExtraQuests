@@ -1,24 +1,18 @@
 {
   "ftbquests.task.extraquests.key_value": "Ключ-значение",
   "ftbquests.reward.extraquests.key_value": "Ключ-значение",
+  "ftbquests.reward.extraquests.timer": "Таймер",
+
   "extraquests.key_value.title": "%s: %s",
   "extraquests.key_value.key": "Ключ",
   "extraquests.key_value.key.tooltip": "Ключ для хранение значений",
   "extraquests.key_value.value": "Значение",
   "extraquests.key_value.value.tooltip": "Значение для ключа",
 
-  "ftbquests.reward.extraquests.timer": "Таймер",
-  "extraquests.timer.title": "Сброс раз в %s минут",
-  "extraquests.timer.time": "Время",
-  "extraquests.timer.time.tooltip": "Количество минут до сброса квеста",
+  "extraquests.timer.title": "Сброс раз в %s секунд",
+  "extraquests.timer.time": "Время до сброса",
+  "extraquests.timer.time.tooltip": "Количество секунд до сброса квеста",
 
   "extraquests.reward.mixins.console": "Консоль",
-  "extraquests.reward.mixins.console.tooltip": "Запуск команды от консоли",
-
-  "extraquests.reward.mixins.command": "Команда-1",
-  "extraquests.reward.mixins.command.tooltip": "Первая команда, которую необходимо выполнить",
-  "extraquests.reward.mixins.command_two": "Команда-2",
-  "extraquests.reward.mixins.command_two.tooltip": "Вторая команда, которую необходимо выполнить \nОставьте поле пустым для пропуска команды",
-  "extraquests.reward.mixins.command_three": "Команда-3",
-  "extraquests.reward.mixins.command_three.tooltip": "Третья команда, которую необходимо выполнить \nОставьте поле пустым для пропуска команды"
+  "extraquests.reward.mixins.console.tooltip": "Запуск команды от консоли"
 }

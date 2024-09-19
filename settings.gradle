@@ -4,8 +4,8 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            name = 'NeoForged'
-            url = 'https://maven.neoforged.net/releases'
+            name = 'Forge'
+            url = 'https://maven.minecraftforge.net/'
         }
     }
 }
@@ -15,4 +15,6 @@ plugins {
 }
 
 rootProject.name = 'ExtraQuests'
+
+include 'forge12'
 include 'forge20'

@@ -1,71 +1,71 @@
 package com.vecoo.extraquests;
 
-import com.vecoo.extraquests.listener.RegisterFTB;
+import com.vecoo.extraquests.integration.ExtraIntegration;
 import com.vecoo.extraquests.timer.ListingProvider;
 import com.vecoo.extraquests.timer.TimerProvider;
-import com.vecoo.extraquests.util.Task;
 import com.vecoo.extraquests.util.Utils;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Mod(
-        modid = "extraquests",
-        name = "ExtraQuests",
-        version = "1.1.1",
-        acceptableRemoteVersions = "*"
-)
+@Mod(modid = ExtraQuests.MOD_ID, acceptableRemoteVersions = "*", useMetadata = true)
 public class ExtraQuests {
-    private static MinecraftServer server;
+    public static final String MOD_ID = "extraquests";
+    private static final Logger LOGGER = LogManager.getLogger("ExtraQuests");
 
-    private static ListingProvider listingsProvider;
+    private static ExtraQuests instance;
 
-    private static TimerProvider timer = new TimerProvider();
+    private ListingProvider listingsProvider;
+
+    private TimerProvider timer = new TimerProvider();
 
     @Mod.EventHandler
-    public void onServerStarting(FMLPreInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new RegisterFTB());
+    public void onPreInitialization(FMLPreInitializationEvent event) {
+        instance = this;
     }
 
     @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event) {
-        server = event.getServer();
+    public void onInitialization(FMLInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(new ExtraIntegration());
     }
 
     @Mod.EventHandler
-    public void loadConfig(FMLServerStartedEvent event) {
-        Task.builder()
-                .execute(() -> {
-                    try {
-                        listingsProvider = new ListingProvider();
-                        listingsProvider.init();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                })
-                .delay(20L * 5)
-                .interval(20L * 5)
-                .build();
+    public void serverStarted(FMLServerStartedEvent event) {
+        this.loadConfig();
+    }
+
+    public void loadConfig() {
+        try {
+            this.listingsProvider = new ListingProvider();
+            this.listingsProvider.init();
+        } catch (Exception e) {
+            LOGGER.error("Error load config.");
+        }
     }
 
     @Mod.EventHandler
-    public void onServerStop(FMLServerStoppedEvent event) {
+    public void onServerStopped(FMLServerStoppedEvent event) {
         Utils.removeAllTimers();
     }
 
-    public static MinecraftServer getServer() {
-        return server;
+    public static ExtraQuests getInstance() {
+        return instance;
     }
 
-    public static ListingProvider getListingsProvider() {
-        return listingsProvider;
+    public static Logger getLogger() {
+        return LOGGER;
     }
 
-    public static TimerProvider getTimerProvider() {
-        return timer;
+    public ListingProvider getListingsProvider() {
+        return instance.listingsProvider;
+    }
+
+    public TimerProvider getTimerProvider() {
+        return instance.timer;
     }
 }

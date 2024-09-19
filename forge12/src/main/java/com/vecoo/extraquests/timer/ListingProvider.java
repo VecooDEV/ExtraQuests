@@ -1,8 +1,9 @@
 package com.vecoo.extraquests.timer;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.vecoo.extralib.gson.UtilGson;
 import com.vecoo.extraquests.ExtraQuests;
-import com.vecoo.extraquests.util.GsonUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,33 +23,33 @@ public class ListingProvider {
 
     public void addListing(QuestTimerListing listing) {
         this.listing.add(listing);
-        ExtraQuests.getTimerProvider().addQuestTimer(listing);
+        ExtraQuests.getInstance().getTimerProvider().addQuestTimer(listing);
        writeToFile();
     }
 
     public void removeListing(QuestTimerListing listing) {
         this.listing.remove(listing);
-        ExtraQuests.getTimerProvider().deleteQuestTimer(listing);
+        ExtraQuests.getInstance().getTimerProvider().deleteQuestTimer(listing);
         writeToFile();
     }
 
     private void writeToFile() {
-        Gson gson = GsonUtils.newGson();
-        CompletableFuture<Boolean> future = GsonUtils.writeFileAsync("/config/temp/ExtraQuests/timer/", "listings.json", gson.toJson(this));
+        Gson gson = UtilGson.newGson();
+        CompletableFuture<Boolean> future = UtilGson.writeFileAsync("/config/temp/ExtraQuests/timer/", "listings.json", gson.toJson(this));
         future.join();
     }
 
     public void init() {
-        CompletableFuture<Boolean> future = GsonUtils.readFileAsync("/config/temp/ExtraQuests/timer/", "listings.json", el -> {
-            Gson gson = GsonUtils.newGson();
+        CompletableFuture<Boolean> future = UtilGson.readFileAsync("/config/temp/ExtraQuests/timer/", "listings.json", el -> {
+            Gson gson = UtilGson.newGson();
             ListingProvider data = gson.fromJson(el, ListingProvider.class);
 
             for (QuestTimerListing listing : data.getListing()) {
                 if (listing.getEndTime() > new Date().getTime()) {
                     this.listing.add(listing);
-                    ExtraQuests.getTimerProvider().addQuestTimer(listing);
+                    ExtraQuests.getInstance().getTimerProvider().addQuestTimer(listing);
                 } else {
-                    ExtraQuests.getTimerProvider().questTimer(listing);
+                    ExtraQuests.getInstance().getTimerProvider().questTimer(listing);
                 }
             }
         });

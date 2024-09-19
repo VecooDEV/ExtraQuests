@@ -1,7 +1,6 @@
-package com.vecoo.extraquests.util;
+package com.vecoo.extraquests.timer;
 
 import com.vecoo.extraquests.ExtraQuests;
-import com.vecoo.extraquests.timer.QuestTimerListing;
 import dev.ftb.mods.ftbquests.quest.QuestObjectBase;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import dev.ftb.mods.ftbquests.util.ProgressChange;
@@ -25,7 +24,7 @@ public class TimerProvider {
         if (file.getQuest(listing.getQuestID()) != null) {
             QuestObjectBase questObject = file.getQuest(listing.getQuestID());
             ProgressChange progressChange = new ProgressChange(file, questObject, listing.getPlayerUUID()).setReset(true);
-            questObject.forceProgress(ServerQuestFile.INSTANCE.getNullableTeamData(listing.getPlayerUUID()), progressChange);
+            questObject.forceProgress(file.getOrCreateTeamData(listing.getPlayerUUID()), progressChange);
         }
         ExtraQuests.getInstance().getListingsProvider().removeListing(listing);
     }

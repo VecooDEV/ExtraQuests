@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TimerReward extends Reward {
     public static RewardType TYPE;
 
-    private long time = 5L;
+    private long time = 300L;
 
     public TimerReward(long id, Quest quest) {
         super(id, quest);
@@ -60,7 +60,7 @@ public class TimerReward extends Reward {
     @OnlyIn(Dist.CLIENT)
     public void fillConfigGroup(ConfigGroup config) {
         super.fillConfigGroup(config);
-        config.addLong("time", time, v -> time = v, 5L, 1L, Long.MAX_VALUE).setNameKey("extraquests.timer.time");
+        config.addLong("time", time, v -> time = v, 300L, 1L, Long.MAX_VALUE).setNameKey("extraquests.timer.time");
     }
 
     @Override

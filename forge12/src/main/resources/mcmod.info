@@ -1,0 +1,15 @@
+[
+  {
+    "modid": "extraquests",
+    "name": "ExtraQuests",
+    "description": "Sidemode for FTB Quests. Adds new quests and rewards.",
+    "version": "1.2.0",
+    "mcversion": "1.12.2",
+    "logoFile": "logo.png",
+    "authorList": ["Vecoo"],
+    "parent": "",
+    "useDependencyInformation": true,
+    "requiredMods": ["ftbquests", "extralib"],
+    "dependencies": ["ftbquests", "extralib"]
+  }
+]

@@ -8,6 +8,7 @@ import com.feed_the_beast.ftbquests.quest.QuestData;
 import com.feed_the_beast.ftbquests.quest.task.Task;
 import com.feed_the_beast.ftbquests.quest.task.TaskData;
 import com.feed_the_beast.ftbquests.quest.task.TaskType;
+import com.vecoo.extraquests.integration.ExtraIntegration;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -15,8 +16,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class KeyValueTask extends Task {
-    public static TaskType TYPE;
-
     private String key = "key";
     private long value = 100L;
 
@@ -26,7 +25,7 @@ public class KeyValueTask extends Task {
 
     @Override
     public TaskType getType() {
-        return TYPE;
+        return ExtraIntegration.KEY_VALUE_TASK;
     }
 
     @Override

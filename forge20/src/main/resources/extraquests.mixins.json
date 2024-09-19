@@ -5,8 +5,5 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "CommandRewardMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+  ]
 }
