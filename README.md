@@ -7,6 +7,9 @@ Sidemode for [FTB Quests](https://www.curseforge.com/minecraft/mc-mods/ftb-quest
 * Additional option to run a command from the console in the command reward.
 * Ability to add a timer for tasks as a task.
 
+## Additional dependencies
+* [ExtraLib](https://modrinth.com/mod/extralib)
+
 ## FAQ:
 **Q: Do I need to install this on both server and client?**  
 A: Yes.
