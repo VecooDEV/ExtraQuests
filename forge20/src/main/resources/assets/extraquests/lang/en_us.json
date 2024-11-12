@@ -12,6 +12,6 @@
   "extraquests.timer.time": "Time to quest reset",
   "extraquests.timer.time.tooltip": "Number of second until the quest resets",
 
-  "extraquests.reward.mixins.console": "Console",
-  "extraquests.reward.mixins.console.tooltip": "Execute a command from the console"
+  "extraquests.reward.command.console": "Console",
+  "extraquests.reward.command.console.tooltip": "Execute a command from the console"
 }

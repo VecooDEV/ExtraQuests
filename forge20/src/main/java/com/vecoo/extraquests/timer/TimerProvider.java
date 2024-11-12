@@ -1,55 +1,47 @@
 package com.vecoo.extraquests.timer;
 
-import com.vecoo.extraquests.ExtraQuests;
-import dev.ftb.mods.ftbquests.quest.QuestObjectBase;
-import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
-import dev.ftb.mods.ftbquests.util.ProgressChange;
+import com.vecoo.extraquests.util.Utils;
 
 import java.util.*;
 
 public class TimerProvider {
-    private HashMap<QuestTimerListing, Timer> listingMap;
+    private final HashMap<QuestTimer, Timer> timers;
 
     public TimerProvider() {
-        listingMap = new HashMap<>();
+        this.timers = new HashMap<>();
     }
 
-    public ArrayList<QuestTimerListing> getTimers() {
-        ArrayList<QuestTimerListing> keys = new ArrayList<>(listingMap.keySet());
-        return keys;
+    public ArrayList<QuestTimer> getTimers() {
+        return new ArrayList<>(this.timers.keySet());
     }
 
-    public void questTimer(QuestTimerListing listing) {
-        ServerQuestFile file = ServerQuestFile.INSTANCE;
-        if (file.getQuest(listing.getQuestID()) != null) {
-            QuestObjectBase questObject = file.getQuest(listing.getQuestID());
-            ProgressChange progressChange = new ProgressChange(file, questObject, listing.getPlayerUUID()).setReset(true);
-            questObject.forceProgress(file.getOrCreateTeamData(listing.getPlayerUUID()), progressChange);
-        }
-        ExtraQuests.getInstance().getListingsProvider().removeListing(listing);
-    }
-
-    public void addQuestTimer(QuestTimerListing listing) {
-        long timeDiff = listing.getEndTime() - new Date().getTime();
+    public void startTimer(QuestTimer questTimer) {
+        long timeDiff = questTimer.getEndTime() - new Date().getTime();
 
         if (timeDiff > 0) {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    questTimer(listing);
+                    Utils.timerExpired(questTimer);
                 }
             }, timeDiff);
-            listingMap.put(listing, timer);
+            this.timers.put(questTimer, timer);
         } else {
-            questTimer(listing);
+            Utils.timerExpired(questTimer);
         }
     }
 
-    public void deleteQuestTimer(QuestTimerListing listing) {
-        Timer timer = listingMap.remove(listing);
+    public void removeTimer(QuestTimer questTimer) {
+        Timer timer = this.timers.remove(questTimer);
         if (timer != null) {
             timer.cancel();
+        }
+    }
+
+    public void removeAllTimers() {
+        for (QuestTimer questTimer : getTimers()) {
+            removeTimer(questTimer);
         }
     }
 }

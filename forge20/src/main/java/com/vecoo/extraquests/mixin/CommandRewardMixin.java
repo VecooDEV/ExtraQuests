@@ -23,7 +23,6 @@ import java.util.Map;
 
 @Mixin(value = CommandReward.class, remap = false)
 public abstract class CommandRewardMixin extends Reward {
-
     @Shadow
     private String command;
 
@@ -33,43 +32,51 @@ public abstract class CommandRewardMixin extends Reward {
     @Shadow
     private boolean silent;
 
+    @Shadow
+    public static String format(String template, Map<String, Object> parameters) {
+        throw new AssertionError();
+    }
+
     @Unique
-    private boolean console = false;
+    private boolean console;
 
     public CommandRewardMixin(long id, Quest q) {
         super(id, q);
     }
 
-    @Inject(method = "writeData", at = @At("RETURN"))
+    @Inject(method = "writeData", at = @At("TAIL"))
     public void writeData(CompoundTag nbt, CallbackInfo ci) {
-        nbt.putBoolean("console", console);
+        if (console) {
+            nbt.putBoolean("console", true);
+        }
     }
 
-    @Inject(method = "readData", at = @At("RETURN"))
+    @Inject(method = "readData", at = @At("TAIL"))
     public void readData(CompoundTag nbt, CallbackInfo ci) {
         console = nbt.getBoolean("console");
     }
 
-    @Inject(method = "writeNetData", at = @At("RETURN"))
+    @Inject(method = "writeNetData", at = @At("TAIL"))
     public void writeNetData(FriendlyByteBuf buffer, CallbackInfo ci) {
         buffer.writeBoolean(console);
     }
 
-    @Inject(method = "readNetData", at = @At("RETURN"))
+    @Inject(method = "readNetData", at = @At("TAIL"))
     public void readNetData(FriendlyByteBuf buffer, CallbackInfo ci) {
         console = buffer.readBoolean();
     }
 
-    @Inject(method = "fillConfigGroup", at = @At("RETURN"))
+    @Inject(method = "fillConfigGroup", at = @At("TAIL"))
     public void fillConfigGroup(ConfigGroup config, CallbackInfo ci) {
-        config.addBool("console", console, v -> console = v, false).setNameKey("extraquests.reward.mixins.console");
+        config.addBool("console", console, v -> console = v, false).setNameKey("extraquests.reward.command.console");
     }
 
     /**
      * @author Vecoo
-     * @reason Add new options
+     * @reason Add execute console.
      */
-    @Overwrite(remap = false)
+    @Overwrite
+    @Override
     public void claim(ServerPlayer player, boolean notify) {
         Map<String, Object> overrides = new HashMap<>();
         overrides.put("p", player.getGameProfile().getName());
@@ -84,27 +91,19 @@ public abstract class CommandRewardMixin extends Reward {
         }
 
         overrides.put("quest", quest);
-        overrides.put("team", FTBTeamsAPI.api().getManager().getTeamForPlayer(player)
-                .map(team -> team.getName().getString())
-                .orElse(player.getGameProfile().getName())
-        );
+        FTBTeamsAPI.api().getManager().getTeamForPlayer(player).ifPresent(team -> {
+            overrides.put("team", team.getName().getString());
+            overrides.put("team_id", team.getShortName());
+            overrides.put("long_team_id", team.getId().toString());
+            overrides.put("member_count", team.getMembers().size());
+            overrides.put("online_member_count", team.getOnlineMembers().size());
+        });
 
-        String cmd = command;
-        for (Map.Entry<String, Object> entry : overrides.entrySet()) {
-            if (entry.getValue() != null) {
-                cmd = cmd.replace("{" + entry.getKey() + "}", entry.getValue().toString());
-            }
-        }
+        String cmd = format(command, overrides);
 
         CommandSourceStack source = player.createCommandSourceStack();
-
-        if (elevatePerms) {
-            source = source.withPermission(2);
-        }
-
-        if (silent) {
-            source = source.withSuppressedOutput();
-        }
+        if (elevatePerms) source = source.withPermission(2);
+        if (silent) source = source.withSuppressedOutput();
 
         if (console) {
             player.server.getCommands().performPrefixedCommand(source.getServer().createCommandSourceStack(), cmd);

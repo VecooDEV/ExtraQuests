@@ -1,17 +1,22 @@
 package com.vecoo.extraquests;
 
+import com.vecoo.extraquests.command.ExtraQuestsCommand;
+import com.vecoo.extraquests.config.LocaleConfig;
+import com.vecoo.extraquests.config.PermissionConfig;
+import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
 import com.vecoo.extraquests.task.KeyValueTask;
-import com.vecoo.extraquests.timer.ListingProvider;
+import com.vecoo.extraquests.timer.QuestTimerProvider;
 import com.vecoo.extraquests.timer.TimerProvider;
-import com.vecoo.extraquests.util.Utils;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,12 +30,17 @@ public class ExtraQuests {
 
     private static ExtraQuests instance;
 
-    private ListingProvider listingsProvider;
+    private ServerConfig config;
+    private LocaleConfig locale;
+    private PermissionConfig permission;
 
-    private TimerProvider timer = new TimerProvider();
+    private QuestTimerProvider questTimerProvider;
+    private TimerProvider timerProvider;
 
     public ExtraQuests() {
         instance = this;
+
+        this.loadConfig();
 
         this.registerQuests();
 
@@ -38,22 +48,41 @@ public class ExtraQuests {
     }
 
     @SubscribeEvent
-    public void pnServerStarted(ServerStartedEvent event) {
-        this.loadConfig();
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        ExtraQuestsCommand.register(event.getDispatcher());
+    }
+
+    @SubscribeEvent
+    public void onServerStarting(ServerStartedEvent event) {
+        this.loadStorage();
     }
 
 
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
-        Utils.removeAllTimers();
+        this.timerProvider.removeAllTimers();
     }
 
     public void loadConfig() {
         try {
-            this.listingsProvider = new ListingProvider();
-            this.listingsProvider.init();
+            this.config = new ServerConfig();
+            this.config.init();
+            this.locale = new LocaleConfig();
+            this.locale.init();
+            this.permission = new PermissionConfig();
+            this.permission.init();
         } catch (Exception e) {
-            LOGGER.error("Error load config.");
+            LOGGER.error("[ExtraQuests] Error load config.");
+        }
+    }
+
+    public void loadStorage() {
+        try {
+            this.questTimerProvider = new QuestTimerProvider();
+            this.questTimerProvider.init();
+            this.timerProvider = new TimerProvider();
+        } catch (Exception e) {
+            LOGGER.error("[ExtraQuests] Error load storage.");
         }
     }
 
@@ -71,11 +100,23 @@ public class ExtraQuests {
         return LOGGER;
     }
 
-    public ListingProvider getListingsProvider() {
-        return instance.listingsProvider;
+    public ServerConfig getConfig() {
+        return instance.config;
+    }
+
+    public LocaleConfig getLocale() {
+        return instance.locale;
+    }
+
+    public PermissionConfig getPermission() {
+        return instance.permission;
+    }
+
+    public QuestTimerProvider getQuestTimerProvider() {
+        return instance.questTimerProvider;
     }
 
     public TimerProvider getTimerProvider() {
-        return instance.timer;
+        return instance.timerProvider;
     }
 }

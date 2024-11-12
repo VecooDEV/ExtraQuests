@@ -4,7 +4,6 @@ import com.vecoo.extraquests.task.KeyValueTask;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
-import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
 import dev.ftb.mods.ftbquests.quest.reward.RewardType;
 import net.minecraft.nbt.CompoundTag;
@@ -76,11 +75,8 @@ public class KeyValueReward extends Reward {
 
     @Override
     public void claim(ServerPlayer player, boolean notify) {
-        ServerQuestFile file = ServerQuestFile.INSTANCE;
-        TeamData data = ServerQuestFile.INSTANCE.getOrCreateTeamData(player);
-
-        for (KeyValueTask task : file.collect(KeyValueTask.class)) {
-            task.progress(data, key, value);
+        for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
+            task.progress(ServerQuestFile.INSTANCE.getOrCreateTeamData(player), key, value);
         }
     }
 

@@ -20,11 +20,10 @@ repositories {}
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.3.0'
 
-    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:5543955")
-    implementation fg.deobf("curse.maven:ftb-library-forge-404465:5567591")
+    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:5816794")
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:5874882")
     implementation fg.deobf("curse.maven:ftb-teams-forge-404468:5267190")
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fg.deobf('maven.modrinth:extralib:1.2.2-forge,1.20.1')
 }
 
 mixin {
@@ -35,7 +34,7 @@ mixin {
 shadowJar {
     configurations = [project.configurations.shadow]
     setArchiveClassifier('')
-    setArchiveBaseName("${rootProject.name}-Forge")
+    setArchiveBaseName("${rootProject.name}")
 }
 
 jar.finalizedBy('shadowJar')
