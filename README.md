@@ -1,5 +1,5 @@
 # ExtraQuests
-Sidemode for [FTB Quests](https://www.curseforge.com/minecraft/mc-mods/ftb-quests-forge). Adds new quests and rewards.
+Sidemode for [FTB Quests](https://www.curseforge.com/minecraft/mc-mods/ftb-quests-forge). Adds new tasks and rewards.
 
 ## Features
 * Task a key-value for convenient control of the player’s development progress.
