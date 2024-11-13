@@ -42,7 +42,7 @@ public class ExtraQuests {
 
         this.loadConfig();
 
-        UtilPermissions.registerPermission(this.permission.getPermissionCommand());
+        UtilPermissions.registerPermission(permission.getPermissionCommand());
 
         this.registerQuests();
 

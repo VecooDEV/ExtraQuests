@@ -3,16 +3,14 @@ package com.vecoo.extraquests.timer;
 import java.util.Date;
 import java.util.UUID;
 
-public class QuestTimerListing {
+public class QuestTimer {
     private final UUID playerUUID;
-
-    private final String questID;
-
+    private final String quest;
     private final long endTime;
 
-    public QuestTimerListing(UUID playerUUID, String quest, long time) {
+    public QuestTimer(UUID playerUUID, String quest, long time) {
         this.playerUUID = playerUUID;
-        this.questID = quest;
+        this.quest = quest;
         this.endTime = new Date().getTime() + (time * 1000L);
     }
 
@@ -20,8 +18,8 @@ public class QuestTimerListing {
         return this.playerUUID;
     }
 
-    public String getQuestID() {
-        return this.questID;
+    public String getQuest() {
+        return this.quest;
     }
 
     public long getEndTime() {

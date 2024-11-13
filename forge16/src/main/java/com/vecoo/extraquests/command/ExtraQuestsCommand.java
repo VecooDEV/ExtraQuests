@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class ExtraQuestsCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
-        for (String command : Arrays.asList("extraquests", "eq")) {
+        for (String command : Arrays.asList("extraquests", "equests")) {
             dispatcher.register(Commands.literal(command)
                     .requires(p -> UtilPermissions.hasPermission(p, "minecraft.command.extraquests", ExtraQuests.getInstance().getPermission().getPermissionCommand()))
                     .then(Commands.literal("keyvalue")

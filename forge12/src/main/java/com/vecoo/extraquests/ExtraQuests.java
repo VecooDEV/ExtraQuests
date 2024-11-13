@@ -1,15 +1,16 @@
 package com.vecoo.extraquests;
 
+import com.vecoo.extralib.permission.UtilPermissions;
+import com.vecoo.extraquests.command.ExtraQuestsCommand;
+import com.vecoo.extraquests.config.LocaleConfig;
+import com.vecoo.extraquests.config.PermissionConfig;
+import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.integration.ExtraIntegration;
-import com.vecoo.extraquests.timer.ListingProvider;
+import com.vecoo.extraquests.timer.QuestTimerProvider;
 import com.vecoo.extraquests.timer.TimerProvider;
-import com.vecoo.extraquests.util.Utils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,37 +21,63 @@ public class ExtraQuests {
 
     private static ExtraQuests instance;
 
-    private ListingProvider listingsProvider;
+    private ServerConfig config;
+    private LocaleConfig locale;
+    private PermissionConfig permission;
 
-    private TimerProvider timer = new TimerProvider();
+    private QuestTimerProvider questTimerProvider;
+    private TimerProvider timerProvider;
 
     @Mod.EventHandler
     public void onPreInitialization(FMLPreInitializationEvent event) {
         instance = this;
+
+        this.loadConfig();
     }
 
     @Mod.EventHandler
     public void onInitialization(FMLInitializationEvent event) {
+        UtilPermissions.registerPermission(permission.getPermissionCommand());
+
         MinecraftForge.EVENT_BUS.register(new ExtraIntegration());
     }
 
     @Mod.EventHandler
+    public void serverStarting(FMLServerStartingEvent event) {
+        event.registerServerCommand(new ExtraQuestsCommand());
+    }
+
+    @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
-        this.loadConfig();
+        this.loadStorage();
+    }
+
+    @Mod.EventHandler
+    public void onServerStopping(FMLServerStoppingEvent event) {
+        this.timerProvider.removeAllTimers();
     }
 
     public void loadConfig() {
         try {
-            this.listingsProvider = new ListingProvider();
-            this.listingsProvider.init();
+            this.config = new ServerConfig();
+            this.config.init();
+            this.locale = new LocaleConfig();
+            this.locale.init();
+            this.permission = new PermissionConfig();
+            this.permission.init();
         } catch (Exception e) {
-            LOGGER.error("Error load config.");
+            LOGGER.error("[ExtraQuests] Error load config.");
         }
     }
 
-    @Mod.EventHandler
-    public void onServerStopped(FMLServerStoppedEvent event) {
-        Utils.removeAllTimers();
+    public void loadStorage() {
+        try {
+            this.questTimerProvider = new QuestTimerProvider();
+            this.questTimerProvider.init();
+            this.timerProvider = new TimerProvider();
+        } catch (Exception e) {
+            LOGGER.error("[ExtraQuests] Error load storage.");
+        }
     }
 
     public static ExtraQuests getInstance() {
@@ -61,11 +88,23 @@ public class ExtraQuests {
         return LOGGER;
     }
 
-    public ListingProvider getListingsProvider() {
-        return instance.listingsProvider;
+    public ServerConfig getConfig() {
+        return instance.config;
+    }
+
+    public LocaleConfig getLocale() {
+        return instance.locale;
+    }
+
+    public PermissionConfig getPermission() {
+        return instance.permission;
+    }
+
+    public QuestTimerProvider getQuestTimerProvider() {
+        return instance.questTimerProvider;
     }
 
     public TimerProvider getTimerProvider() {
-        return instance.timer;
+        return instance.timerProvider;
     }
 }

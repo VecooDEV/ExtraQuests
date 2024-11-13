@@ -3,12 +3,12 @@ package com.vecoo.extraquests.reward;
 import com.feed_the_beast.ftblib.lib.config.ConfigGroup;
 import com.feed_the_beast.ftblib.lib.io.DataIn;
 import com.feed_the_beast.ftblib.lib.io.DataOut;
-import com.feed_the_beast.ftbquests.quest.*;
+import com.feed_the_beast.ftbquests.quest.Quest;
 import com.feed_the_beast.ftbquests.quest.reward.Reward;
 import com.feed_the_beast.ftbquests.quest.reward.RewardType;
-import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.integration.ExtraIntegration;
-import com.vecoo.extraquests.timer.QuestTimerListing;
+import com.vecoo.extraquests.timer.QuestTimer;
+import com.vecoo.extraquests.timer.QuestTimerFactory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -65,8 +65,7 @@ public class TimerReward extends Reward {
 
     @Override
     public void claim(EntityPlayerMP player, boolean notify) {
-        QuestTimerListing listing = new QuestTimerListing(player.getUniqueID(), quest.getCodeString(), time);
-        ExtraQuests.getInstance().getListingsProvider().addListing(listing);
+        QuestTimerFactory.addQuestTimer(new QuestTimer(player.getUniqueID(), quest.getCodeString(), time));
     }
 
     @Override

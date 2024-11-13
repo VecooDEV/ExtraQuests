@@ -5,7 +5,7 @@ Sidemode for [FTB Quests](https://www.curseforge.com/minecraft/mc-mods/ftb-quest
 * Task a key-value for convenient control of the player’s development progress.
 * Reward with a key-value for task of the same type.
 * Additional option to run a command from the console in the command reward.
-* Ability to add a timer for tasks as a task.
+* Ability to add a timer for tasks as a reward.
 
 ## Additional dependencies
 * [ExtraLib](https://modrinth.com/mod/extralib)

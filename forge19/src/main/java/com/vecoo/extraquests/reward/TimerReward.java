@@ -6,11 +6,11 @@ import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
 import dev.ftb.mods.ftbquests.quest.reward.RewardType;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,25 +29,25 @@ public class TimerReward extends Reward {
     }
 
     @Override
-    public void writeData(CompoundNBT nbt) {
+    public void writeData(CompoundTag nbt) {
         super.writeData(nbt);
         nbt.putLong("time", time);
     }
 
     @Override
-    public void readData(CompoundNBT nbt) {
+    public void readData(CompoundTag nbt) {
         super.readData(nbt);
         time = nbt.getLong("time");
     }
 
     @Override
-    public void writeNetData(PacketBuffer buffer) {
+    public void writeNetData(FriendlyByteBuf buffer) {
         super.writeNetData(buffer);
         buffer.writeVarLong(time);
     }
 
     @Override
-    public void readNetData(PacketBuffer buffer) {
+    public void readNetData(FriendlyByteBuf buffer) {
         super.readNetData(buffer);
         time = buffer.readVarLong();
     }
@@ -64,13 +64,13 @@ public class TimerReward extends Reward {
     }
 
     @Override
-    public void claim(ServerPlayerEntity player, boolean notify) {
+    public void claim(ServerPlayer player, boolean notify) {
         QuestTimerFactory.addQuestTimer(new QuestTimer(player.getUUID(), quest.getCodeString(), time));
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public IFormattableTextComponent getAltTitle() {
-        return new TranslationTextComponent("extraquests.timer.title", getTime());
+    public MutableComponent getAltTitle() {
+        return Component.translatable("extraquests.timer.title", getTime());
     }
 }
