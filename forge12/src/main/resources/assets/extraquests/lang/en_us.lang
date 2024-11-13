@@ -1,6 +1,5 @@
 ftbquests.task.extraquests.key_value=Key-value
 ftbquests.reward.extraquests.key_value=Key-value
-ftbquests.reward.extraquests.timer=Timer
 
 extraquests.key_value.title=%s: %s
 extraquests.key_value.key=Key
@@ -10,6 +9,7 @@ extraquests.key_value.value.tooltip=Key value
 extraquests.key_value.ignore=Ignore?
 extraquests.key_value.ignore.tooltip=Will rewards ignore quest progress?
 
+ftbquests.reward.extraquests.timer=Timer
 extraquests.timer.title=Reset every %s seconds
 extraquests.timer.time=Time to reset
 extraquests.timer.time.tooltip=Number of seconds until the quest resets

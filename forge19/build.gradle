@@ -3,12 +3,12 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-forgeVersion = "1.12.2"
+forgeVersion = "1.19.2"
 
 minecraft {
-    mappings channel: 'stable', version: '39-1.12'
+    mappings channel: 'official', version: '1.19.2'
     copyIdeResources = true
 }
 
@@ -17,11 +17,12 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {}
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.4.0'
 
-    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:3015063")
-    implementation fg.deobf("curse.maven:ftb-library-legacy-237167:2985811")
-    implementation fg.deobf('maven.modrinth:extralib:1.2.2-forge,1.12.2')
+    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:5417957")
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:4661834")
+    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4611938")
+    implementation fg.deobf('maven.modrinth:extralib:1.2.2-forge,1.19.2')
 }
 
 shadowJar {

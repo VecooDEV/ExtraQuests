@@ -1,0 +1,39 @@
+modLoader="javafml"
+loaderVersion="[43,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="extraquests"
+version="1.3.0"
+displayName="ExtraQuests"
+logoFile ="logo.png"
+authors="Vecoo"
+description="Addition to FTB Quests"
+
+[[dependencies.extraquests]]
+modId="forge"
+mandatory=true
+versionRange="[43,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.extraquests]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.19,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.extraquests]]
+modId="ftbquests"
+mandatory=true
+versionRange="[1902,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.extraquests]]
+modId="extralib"
+mandatory=true
+versionRange="[1.2,)"
+ordering="AFTER"
+side="BOTH"

@@ -5,10 +5,10 @@ plugins {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
-forgeVersion = "1.12.2"
+forgeVersion = "1.16.5"
 
 minecraft {
-    mappings channel: 'stable', version: '39-1.12'
+    mappings channel: 'official', version: '1.16.5'
     copyIdeResources = true
 }
 
@@ -17,11 +17,12 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {}
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
 
-    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:3015063")
-    implementation fg.deobf("curse.maven:ftb-library-legacy-237167:2985811")
-    implementation fg.deobf('maven.modrinth:extralib:1.2.2-forge,1.12.2')
+    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:4297999")
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:3553840")
+    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:3535953")
+    implementation fg.deobf('maven.modrinth:extralib:1.2.2-forge,1.16.5')
 }
 
 shadowJar {
