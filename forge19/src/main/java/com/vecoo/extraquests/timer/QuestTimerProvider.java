@@ -4,6 +4,7 @@ import com.vecoo.extralib.gson.UtilGson;
 import com.vecoo.extralib.world.UtilWorld;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.util.Utils;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,11 +12,12 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class QuestTimerProvider {
-    private final String filePath = UtilWorld.worldDirectory(ExtraQuests.getInstance().getConfig().getTimerStorage());
+    private final String filePath;
     private final ArrayList<QuestTimer> questTimers;
 
-    public QuestTimerProvider() {
+    public QuestTimerProvider(String filePath, MinecraftServer server) {
         this.questTimers = new ArrayList<>();
+        this.filePath = UtilWorld.worldDirectory(filePath, server);
     }
 
     public List<QuestTimer> getQuestTimers() {

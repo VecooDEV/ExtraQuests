@@ -3,7 +3,6 @@ package com.vecoo.extraquests;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.PermissionConfig;
-import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
 import com.vecoo.extraquests.task.KeyValueTask;
@@ -13,9 +12,11 @@ import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,18 +30,18 @@ public class ExtraQuests {
 
     private static ExtraQuests instance;
 
-    private ServerConfig config;
     private LocaleConfig locale;
     private PermissionConfig permission;
 
     private QuestTimerProvider questTimerProvider;
     private TimerProvider timerProvider;
 
+    private MinecraftServer server;
+
     public ExtraQuests() {
         instance = this;
 
         this.loadConfig();
-
         this.registerQuests();
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -52,7 +53,12 @@ public class ExtraQuests {
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartedEvent event) {
+    public void onServerStarting(ServerStartingEvent event) {
+        this.server = event.getServer();
+    }
+
+    @SubscribeEvent
+    public void onServerStarted(ServerStartedEvent event) {
         this.loadStorage();
     }
 
@@ -64,8 +70,6 @@ public class ExtraQuests {
 
     public void loadConfig() {
         try {
-            this.config = new ServerConfig();
-            this.config.init();
             this.locale = new LocaleConfig();
             this.locale.init();
             this.permission = new PermissionConfig();
@@ -77,7 +81,7 @@ public class ExtraQuests {
 
     public void loadStorage() {
         try {
-            this.questTimerProvider = new QuestTimerProvider();
+            this.questTimerProvider = new QuestTimerProvider("/%directory%/storage/ExtraQuests/", this.server);
             this.questTimerProvider.init();
             this.timerProvider = new TimerProvider();
         } catch (Exception e) {
@@ -99,10 +103,6 @@ public class ExtraQuests {
         return LOGGER;
     }
 
-    public ServerConfig getConfig() {
-        return instance.config;
-    }
-
     public LocaleConfig getLocale() {
         return instance.locale;
     }
@@ -117,5 +117,9 @@ public class ExtraQuests {
 
     public TimerProvider getTimerProvider() {
         return instance.timerProvider;
+    }
+
+    public MinecraftServer getServer() {
+        return instance.server;
     }
 }

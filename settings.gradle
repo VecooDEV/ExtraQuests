@@ -16,4 +16,4 @@ plugins {
 
 rootProject.name = 'ExtraQuests'
 
-include 'forge12', 'forge16', 'forge19', 'forge20'
+include 'forge16', 'forge19', 'forge20'
