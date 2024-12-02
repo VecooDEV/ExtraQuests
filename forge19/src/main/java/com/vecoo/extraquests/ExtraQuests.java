@@ -33,8 +33,8 @@ public class ExtraQuests {
 
     private LocaleConfig locale;
 
-    private QuestTimerProvider questTimerProvider;
     private TimerProvider timerProvider;
+    private QuestTimerProvider questTimerProvider;
 
     private MinecraftServer server;
 
@@ -48,13 +48,13 @@ public class ExtraQuests {
     }
 
     @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event) {
-        ExtraQuestsCommand.register(event.getDispatcher());
+    public void onPermissionGather(PermissionGatherEvent.Nodes event) {
+        event.addNodes(PermissionNodes.EXTRAQUESTS_COMMAND);
     }
 
     @SubscribeEvent
-    public void onPermissionGather(PermissionGatherEvent.Nodes event) {
-        event.addNodes(PermissionNodes.EXTRAQUESTS_COMMAND);
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        ExtraQuestsCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent
@@ -84,9 +84,9 @@ public class ExtraQuests {
 
     public void loadStorage() {
         try {
+            this.timerProvider = new TimerProvider();
             this.questTimerProvider = new QuestTimerProvider("/%directory%/storage/ExtraQuests/", this.server);
             this.questTimerProvider.init();
-            this.timerProvider = new TimerProvider();
         } catch (Exception e) {
             LOGGER.error("[ExtraQuests] Error load storage.");
         }

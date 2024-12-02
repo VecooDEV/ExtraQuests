@@ -10,6 +10,8 @@
 
   "ftbquests.reward.extraquests.timer": "Таймер",
   "extraquests.timer.title": "Сброс раз в %s секунд",
+  "extraquests.timer.questid": "ID квеста, который будет сброшен",
+  "extraquests.timer.questid.tooltip": "Оставьте поле пустым, чтобы сбросить текущий квест.",
   "extraquests.timer.time": "Время до сброса",
   "extraquests.timer.time.tooltip": "Количество секунд до сброса квеста",
 

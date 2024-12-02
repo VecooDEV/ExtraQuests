@@ -20,7 +20,7 @@ public class ExtraQuestsCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(Commands.literal("equests")
                 .requires(p -> UtilPermission.hasPermission(p, "minecraft.command.equests"))
-                .then(Commands.literal("keyvalue")
+                .then(Commands.literal("key_value")
                         .then(Commands.literal("add")
                                 .then(Commands.argument("player", EntityArgument.player())
                                         .suggests((s, builder) -> {

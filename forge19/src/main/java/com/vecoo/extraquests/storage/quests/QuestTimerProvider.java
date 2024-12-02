@@ -16,8 +16,9 @@ public class QuestTimerProvider {
     private final ArrayList<QuestTimer> questTimers;
 
     public QuestTimerProvider(String filePath, MinecraftServer server) {
-        this.questTimers = new ArrayList<>();
         this.filePath = UtilWorld.worldDirectory(filePath, server);
+
+        this.questTimers = new ArrayList<>();
     }
 
     public List<QuestTimer> getQuestTimers() {
@@ -45,7 +46,10 @@ public class QuestTimerProvider {
                     this.questTimers.add(questTimer);
                     ExtraQuests.getInstance().getTimerProvider().startTimer(questTimer);
                 } else {
-                    Utils.timerExpired(questTimer);
+                    if (!Utils.questReset(questTimer, false)) {
+                        ExtraQuests.getLogger().error("[ExtraQuests] The quest or timer is invalid. Quest ID: " + questTimer.getQuestID() + ". If you deleted the quest, ignore this.");
+                    }
+                    removeQuestTimer(questTimer);
                 }
             }
         });

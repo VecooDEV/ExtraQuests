@@ -9,8 +9,12 @@ public class QuestsFactory {
         ExtraQuests.getInstance().getQuestTimerProvider().addQuestTimer(questTimer);
     }
 
-    public static void removeQuestTimer(QuestTimer questTimer) {
-        ExtraQuests.getInstance().getTimerProvider().removeTimer(questTimer);
+    public static boolean removeQuestTimer(QuestTimer questTimer) {
+        if (!ExtraQuests.getInstance().getTimerProvider().removeTimer(questTimer)) {
+            return false;
+        }
+
         ExtraQuests.getInstance().getQuestTimerProvider().removeQuestTimer(questTimer);
+        return true;
     }
 }

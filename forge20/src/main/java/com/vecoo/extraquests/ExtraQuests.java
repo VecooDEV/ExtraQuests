@@ -33,8 +33,8 @@ public class ExtraQuests {
 
     private LocaleConfig locale;
 
-    private QuestTimerProvider questTimerProvider;
     private TimerProvider timerProvider;
+    private QuestTimerProvider questTimerProvider;
 
     private MinecraftServer server;
 

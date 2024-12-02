@@ -20,7 +20,7 @@ public class ExtraQuestsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("equests")
                 .requires(s -> UtilPermission.hasPermission(s, PermissionNodes.EXTRAQUESTS_COMMAND))
-                .then(Commands.literal("keyvalue")
+                .then(Commands.literal("key_value")
                         .then(Commands.literal("add")
                                 .then(Commands.argument("player", EntityArgument.player())
                                         .suggests((s, builder) -> {

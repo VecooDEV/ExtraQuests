@@ -9,6 +9,8 @@
 
   "ftbquests.reward.extraquests.timer": "Timer",
   "extraquests.timer.title": "Reset every %s second",
+  "extraquests.timer.questid": "The quest ID to reset",
+  "extraquests.timer.questid.tooltip": "Leave blank to reset the current quest.",
   "extraquests.timer.time": "Time to quest reset",
   "extraquests.timer.time.tooltip": "Number of second until the quest resets",
 
