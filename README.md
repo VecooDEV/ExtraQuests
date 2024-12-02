@@ -17,6 +17,9 @@ A: Yes.
 **Q: Why are my players getting kicked from the server with weird error messages when they try to join?**
 A: Ask them if they have this mod installed. If not, they won't be able to join the server.
 
+**Q: What java does the mod require?**  
+A: Java 8+ (1.12.2-1.16.5) or Java 17+ (1.19.2-1.20.1).
+
 **Q: Where can I report a bug or suggest my idea for a mod?**     
 A: In my [discord server](https://discord.gg/VSGEVagRPq).
 
