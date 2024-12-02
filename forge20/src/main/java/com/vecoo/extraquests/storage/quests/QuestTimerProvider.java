@@ -1,4 +1,4 @@
-package com.vecoo.extraquests.timer;
+package com.vecoo.extraquests.storage.quests;
 
 import com.vecoo.extralib.gson.UtilGson;
 import com.vecoo.extralib.world.UtilWorld;
@@ -16,8 +16,9 @@ public class QuestTimerProvider {
     private final ArrayList<QuestTimer> questTimers;
 
     public QuestTimerProvider(String filePath, MinecraftServer server) {
-        this.questTimers = new ArrayList<>();
         this.filePath = UtilWorld.worldDirectory(filePath, server);
+
+        this.questTimers = new ArrayList<>();
     }
 
     public List<QuestTimer> getQuestTimers() {
@@ -26,13 +27,11 @@ public class QuestTimerProvider {
 
     public void addQuestTimer(QuestTimer questTimer) {
         this.questTimers.add(questTimer);
-        ExtraQuests.getInstance().getTimerProvider().startTimer(questTimer);
         write();
     }
 
     public void removeQuestTimer(QuestTimer questTimer) {
         this.questTimers.remove(questTimer);
-        ExtraQuests.getInstance().getTimerProvider().removeTimer(questTimer);
         write();
     }
 
@@ -47,7 +46,10 @@ public class QuestTimerProvider {
                     this.questTimers.add(questTimer);
                     ExtraQuests.getInstance().getTimerProvider().startTimer(questTimer);
                 } else {
-                    Utils.timerExpired(questTimer);
+                    if (!Utils.questReset(questTimer, false)) {
+                        ExtraQuests.getLogger().error("[ExtraQuests] The quest or timer is invalid. Quest ID: " + questTimer.getQuestID() + ". If you deleted the quest, ignore this.");
+                    }
+                    removeQuestTimer(questTimer);
                 }
             }
         });

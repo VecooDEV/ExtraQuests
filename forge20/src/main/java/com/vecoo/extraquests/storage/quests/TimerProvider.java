@@ -1,5 +1,7 @@
-package com.vecoo.extraquests.timer;
+package com.vecoo.extraquests.storage.quests;
 
+import com.vecoo.extraquests.ExtraQuests;
+import com.vecoo.extraquests.storage.QuestsFactory;
 import com.vecoo.extraquests.util.Utils;
 
 import java.util.*;
@@ -23,20 +25,30 @@ public class TimerProvider {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Utils.timerExpired(questTimer);
+                    if (!Utils.questReset(questTimer, true)) {
+                        ExtraQuests.getLogger().error("[ExtraQuests] The quest or timer is invalid. Quest ID: " + questTimer.getQuestID() + ". If you deleted the quest, ignore this.");
+                        QuestsFactory.removeQuestTimer(questTimer);
+                    }
                 }
             }, timeDiff);
             this.timers.put(questTimer, timer);
         } else {
-            Utils.timerExpired(questTimer);
+            if (!Utils.questReset(questTimer, true)) {
+                ExtraQuests.getLogger().error("[ExtraQuests] The quest or timer is invalid. Quest ID: " + questTimer.getQuestID() + ". If you deleted the quest, ignore this.");
+                QuestsFactory.removeQuestTimer(questTimer);
+            }
         }
     }
 
-    public void removeTimer(QuestTimer questTimer) {
+    public boolean removeTimer(QuestTimer questTimer) {
         Timer timer = this.timers.remove(questTimer);
-        if (timer != null) {
-            timer.cancel();
+
+        if (timer == null) {
+            return false;
         }
+
+        timer.cancel();
+        return true;
     }
 
     public void removeAllTimers() {

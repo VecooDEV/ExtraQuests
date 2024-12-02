@@ -1,4 +1,4 @@
-package com.vecoo.extraquests.timer;
+package com.vecoo.extraquests.storage.quests;
 
 import com.vecoo.extralib.gson.UtilGson;
 import com.vecoo.extralib.world.UtilWorld;
@@ -16,8 +16,9 @@ public class QuestTimerProvider {
     private final ArrayList<QuestTimer> questTimers;
 
     public QuestTimerProvider(String filePath, MinecraftServer server) {
-        this.questTimers = new ArrayList<>();
         this.filePath = UtilWorld.worldDirectory(filePath, server);
+
+        this.questTimers = new ArrayList<>();
     }
 
     public List<QuestTimer> getQuestTimers() {
@@ -26,22 +27,20 @@ public class QuestTimerProvider {
 
     public void addQuestTimer(QuestTimer questTimer) {
         this.questTimers.add(questTimer);
-        ExtraQuests.getInstance().getTimerProvider().startTimer(questTimer);
         write();
     }
 
     public void removeQuestTimer(QuestTimer questTimer) {
         this.questTimers.remove(questTimer);
-        ExtraQuests.getInstance().getTimerProvider().removeTimer(questTimer);
         write();
     }
 
     private void write() {
-        UtilGson.writeFileAsync(filePath, "timers.json", UtilGson.newGson().toJson(this)).join();
+        UtilGson.writeFileAsync(filePath, "TimerStorage.json", UtilGson.newGson().toJson(this)).join();
     }
 
     public void init() {
-        CompletableFuture<Boolean> future = UtilGson.readFileAsync(filePath, "timers.json", el -> {
+        CompletableFuture<Boolean> future = UtilGson.readFileAsync(filePath, "TimerStorage.json", el -> {
             for (QuestTimer questTimer : UtilGson.newGson().fromJson(el, QuestTimerProvider.class).getQuestTimers()) {
                 if (questTimer.getEndTime() > new Date().getTime()) {
                     this.questTimers.add(questTimer);

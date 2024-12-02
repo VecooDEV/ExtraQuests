@@ -1,7 +1,7 @@
 package com.vecoo.extraquests.reward;
 
-import com.vecoo.extraquests.timer.QuestTimer;
-import com.vecoo.extraquests.timer.QuestTimerFactory;
+import com.vecoo.extraquests.storage.quests.QuestTimer;
+import com.vecoo.extraquests.storage.QuestsFactory;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TimerReward extends Reward {
     public static RewardType TYPE;
 
+    private String quest = "";
     private long time = 300L;
 
     public TimerReward(Quest quest) {
@@ -31,29 +32,37 @@ public class TimerReward extends Reward {
     @Override
     public void writeData(CompoundNBT nbt) {
         super.writeData(nbt);
+        nbt.putString("quest", quest);
         nbt.putLong("time", time);
     }
 
     @Override
     public void readData(CompoundNBT nbt) {
         super.readData(nbt);
+        quest = nbt.getString("quest");
         time = nbt.getLong("time");
     }
 
     @Override
     public void writeNetData(PacketBuffer buffer) {
         super.writeNetData(buffer);
+        buffer.writeUtf(quest);
         buffer.writeVarLong(time);
     }
 
     @Override
     public void readNetData(PacketBuffer buffer) {
         super.readNetData(buffer);
+        quest = buffer.readUtf();
         time = buffer.readVarLong();
     }
 
+    public String getQuest() {
+        return this.quest;
+    }
+
     public long getTime() {
-        return time;
+        return this.time;
     }
 
     @Override
@@ -65,7 +74,7 @@ public class TimerReward extends Reward {
 
     @Override
     public void claim(ServerPlayerEntity player, boolean notify) {
-        QuestTimerFactory.addQuestTimer(new QuestTimer(player.getUUID(), quest.getCodeString(), time));
+        QuestsFactory.addQuestTimer(new QuestTimer(player.getUUID(), quest.getCodeString(), time));
     }
 
     @Override

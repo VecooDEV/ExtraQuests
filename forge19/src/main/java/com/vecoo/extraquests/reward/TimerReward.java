@@ -1,7 +1,7 @@
 package com.vecoo.extraquests.reward;
 
-import com.vecoo.extraquests.timer.QuestTimer;
-import com.vecoo.extraquests.timer.QuestTimerFactory;
+import com.vecoo.extraquests.storage.quests.QuestTimer;
+import com.vecoo.extraquests.storage.QuestsFactory;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
@@ -65,7 +65,7 @@ public class TimerReward extends Reward {
 
     @Override
     public void claim(ServerPlayer player, boolean notify) {
-        QuestTimerFactory.addQuestTimer(new QuestTimer(player.getUUID(), quest.getCodeString(), time));
+        QuestsFactory.addQuestTimer(new QuestTimer(player.getUUID(), quest.getCodeString(), time));
     }
 
     @Override

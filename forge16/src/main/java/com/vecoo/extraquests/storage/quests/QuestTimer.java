@@ -1,4 +1,4 @@
-package com.vecoo.extraquests.timer;
+package com.vecoo.extraquests.storage.quests;
 
 import java.util.Date;
 import java.util.UUID;

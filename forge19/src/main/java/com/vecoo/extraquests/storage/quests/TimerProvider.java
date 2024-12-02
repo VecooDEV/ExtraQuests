@@ -1,4 +1,4 @@
-package com.vecoo.extraquests.timer;
+package com.vecoo.extraquests.storage.quests;
 
 import com.vecoo.extraquests.util.Utils;
 
@@ -33,10 +33,7 @@ public class TimerProvider {
     }
 
     public void removeTimer(QuestTimer questTimer) {
-        Timer timer = this.timers.remove(questTimer);
-        if (timer != null) {
-            timer.cancel();
-        }
+        this.timers.remove(questTimer).cancel();
     }
 
     public void removeAllTimers() {

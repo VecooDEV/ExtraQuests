@@ -4,8 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.vecoo.extralib.chat.UtilChat;
+import com.vecoo.extralib.permission.UtilPermission;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.task.KeyValueTask;
+import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -16,32 +18,30 @@ import java.util.List;
 
 public class ExtraQuestsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        for (String command : List.of("extraquests", "equests")) {
-            dispatcher.register(Commands.literal(command)
-                    .requires(p -> p.hasPermission(ExtraQuests.getInstance().getPermission().getPermissionCommand().get("minecraft.command.extraquests")))
-                    .then(Commands.literal("keyvalue")
-                            .then(Commands.literal("add")
-                                    .then(Commands.argument("player", EntityArgument.player())
-                                            .suggests((s, builder) -> {
-                                                for (String nick : s.getSource().getOnlinePlayerNames()) {
-                                                    if (nick.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) {
-                                                        builder.suggest(nick);
-                                                    }
+        dispatcher.register(Commands.literal("equests")
+                .requires(s -> UtilPermission.hasPermission(s, PermissionNodes.EXTRAQUESTS_COMMAND))
+                .then(Commands.literal("key_value")
+                        .then(Commands.literal("add")
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .suggests((s, builder) -> {
+                                            for (String nick : s.getSource().getOnlinePlayerNames()) {
+                                                if (nick.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) {
+                                                    builder.suggest(nick);
                                                 }
-                                                return builder.buildFuture();
-                                            })
-                                            .then(Commands.argument("key", StringArgumentType.string())
-                                                    .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                            .suggests((s, builder) -> {
-                                                                for (int amount : List.of(10, 50, 100)) {
-                                                                    builder.suggest(amount);
-                                                                }
-                                                                return builder.buildFuture();
-                                                            })
-                                                            .executes(e -> executeKeyValueAdd(e.getSource(), EntityArgument.getPlayer(e, "player"), StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"))))))))
-                    .then(Commands.literal("reload")
-                            .executes(e -> executeReload(e.getSource()))));
-        }
+                                            }
+                                            return builder.buildFuture();
+                                        })
+                                        .then(Commands.argument("key", StringArgumentType.string())
+                                                .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                                                        .suggests((s, builder) -> {
+                                                            for (int amount : List.of(10, 50, 100)) {
+                                                                builder.suggest(amount);
+                                                            }
+                                                            return builder.buildFuture();
+                                                        })
+                                                        .executes(e -> executeKeyValueAdd(e.getSource(), EntityArgument.getPlayer(e, "player"), StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"))))))))
+                .then(Commands.literal("reload")
+                        .executes(e -> executeReload(e.getSource()))));
     }
 
     private static int executeKeyValueAdd(CommandSourceStack source, ServerPlayer target, String key, int amount) {

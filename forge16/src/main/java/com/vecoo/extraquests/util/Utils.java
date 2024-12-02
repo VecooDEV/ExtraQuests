@@ -1,7 +1,7 @@
 package com.vecoo.extraquests.util;
 
-import com.vecoo.extraquests.timer.QuestTimer;
-import com.vecoo.extraquests.timer.QuestTimerFactory;
+import com.vecoo.extraquests.storage.quests.QuestTimer;
+import com.vecoo.extraquests.storage.QuestsFactory;
 import dev.ftb.mods.ftbquests.quest.QuestObject;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import dev.ftb.mods.ftbquests.util.ProgressChange;
@@ -18,6 +18,6 @@ public class Utils {
 
             questObject.forceProgress(file.getData(FTBTeamsAPI.getPlayerTeamID(questTimer.getPlayerUUID())), progressChange);
         }
-        QuestTimerFactory.removeQuestTimer(questTimer);
+        QuestsFactory.removeQuestTimer(questTimer);
     }
 }

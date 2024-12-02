@@ -1,18 +1,16 @@
-package com.vecoo.extraquests.timer;
-
-import dev.ftb.mods.ftbquests.quest.QuestObjectBase;
+package com.vecoo.extraquests.storage.quests;
 
 import java.util.Date;
 import java.util.UUID;
 
 public class QuestTimer {
     private final UUID playerUUID;
-    private final long questID;
+    private final String quest;
     private final long endTime;
 
-    public QuestTimer(UUID playerUUID, QuestObjectBase questObject, long time) {
+    public QuestTimer(UUID playerUUID, String quest, long time) {
         this.playerUUID = playerUUID;
-        this.questID = questObject.id;
+        this.quest = quest;
         this.endTime = new Date().getTime() + (time * 1000L);
     }
 
@@ -20,8 +18,8 @@ public class QuestTimer {
         return this.playerUUID;
     }
 
-    public long getQuestID() {
-        return this.questID;
+    public String getQuest() {
+        return this.quest;
     }
 
     public long getEndTime() {

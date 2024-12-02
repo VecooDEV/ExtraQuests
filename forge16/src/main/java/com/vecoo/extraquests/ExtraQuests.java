@@ -1,14 +1,12 @@
 package com.vecoo.extraquests;
 
-import com.vecoo.extralib.permission.UtilPermissions;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
-import com.vecoo.extraquests.config.PermissionConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
 import com.vecoo.extraquests.task.KeyValueTask;
-import com.vecoo.extraquests.timer.QuestTimerProvider;
-import com.vecoo.extraquests.timer.TimerProvider;
+import com.vecoo.extraquests.storage.quests.QuestTimerProvider;
+import com.vecoo.extraquests.storage.quests.TimerProvider;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
@@ -32,7 +30,6 @@ public class ExtraQuests {
     private static ExtraQuests instance;
 
     private LocaleConfig locale;
-    private PermissionConfig permission;
 
     private QuestTimerProvider questTimerProvider;
     private TimerProvider timerProvider;
@@ -44,8 +41,6 @@ public class ExtraQuests {
 
         this.loadConfig();
         this.registerQuests();
-
-        UtilPermissions.registerPermission(permission.getPermissionCommand());
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -74,8 +69,6 @@ public class ExtraQuests {
         try {
             this.locale = new LocaleConfig();
             this.locale.init();
-            this.permission = new PermissionConfig();
-            this.permission.init();
         } catch (Exception e) {
             LOGGER.error("[ExtraQuests] Error load config.");
         }
@@ -107,10 +100,6 @@ public class ExtraQuests {
 
     public LocaleConfig getLocale() {
         return instance.locale;
-    }
-
-    public PermissionConfig getPermission() {
-        return instance.permission;
     }
 
     public QuestTimerProvider getQuestTimerProvider() {

@@ -11,8 +11,6 @@ public class LocaleConfig {
     private String addKeyValueSource = "&e(!) You have added a key %key% value %value% to the player %player%.";
     private String addKeyValueTarget = "&e(!) You have been added a value of %value% key %key%.";
 
-    private String notPermission = "&c(!) You do not have sufficient permissions to use this command.";
-
     public String getReload() {
         return this.reload;
     }
@@ -23,10 +21,6 @@ public class LocaleConfig {
 
     public String getAddKeyValueTarget() {
         return this.addKeyValueTarget;
-    }
-
-    public String getNotPermission() {
-        return this.notPermission;
     }
 
     private void write() {
@@ -41,7 +35,6 @@ public class LocaleConfig {
                 this.reload = config.getReload();
                 this.addKeyValueSource = config.getAddKeyValueSource();
                 this.addKeyValueTarget = config.getAddKeyValueTarget();
-                this.notPermission = config.getNotPermission();
             });
             if (!future.join()) {
                 write();
