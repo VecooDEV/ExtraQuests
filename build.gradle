@@ -3,7 +3,7 @@ subprojects {
     apply plugin: 'idea'
 
     group = 'com.vecoo.extraquests'
-    version = '1.4.0'
+    version = '1.4.1'
 
     ext {
         forgeVersion = "none"

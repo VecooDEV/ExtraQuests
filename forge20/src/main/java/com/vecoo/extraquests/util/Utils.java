@@ -4,7 +4,9 @@ import com.vecoo.extraquests.storage.QuestsFactory;
 import com.vecoo.extraquests.storage.quests.QuestTimer;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
+import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbquests.util.ProgressChange;
+import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
 
 public class Utils {
     public static boolean questReset(QuestTimer questTimer, boolean isTimer) {
@@ -19,7 +21,9 @@ public class Utils {
             return false;
         }
 
-        quest.forceProgress(file.getOrCreateTeamData(questTimer.getPlayerUUID()), new ProgressChange(file, quest, questTimer.getPlayerUUID()).setReset(true));
+        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(questTimer.getPlayerUUID()).map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(questTimer.getPlayerUUID()));
+
+        quest.forceProgress(teamData, new ProgressChange(file, quest, questTimer.getPlayerUUID()).setReset(true));
         return true;
     }
 }

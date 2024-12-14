@@ -2,7 +2,7 @@ package com.vecoo.extraquests.util;
 
 import com.vecoo.extraquests.storage.QuestsFactory;
 import com.vecoo.extraquests.storage.quests.QuestTimer;
-import dev.ftb.mods.ftbquests.quest.QuestObject;
+import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import dev.ftb.mods.ftbquests.util.ProgressChange;
 import dev.ftb.mods.ftbteams.FTBTeamsAPI;
@@ -10,7 +10,7 @@ import dev.ftb.mods.ftbteams.FTBTeamsAPI;
 public class Utils {
     public static boolean questReset(QuestTimer questTimer, boolean isTimer) {
         ServerQuestFile file = ServerQuestFile.INSTANCE;
-        QuestObject quest = file.getQuest(file.getID(questTimer.getQuestID()));
+        Quest quest = file.getQuest(file.getID(questTimer.getQuestID()));
 
         if (quest == null) {
             return false;
