@@ -40,7 +40,7 @@ public class LocaleConfig {
                 write();
             }
         } catch (Exception e) {
-            ExtraQuests.getLogger().error("[ExtraQuests] Error in locale config.");
+            ExtraQuests.getLogger().error("[ExtraQuests] Error in locale config.", e);
             write();
         }
     }

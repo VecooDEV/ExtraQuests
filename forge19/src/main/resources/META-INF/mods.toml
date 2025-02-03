@@ -4,7 +4,7 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="extraquests"
-version="1.4.1"
+version="1.4.2"
 displayName="ExtraQuests"
 logoFile ="logo.png"
 authors="Vecoo"
@@ -34,6 +34,6 @@ side="BOTH"
 [[dependencies.extraquests]]
 modId="extralib"
 mandatory=true
-versionRange="[1.4,)"
+versionRange="[1.5,)"
 ordering="NONE"
 side="BOTH"

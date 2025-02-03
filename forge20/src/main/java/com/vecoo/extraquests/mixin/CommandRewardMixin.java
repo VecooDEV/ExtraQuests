@@ -1,5 +1,6 @@
 package com.vecoo.extraquests.mixin;
 
+import com.vecoo.extraquests.ExtraQuests;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.CommandReward;
@@ -78,6 +79,16 @@ public abstract class CommandRewardMixin extends Reward {
     @Overwrite
     @Override
     public void claim(ServerPlayer player, boolean notify) {
+        if (!console) {
+            return;
+        }
+
+        for (String blacklistCommand : ExtraQuests.getInstance().getConfig().getBlacklistConsole()) {
+            if (command.contains(blacklistCommand)) {
+                return;
+            }
+        }
+
         Map<String, Object> overrides = new HashMap<>();
         overrides.put("p", player.getGameProfile().getName());
 

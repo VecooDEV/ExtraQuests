@@ -1,6 +1,7 @@
 plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
@@ -22,7 +23,12 @@ dependencies {
     implementation fg.deobf("curse.maven:ftb-quests-forge-289412:4297999")
     implementation fg.deobf("curse.maven:ftb-library-forge-404465:3553840")
     implementation fg.deobf("curse.maven:ftb-teams-forge-404468:3535953")
-    implementation fg.deobf('maven.modrinth:extralib:1.4.0-forge,1.16.5')
+    implementation fg.deobf('maven.modrinth:extralib:1.5.0-forge,1.16.5')
+}
+
+mixin {
+    add sourceSets.main, 'extraquests.refmap.json'
+    config 'extraquests.mixins.json'
 }
 
 shadowJar {

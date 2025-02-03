@@ -20,10 +20,10 @@ repositories {}
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.3.0'
 
-    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:5816794")
-    implementation fg.deobf("curse.maven:ftb-library-forge-404465:5874882")
-    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:5267190")
-    implementation fg.deobf('maven.modrinth:extralib:1.4.0-forge,1.20.1')
+    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:6133440")
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:6136535")
+    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:6130786")
+    implementation fg.deobf('maven.modrinth:extralib:1.5.0-forge,1.20.1')
 }
 
 mixin {

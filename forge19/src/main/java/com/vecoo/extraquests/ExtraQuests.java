@@ -2,6 +2,7 @@ package com.vecoo.extraquests;
 
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
+import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
 import com.vecoo.extraquests.storage.quests.QuestTimerProvider;
@@ -31,6 +32,7 @@ public class ExtraQuests {
 
     private static ExtraQuests instance;
 
+    private ServerConfig config;
     private LocaleConfig locale;
 
     private TimerProvider timerProvider;
@@ -75,10 +77,12 @@ public class ExtraQuests {
 
     public void loadConfig() {
         try {
+            this.config = new ServerConfig();
+            this.config.init();
             this.locale = new LocaleConfig();
             this.locale.init();
         } catch (Exception e) {
-            LOGGER.error("[ExtraQuests] Error load config.");
+            LOGGER.error("[ExtraQuests] Error load config.", e);
         }
     }
 
@@ -88,7 +92,7 @@ public class ExtraQuests {
             this.questTimerProvider = new QuestTimerProvider("/%directory%/storage/ExtraQuests/", this.server);
             this.questTimerProvider.init();
         } catch (Exception e) {
-            LOGGER.error("[ExtraQuests] Error load storage.");
+            LOGGER.error("[ExtraQuests] Error load storage.", e);
         }
     }
 
@@ -104,6 +108,10 @@ public class ExtraQuests {
 
     public static Logger getLogger() {
         return LOGGER;
+    }
+
+    public ServerConfig getConfig() {
+        return this.config;
     }
 
     public LocaleConfig getLocale() {
