@@ -8,10 +8,15 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ServerConfig {
-    private List<String> blacklistConsole = Arrays.asList("op", "gamemode");
+    private boolean blacklistConsole = false;
+    private List<String> blacklistConsoleList = Arrays.asList("op", "gamemode");
 
-    public List<String> getBlacklistConsole() {
+    public boolean isBlacklistConsole() {
         return this.blacklistConsole;
+    }
+
+    public List<String> getBlacklistConsoleList() {
+        return this.blacklistConsoleList;
     }
 
     private void write() {
@@ -23,7 +28,8 @@ public class ServerConfig {
             CompletableFuture<Boolean> future = UtilGson.readFileAsync("/config/ExtraQuests/", "config.json", el -> {
                 ServerConfig config = UtilGson.newGson().fromJson(el, ServerConfig.class);
 
-                this.blacklistConsole = config.getBlacklistConsole();
+                this.blacklistConsole = config.isBlacklistConsole();
+                this.blacklistConsoleList = config.getBlacklistConsoleList();
             });
             if (!future.join()) {
                 write();

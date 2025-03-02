@@ -23,17 +23,18 @@ dependencies {
     implementation fg.deobf("curse.maven:ftb-quests-forge-289412:4297999")
     implementation fg.deobf("curse.maven:ftb-library-forge-404465:3553840")
     implementation fg.deobf("curse.maven:ftb-teams-forge-404468:3535953")
-    implementation fg.deobf('maven.modrinth:extralib:1.5.0-forge,1.16.5')
+    implementation fg.deobf('maven.modrinth:extralib:1.5.1-forge,1.16.5')
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
 }
 
 mixin {
-    add sourceSets.main, 'extraquests.refmap.json'
-    config 'extraquests.mixins.json'
+    add sourceSets.main, 'mixins.extraquests.refmap.json'
+    config 'mixins.extraquests.json'
 }
 
 shadowJar {
     configurations = [project.configurations.shadow]
-    setArchiveClassifier('')
     setArchiveBaseName("${rootProject.name}")
 }
 

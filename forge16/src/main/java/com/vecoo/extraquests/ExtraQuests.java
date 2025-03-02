@@ -41,20 +41,20 @@ public class ExtraQuests {
     public ExtraQuests() {
         instance = this;
 
-        this.loadConfig();
         this.registerQuests();
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event) {
-        ExtraQuestsCommand.register(event.getDispatcher());
+    public void onServerStarting(FMLServerStartingEvent event) {
+        this.server = event.getServer();
+        this.loadConfig();
     }
 
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
-        this.server = event.getServer();
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        ExtraQuestsCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent

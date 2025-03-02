@@ -43,10 +43,16 @@ public class ExtraQuests {
     public ExtraQuests() {
         instance = this;
 
-        this.loadConfig();
         this.registerQuests();
 
         MinecraftForge.EVENT_BUS.register(this);
+//        MinecraftForge.EVENT_BUS.register(new TaskListener());
+    }
+
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+        this.server = event.getServer();
+        this.loadConfig();
     }
 
     @SubscribeEvent
@@ -57,11 +63,6 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onRegisterCommands(RegisterCommandsEvent event) {
         ExtraQuestsCommand.register(event.getDispatcher());
-    }
-
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        this.server = event.getServer();
     }
 
     @SubscribeEvent
@@ -97,6 +98,7 @@ public class ExtraQuests {
 
     public void registerQuests() {
         KeyValueTask.TYPE = TaskTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "key_value"), KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
+//        ItemUseTask.TYPE = TaskTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "item_use"), ItemUseTask::new, () -> Icon.getIcon("minecraft:item/firework_rocket"));
         KeyValueReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "key_value"), KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
         TimerReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
     }

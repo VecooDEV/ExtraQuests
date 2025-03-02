@@ -1,9 +1,7 @@
 package com.vecoo.extraquests.mixin;
 
 import com.vecoo.extraquests.ExtraQuests;
-import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.CommandReward;
-import dev.ftb.mods.ftbquests.quest.reward.Reward;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,11 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = CommandReward.class, remap = false)
-public abstract class CommandRewardMixin extends Reward {
-    public CommandRewardMixin(Quest quest) {
-        super(quest);
-    }
-
+public abstract class CommandRewardMixin {
     @Shadow
     public String command;
 
@@ -25,13 +19,13 @@ public abstract class CommandRewardMixin extends Reward {
 
     @Inject(method = "claim", at = @At("HEAD"), cancellable = true)
     public void claim(ServerPlayerEntity player, boolean notify, CallbackInfo ci) {
-        if (playerCommand) {
-            return;
-        }
-
-        for (String blacklistCommand : ExtraQuests.getInstance().getConfig().getBlacklistConsole()) {
-            if (command.contains(blacklistCommand)) {
-                ci.cancel();
+        if (!playerCommand) {
+            if (ExtraQuests.getInstance().getConfig().isBlacklistConsole()) {
+                for (String blacklistCommand : ExtraQuests.getInstance().getConfig().getBlacklistConsoleList()) {
+                    if (command.contains(blacklistCommand)) {
+                        ci.cancel();
+                    }
+                }
             }
         }
     }

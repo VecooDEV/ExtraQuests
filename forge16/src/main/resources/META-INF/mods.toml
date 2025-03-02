@@ -1,39 +1,39 @@
-modLoader="javafml"
-loaderVersion="[36,)"
-license="All Rights Reserved"
+modLoader = "javafml"
+loaderVersion = "[36,)"
+license = "All Rights Reserved"
 
 [[mods]]
-modId="extraquests"
-version="1.4.2"
-displayName="ExtraQuests"
-logoFile ="logo.png"
-authors="Vecoo"
-description="Addition to FTB Quests."
+modId = "extraquests"
+version = "1.5.0"
+displayName = "ExtraQuests"
+logoFile = "logo.png"
+authors = "Vecoo"
+description = "Sidemod for FTB Quests. Adds new tasks and rewards."
 
 [[dependencies.extraquests]]
-modId="forge"
-mandatory=true
-versionRange="[36,)"
-ordering="NONE"
-side="BOTH"
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.extraquests]]
-modId="minecraft"
-mandatory=true
-versionRange="[1.16,)"
-ordering="NONE"
-side="BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16,)"
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.extraquests]]
-modId="ftbquests"
-mandatory=true
-versionRange="[1605,)"
-ordering="AFTER"
-side="BOTH"
+modId = "ftbquests"
+mandatory = true
+versionRange = "[1605,)"
+ordering = "AFTER"
+side = "BOTH"
 
 [[dependencies.extraquests]]
-modId="extralib"
-mandatory=true
-versionRange="[1.5,)"
-ordering="NONE"
-side="BOTH"
+modId = "extralib"
+mandatory = true
+versionRange = "[1.5,)"
+ordering = "NONE"
+side = "SERVER"
