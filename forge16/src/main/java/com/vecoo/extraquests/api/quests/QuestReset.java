@@ -22,6 +22,7 @@ public class QuestReset {
 
         ProgressChange progressChange = new ProgressChange(file);
         progressChange.origin = quest;
+        progressChange.player = questTimer.getPlayerUUID();
 
         quest.forceProgress(file.getData(FTBTeamsAPI.getPlayerTeamID(questTimer.getPlayerUUID())), progressChange);
         return true;
