@@ -1,12 +1,12 @@
 plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id("com.github.johnrengelman.shadow") version "8.1.1"
     id 'org.spongepowered.mixin' version '0.7.+'
+    id "com.modrinth.minotaur" version "2.8.7"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-forgeVersion = "1.19.2"
+version = "${project_version}-1.19.2-Forge"
 
 minecraft {
     mappings channel: 'official', version: '1.19.2'
@@ -18,12 +18,12 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {}
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.4.0'
+    minecraft "net.minecraftforge:forge:1.19.2-${forge_19}"
 
-    implementation fg.deobf("curse.maven:ftb-quests-forge-289412:6130546")
-    implementation fg.deobf("curse.maven:ftb-library-forge-404465:4661834")
-    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:4611938")
-    implementation fg.deobf('maven.modrinth:extralib:1.5.1-forge,1.19.2')
+    compileOnly fg.deobf("curse.maven:ftb-quests-forge-289412:${ftbquests_forge_19}")
+    compileOnly fg.deobf("curse.maven:ftb-library-forge-404465:${ftblibrary_forge_19}")
+    compileOnly fg.deobf("curse.maven:ftb-teams-forge-404468:${ftbteams_forge_19}")
+    compileOnly fg.deobf("maven.modrinth:extralib:${extralib}-forge,1.19.2")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
 }
@@ -33,11 +33,36 @@ mixin {
     config 'mixins.extraquests.json'
 }
 
-shadowJar {
-    configurations = [project.configurations.shadow]
-    setArchiveBaseName("${rootProject.name}")
+processResources {
+    filesMatching('META-INF/mods.toml') {
+        expand(
+                'project_name': project_name,
+                'project_version': project_version
+        )
+    }
 }
 
-jar.finalizedBy('shadowJar')
-shadowJar.finalizedBy('reobfJar')
+def gradleProperties = new Properties()
+def gradlePropertiesFile = new File(rootProject.file("/.gradle/gradle.properties").path)
+
+if (gradlePropertiesFile.exists()) {
+    gradlePropertiesFile.withInputStream { gradleProperties.load(it) }
+}
+
+modrinth {
+    token = gradleProperties.getProperty("modrinth_api_key")
+    projectId = "extraquests"
+    versionName = "${project_name}-${version}"
+    versionNumber = project_version
+    versionType = "release"
+    changelog = rootProject.file("changelog.md").text
+    uploadFile = jar
+    gameVersions = ["1.19.2"]
+    loaders = ["forge"]
+    dependencies {
+        required.project "extralib"
+    }
+}
+
+jar.finalizedBy('reobfJar')
 build.finalizedBy('versionedRelease')

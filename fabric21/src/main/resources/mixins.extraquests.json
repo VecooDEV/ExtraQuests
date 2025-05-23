@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "com.vecoo.extraquests.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "CommandRewardMixin"
+  ]
+}

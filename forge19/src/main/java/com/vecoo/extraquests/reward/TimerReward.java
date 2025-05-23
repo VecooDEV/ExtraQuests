@@ -1,7 +1,6 @@
 package com.vecoo.extraquests.reward;
 
-import com.vecoo.extraquests.api.factory.QuestsFactory;
-import com.vecoo.extraquests.storage.quests.QuestTimer;
+import com.vecoo.extraquests.api.factory.ExtraQuestsFactory;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
@@ -18,7 +17,7 @@ public class TimerReward extends Reward {
     public static RewardType TYPE;
 
     private String questID = "";
-    private long time = 300L;
+    private int time = 300;
 
     public TimerReward(Quest quest) {
         super(quest);
@@ -32,37 +31,43 @@ public class TimerReward extends Reward {
     @Override
     public void writeData(CompoundTag nbt) {
         super.writeData(nbt);
-        nbt.putString("quest", questID);
-        nbt.putLong("time", time);
+        nbt.putString("quest", this.questID);
+        nbt.putInt("time", this.time);
     }
 
     @Override
     public void readData(CompoundTag nbt) {
         super.readData(nbt);
-        questID = nbt.getString("quest");
-        time = nbt.getLong("time");
+        this.questID = nbt.getString("quest");
+        this.time = nbt.getInt("time");
     }
 
     @Override
     public void writeNetData(FriendlyByteBuf buffer) {
         super.writeNetData(buffer);
-        buffer.writeUtf(questID);
-        buffer.writeVarLong(time);
+        buffer.writeUtf(this.questID);
+        buffer.writeVarInt(this.time);
     }
 
     @Override
     public void readNetData(FriendlyByteBuf buffer) {
         super.readNetData(buffer);
-        questID = buffer.readUtf();
-        time = buffer.readVarLong();
+        this.questID = buffer.readUtf();
+        this.time = buffer.readVarInt();
     }
 
     public String getQuestID() {
         return this.questID;
     }
 
-    public long getTime() {
+    public int getTime() {
         return time;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public MutableComponent getAltTitle() {
+        return Component.translatable("extraquests.timer.title", this.time);
     }
 
     @Override
@@ -70,21 +75,15 @@ public class TimerReward extends Reward {
     public void getConfig(ConfigGroup config) {
         super.getConfig(config);
         config.addString("questID", this.questID, v -> this.questID = v, "").setNameKey("extraquests.timer.questid");
-        config.addLong("time", time, v -> time = v, 300L, 1L, Long.MAX_VALUE).setNameKey("extraquests.timer.time");
+        config.addInt("time", this.time, v -> this.time = v, 300, 1, Integer.MAX_VALUE).setNameKey("extraquests.timer.time");
     }
 
     @Override
     public void claim(ServerPlayer player, boolean notify) {
         if (this.questID.isEmpty()) {
-            QuestsFactory.addQuestTimer(new QuestTimer(player.getUUID(), quest.getCodeString(), this.time));
+            ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUUID(), this.quest.getCodeString(), this.time);
         } else {
-            QuestsFactory.addQuestTimer(new QuestTimer(player.getUUID(), this.questID, this.time));
+            ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUUID(), this.questID, this.time);
         }
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public MutableComponent getAltTitle() {
-        return Component.translatable("extraquests.timer.title", getTime());
     }
 }

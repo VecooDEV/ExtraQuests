@@ -32,63 +32,63 @@ public class KeyValueReward extends Reward {
     @Override
     public void writeData(CompoundNBT nbt) {
         super.writeData(nbt);
-        nbt.putString("key", key);
-        nbt.putLong("value", value);
+        nbt.putString("key", this.key);
+        nbt.putLong("value", this.value);
     }
 
     @Override
     public void readData(CompoundNBT nbt) {
         super.readData(nbt);
-        key = nbt.getString("key");
-        value = nbt.getLong("value");
+        this.key = nbt.getString("key");
+        this.value = nbt.getLong("value");
     }
 
     @Override
     public void writeNetData(PacketBuffer buffer) {
         super.writeNetData(buffer);
-        buffer.writeUtf(key, Short.MAX_VALUE);
-        buffer.writeVarLong(value);
+        buffer.writeUtf(this.key, Short.MAX_VALUE);
+        buffer.writeVarLong(this.value);
     }
 
     @Override
     public void readNetData(PacketBuffer buffer) {
         super.readNetData(buffer);
-        key = buffer.readUtf(Short.MAX_VALUE);
-        value = buffer.readVarLong();
+        this.key = buffer.readUtf(Short.MAX_VALUE);
+        this.value = buffer.readVarLong();
     }
 
     public String getKey() {
-        return key;
+        return this.key;
     }
 
     public long getValue() {
-        return value;
+        return this.value;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public IFormattableTextComponent getAltTitle() {
+        return new TranslationTextComponent("extraquests.key_value.title", this.key, this.value);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public String getButtonText() {
+        return "+" + this.value;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void getConfig(ConfigGroup config) {
         super.getConfig(config);
-        config.addString("key", key, v -> key = v, key).setNameKey("extraquests.key_value.key");
-        config.addLong("value", value, v -> value = v, 5L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
+        config.addString("key", this.key, v -> this.key = v, this.key).setNameKey("extraquests.key_value.key");
+        config.addLong("value", this.value, v -> this.value = v, 5L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
     }
 
     @Override
     public void claim(ServerPlayerEntity player, boolean notify) {
         for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
-            task.progress(ServerQuestFile.INSTANCE.getData(player), key, value);
+            task.progress(ServerQuestFile.INSTANCE.getData(player), this.key, this.value);
         }
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public IFormattableTextComponent getAltTitle() {
-        return new TranslationTextComponent("extraquests.key_value.title", getKey(), getValue());
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public String getButtonText() {
-        return "+" + value;
     }
 }

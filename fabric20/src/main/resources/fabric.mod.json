@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "extraquests",
+  "version": "${project_version}",
+  "name": "${project_name}",
+  "icon": "assets/extraquests/icon.png",
+  "description": "Sidemod for FTB Quests. Adds new tasks and rewards.",
+  "authors": [
+    "Vecoo"
+  ],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.vecoo.extraquests.ExtraQuests"
+    ]
+  },
+  "mixins": [
+    "mixins.extraquests.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": "<=1.20.1",
+    "java": ">=17",
+    "extralib": ">=1.6.0",
+    "ftbquests": ">=2001"
+  }
+}

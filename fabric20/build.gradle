@@ -1,0 +1,60 @@
+plugins {
+    id 'fabric-loom' version '1.9.2'
+    id "com.modrinth.minotaur" version "2.8.7"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+archivesBaseName = "${project_name}"
+
+version = "${project_version}-1.20.1-Fabric"
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.19.2"
+    mappings loom.officialMojangMappings()
+
+    modCompileOnly "net.fabricmc:fabric-loader:${fabric_loader_20}"
+    modCompileOnly "net.fabricmc.fabric-api:fabric-api:${fabric_api_20}"
+
+    modCompileOnly "curse.maven:ftb-quests-forge-438496:${ftbquests_fabric_20}"
+    modCompileOnly "curse.maven:ftb-library-forge-438495:${ftblibrary_fabric_20}"
+    modCompileOnly "curse.maven:ftb-teams-forge-438497:${ftbteams_fabric_20}"
+    modCompileOnly "maven.modrinth:extralib:${extralib}-fabric,1.20.1"
+}
+
+processResources {
+    filesMatching('fabric.mod.json') {
+        expand(
+                'project_name': project_name,
+                'project_version': project_version
+        )
+    }
+}
+
+def gradleProperties = new Properties()
+def gradlePropertiesFile = new File(rootProject.file("/.gradle/gradle.properties").path)
+
+if (gradlePropertiesFile.exists()) {
+    gradlePropertiesFile.withInputStream { gradleProperties.load(it) }
+}
+
+modrinth {
+    token = gradleProperties.getProperty("modrinth_api_key")
+    projectId = "extraquests"
+    versionName = "${project_name}-${version}"
+    versionNumber = project_version
+    versionType = "release"
+    changelog = rootProject.file("changelog.md").text
+    uploadFile = remapJar
+    gameVersions = ["1.20.1"]
+    loaders = ["fabric"]
+    dependencies {
+        required.project "extralib"
+    }
+}
+
+build.finalizedBy('versionedRelease')

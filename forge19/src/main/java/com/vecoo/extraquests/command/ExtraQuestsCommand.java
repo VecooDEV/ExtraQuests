@@ -24,9 +24,9 @@ public class ExtraQuestsCommand {
                         .then(Commands.literal("add")
                                 .then(Commands.argument("player", EntityArgument.player())
                                         .suggests((s, builder) -> {
-                                            for (String nick : s.getSource().getOnlinePlayerNames()) {
-                                                if (nick.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) {
-                                                    builder.suggest(nick);
+                                            for (String playerName : s.getSource().getOnlinePlayerNames()) {
+                                                if (playerName.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) {
+                                                    builder.suggest(playerName);
                                                 }
                                             }
                                             return builder.buildFuture();

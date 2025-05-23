@@ -1,6 +1,7 @@
 package com.vecoo.extraquests.mixin;
 
 import com.vecoo.extraquests.ExtraQuests;
+import com.vecoo.extraquests.config.ServerConfig;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.reward.CommandReward;
 import net.minecraft.commands.CommandSourceStack;
@@ -49,8 +50,10 @@ public abstract class CommandRewardMixin {
     @Redirect(method = "claim", at = @At(value = "INVOKE", target = "Lnet/minecraft/commands/Commands;performPrefixedCommand(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"), remap = true)
     public int claim(Commands instance, CommandSourceStack source, String command) {
         if (console) {
-            if (ExtraQuests.getInstance().getConfig().isBlacklistConsole()) {
-                for (String blacklistCommand : ExtraQuests.getInstance().getConfig().getBlacklistConsoleList()) {
+            ServerConfig config = ExtraQuests.getInstance().getConfig();
+
+            if (config.isBlacklistConsole()) {
+                for (String blacklistCommand : config.getBlacklistConsoleList()) {
                     if (command.contains(blacklistCommand)) {
                         return 0;
                     }

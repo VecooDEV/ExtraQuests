@@ -4,8 +4,8 @@ license = "All Rights Reserved"
 
 [[mods]]
 modId = "extraquests"
-version = "1.5.1"
-displayName = "ExtraQuests"
+version = "${project_version}"
+displayName = "${project_name}"
 logoFile = "logo.png"
 authors = "Vecoo"
 description = "Sidemod for FTB Quests. Adds new tasks and rewards."
@@ -34,6 +34,6 @@ side = "BOTH"
 [[dependencies.extraquests]]
 modId = "extralib"
 mandatory = true
-versionRange = "[1.5,)"
+versionRange = "[1.6,)"
 ordering = "NONE"
-side = "SERVER"
+side = "BOTH"

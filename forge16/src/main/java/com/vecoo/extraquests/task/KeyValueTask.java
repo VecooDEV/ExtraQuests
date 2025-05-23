@@ -30,70 +30,72 @@ public class KeyValueTask extends Task {
 
     @Override
     public long getMaxProgress() {
-        return value;
+        return this.value;
     }
 
     @Override
     public void writeData(CompoundNBT nbt) {
         super.writeData(nbt);
-        nbt.putString("key", key);
-        nbt.putLong("value", value);
+        nbt.putString("key", this.key);
+        nbt.putLong("value", this.value);
     }
 
     @Override
     public void readData(CompoundNBT nbt) {
         super.readData(nbt);
-        key = nbt.getString("key");
-        value = nbt.getLong("value");
+        this.key = nbt.getString("key");
+        this.value = nbt.getLong("value");
     }
 
     @Override
     public void writeNetData(PacketBuffer buffer) {
         super.writeNetData(buffer);
-        buffer.writeUtf(key, Short.MAX_VALUE);
-        buffer.writeVarLong(value);
+        buffer.writeUtf(this.key, Short.MAX_VALUE);
+        buffer.writeVarLong(this.value);
     }
 
     @Override
     public void readNetData(PacketBuffer buffer) {
         super.readNetData(buffer);
-        key = buffer.readUtf(Short.MAX_VALUE);
-        value = buffer.readVarLong();
+        this.key = buffer.readUtf(Short.MAX_VALUE);
+        this.value = buffer.readVarLong();
     }
 
     public String getKey() {
-        return key;
+        return this.key;
     }
 
     public long getValue() {
-        return value;
+        return this.value;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public IFormattableTextComponent getAltTitle() {
-        return new TranslationTextComponent("extraquests.key_value.title", getKey(), getValue());
+        return new TranslationTextComponent("extraquests.key_value.title", this.key, this.value);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public IFormattableTextComponent getButtonText() {
+        return new StringTextComponent(String.valueOf(this.value));
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void getConfig(ConfigGroup config) {
         super.getConfig(config);
-        config.addString("key", key, v -> key = v, key).setNameKey("extraquests.key_value.key");
-        config.addLong("value", value, v -> value = v, 100L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
+        config.addString("key", this.key, v -> this.key = v, this.key).setNameKey("extraquests.key_value.key");
+        config.addLong("value", this.value, v -> this.value = v, 100L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
     }
 
-    @Override
-    public IFormattableTextComponent getButtonText() {
-        return new StringTextComponent(String.valueOf(value));
-    }
 
     public void progress(TeamData teamData, String key, long value) {
         if (!this.key.equals(key)) {
             return;
         }
 
-        if (teamData.isCompleted(this) || !teamData.canStartTasks(quest)) {
+        if (teamData.isCompleted(this) || !teamData.canStartTasks(this.quest)) {
             return;
         }
 

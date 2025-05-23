@@ -3,11 +3,7 @@ subprojects {
     apply plugin: 'idea'
 
     group = 'com.vecoo.extraquests'
-    version = '1.5.1'
-
-    ext {
-        forgeVersion = "none"
-    }
+    version = project_version
 
     jar {
         setArchiveBaseName("${rootProject.name}")
@@ -15,7 +11,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven { url = "https://repo.spongepowered.org/maven" }
         maven { url = "https://cursemaven.com" }
         maven { url = "https://api.modrinth.com/maven" }
     }
@@ -25,16 +20,20 @@ subprojects {
     }
 
     task versionedRelease(type: Copy) {
-        dependsOn('shadowJar')
+        group "build"
+
         delete fileTree('../release/') {
             include '**/*.jar'
         }
-        group "build"
-        from("./build/libs/${rootProject.name}-${version}.jar")
+
+        from fileTree("/build/libs/") {
+            include '**/*.jar'
+        }
+
         into('../release/')
-        include '*.jar'
-        rename { String filename ->
-            filename.replace("-${version}.jar", "-${project.version}-${forgeVersion}.jar")
+
+        doLast {
+            delete "build/libs"
         }
     }
 }
