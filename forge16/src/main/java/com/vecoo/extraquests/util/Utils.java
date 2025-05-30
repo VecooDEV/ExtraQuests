@@ -1,5 +1,6 @@
 package com.vecoo.extraquests.util;
 
+import com.vecoo.extralib.task.TaskTimer;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.api.factory.ExtraQuestsFactory;
 import com.vecoo.extraquests.storage.quests.TimerStorage;
@@ -25,5 +26,18 @@ public class Utils {
 
         quest.forceProgress(file.getData(FTBTeamsAPI.getPlayerTeamID(timer.getPlayerUUID())), progressChange);
         return true;
+    }
+
+    public static void startTimer(TimerStorage timer) {
+        TaskTimer.builder()
+                .delay((timer.getEndTime() - System.currentTimeMillis()) / 50L)
+                .consume(task -> {
+                    if (!Utils.questReset(timer)) {
+                        task.cancel();
+                        return;
+                    }
+
+                    ExtraQuestsFactory.TimerProvider.removeTimerQuests(timer);
+                }).build();
     }
 }

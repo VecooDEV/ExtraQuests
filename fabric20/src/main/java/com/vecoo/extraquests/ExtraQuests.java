@@ -7,14 +7,12 @@ import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
 import com.vecoo.extraquests.storage.quests.TimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
-import com.vecoo.extraquests.util.TaskTimerUtils;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
@@ -37,14 +35,14 @@ public class ExtraQuests implements ModInitializer {
     public void onInitialize() {
         instance = this;
 
-        this.loadConfig();
         this.registerQuests();
 
         CommandRegistrationCallback.EVENT.register(ExtraQuestsCommand::register);
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> this.server = server);
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+            this.server = server;
+            this.loadConfig();
+        });
         ServerLifecycleEvents.SERVER_STARTED.register(server -> this.loadStorage());
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> TaskTimerUtils.cancelAll());
-        ServerTickEvents.END_SERVER_TICK.register(server -> TaskTimerUtils.onServerTick());
     }
 
     public void loadConfig() {

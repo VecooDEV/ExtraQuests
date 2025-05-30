@@ -43,7 +43,7 @@ if (gradlePropertiesFile.exists()) {
 }
 
 modrinth {
-    token = gradleProperties.getProperty("modrinth_api_key")
+    token = gradleProperties.getProperty("MODRINTH_API_KEY")
     projectId = "extraquests"
     versionName = "${project_name}-${version}"
     versionNumber = project_version

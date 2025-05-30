@@ -7,7 +7,6 @@ import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
 import com.vecoo.extraquests.storage.quests.TimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
-import com.vecoo.extraquests.util.TaskTimerUtils;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
@@ -42,16 +41,15 @@ public class ExtraQuests {
     public ExtraQuests() {
         instance = this;
 
-        this.loadConfig();
         this.registerQuests();
 
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new TaskTimerUtils.EventHandler());
     }
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         this.server = event.getServer();
+        this.loadConfig();
 
         PermissionAPI.registerNode("minecraft.command.equests", DefaultPermissionLevel.OP, "/equests");
     }
@@ -64,11 +62,6 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onServerStarted(FMLServerStartedEvent event) {
         this.loadStorage();
-    }
-
-    @SubscribeEvent
-    public void onServerStopping(FMLServerStoppingEvent event) {
-        TaskTimerUtils.cancelAll();
     }
 
     public void loadConfig() {

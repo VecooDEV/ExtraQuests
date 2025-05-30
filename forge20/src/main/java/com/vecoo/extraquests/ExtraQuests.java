@@ -8,7 +8,6 @@ import com.vecoo.extraquests.reward.TimerReward;
 import com.vecoo.extraquests.storage.quests.TimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
-import com.vecoo.extraquests.util.TaskTimerUtils;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
@@ -18,7 +17,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.permission.events.PermissionGatherEvent;
@@ -42,21 +40,23 @@ public class ExtraQuests {
     public ExtraQuests() {
         instance = this;
 
-        this.loadConfig();
         this.registerQuests();
 
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new TaskTimerUtils.EventHandler());
     }
 
     @SubscribeEvent
     public void onPermissionGather(PermissionGatherEvent.Nodes event) {
-        event.addNodes(PermissionNodes.EXTRAQUESTS_COMMAND);
+        if (!event.getNodes().contains(PermissionNodes.EXTRAQUESTS_COMMAND)) {
+            event.addNodes(PermissionNodes.EXTRAQUESTS_COMMAND);
+        }
     }
+
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         this.server = event.getServer();
+        this.loadConfig();
     }
 
     @SubscribeEvent
@@ -67,11 +67,6 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onServerStarted(ServerStartedEvent event) {
         this.loadStorage();
-    }
-
-    @SubscribeEvent
-    public void onServerStopping(ServerStoppingEvent event) {
-        TaskTimerUtils.cancelAll();
     }
 
     public void loadConfig() {

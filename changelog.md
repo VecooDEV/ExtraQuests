@@ -1,5 +1,3 @@
-* Port to Fabric and NeoForge.
-* Port to 1.21.1.
-* Fix timer reward.
-* Optimization timer.
-* Various minor improvements and fixes.
+* Unsupported Fabric: 1.16.5/1.19.2.
+* No longer requires dependent mod on client.
+* Various improvements and fixes.

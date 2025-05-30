@@ -3,7 +3,6 @@ package com.vecoo.extraquests.storage.quests;
 import com.vecoo.extralib.gson.UtilGson;
 import com.vecoo.extralib.world.UtilWorld;
 import com.vecoo.extraquests.ExtraQuests;
-import com.vecoo.extraquests.api.factory.ExtraQuestsFactory;
 import com.vecoo.extraquests.util.Utils;
 import net.minecraft.server.MinecraftServer;
 
@@ -25,22 +24,24 @@ public class TimerProvider {
         return this.timers;
     }
 
-    public void addTimer(TimerStorage timer) {
+    public boolean addTimer(TimerStorage timer) {
         if (!this.timers.add(timer)) {
             ExtraQuests.getLogger().error("[ExtraQuests] Failed to add timer " + timer.toString());
-            return;
+            return false;
         }
 
         write();
+        return true;
     }
 
-    public void removeTimer(TimerStorage timer) {
+    public boolean removeTimer(TimerStorage timer) {
         if (!this.timers.remove(timer)) {
             ExtraQuests.getLogger().error("[ExtraQuests] Failed to remove timer " + timer.toString());
-            return;
+            return false;
         }
 
         write();
+        return true;
     }
 
     private void write() {
@@ -49,12 +50,13 @@ public class TimerProvider {
 
     public void init() {
         CompletableFuture<Boolean> future = UtilGson.readFileAsync(filePath, "TimerStorage.json", el -> {
+            TimerProvider provider = UtilGson.newGson().fromJson(el, TimerProvider.class);
             long time = System.currentTimeMillis();
 
-            for (TimerStorage timer : UtilGson.newGson().fromJson(el, TimerProvider.class).getTimers()) {
+            for (TimerStorage timer : provider.getTimers()) {
                 if (timer.getEndTime() > time) {
                     this.timers.add(timer);
-                    ExtraQuestsFactory.TimerProvider.startTimer(timer);
+                    Utils.startTimer(timer);
                 } else {
                     Utils.questReset(timer);
                 }
