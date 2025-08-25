@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[43,)"
-license = "All Rights Reserved"
+license = "MIT"
 
 [[mods]]
 modId = "extraquests"
@@ -28,12 +28,12 @@ side = "BOTH"
 modId = "ftbquests"
 mandatory = true
 versionRange = "[1902,)"
-ordering = "AFTER"
+ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.extraquests]]
 modId = "extralib"
 mandatory = true
-versionRange = "[1.6,)"
+versionRange = "[1.7,)"
 ordering = "NONE"
 side = "SERVER"

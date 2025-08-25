@@ -51,7 +51,7 @@ public class ExtraQuests {
         this.server = event.getServer();
         this.loadConfig();
 
-        PermissionAPI.registerNode("minecraft.command.equests", DefaultPermissionLevel.OP, "/equests");
+        PermissionAPI.registerNode("minecraft.command.equests", DefaultPermissionLevel.OP, "");
     }
 
     @SubscribeEvent

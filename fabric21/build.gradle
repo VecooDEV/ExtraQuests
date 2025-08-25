@@ -17,7 +17,7 @@ dependencies {
     minecraft "com.mojang:minecraft:1.21.1"
     mappings loom.officialMojangMappings()
 
-    modCompileOnly "net.fabricmc:fabric-loader:${fabric_loader_21}"
+    modCompileOnly "net.fabricmc:fabric-loader:${fabric_loader}"
     modCompileOnly "net.fabricmc.fabric-api:fabric-api:${fabric_api_21}"
 
     modCompileOnly "curse.maven:ftb-quests-forge-438496:${ftbquests_fabric_21}"

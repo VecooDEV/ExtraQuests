@@ -1,4 +1,4 @@
-![](https://imgur.com/CgZsbrP.png)   
+![](https://i.ibb.co/F4gZSMQ2/Extra-Quests.png)   
 [![](https://i.imgur.com/B4evs2K.png)](https://discord.gg/VSGEVagRPq) [![](https://i.imgur.com/uquQMuU.png)](https://github.com/VecooDEV/ExtraQuests/wiki) [![](https://i.imgur.com/eaHjYUQ.png)](https://www.patreon.com/Vecoo) [![](https://i.imgur.com/yPBPV5c.png)](https://ko-fi.com/vecoo)
 
 ![](https://i.imgur.com/Hy28Vmo.png)

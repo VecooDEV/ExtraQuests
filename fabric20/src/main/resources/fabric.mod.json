@@ -8,6 +8,7 @@
   "authors": [
     "Vecoo"
   ],
+  "license": "MIT",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -22,6 +23,7 @@
     "fabric": "*",
     "minecraft": "<=1.20.1",
     "java": ">=17",
-    "ftbquests": ">=2001"
+    "ftbquests": ">=2001",
+    "extralib": ">=1.7.0"
   }
 }

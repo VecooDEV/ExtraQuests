@@ -8,10 +8,6 @@ pluginManagement {
     }
 }
 
-plugins {
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.10.0'
-}
-
 rootProject.name = project_name
 
 include 'forge16', 'forge19', 'forge20', 'fabric20', 'fabric21', 'neoforge21'
