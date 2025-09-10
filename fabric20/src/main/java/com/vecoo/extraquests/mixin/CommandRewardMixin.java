@@ -22,34 +22,34 @@ public abstract class CommandRewardMixin {
 
     @Inject(method = "writeData", at = @At("TAIL"))
     public void writeData(CompoundTag nbt, CallbackInfo ci) {
-        if (console) {
+        if (this.console) {
             nbt.putBoolean("console", true);
         }
     }
 
     @Inject(method = "readData", at = @At("TAIL"))
     public void readData(CompoundTag nbt, CallbackInfo ci) {
-        console = nbt.getBoolean("console");
+        this.console = nbt.getBoolean("console");
     }
 
     @Inject(method = "writeNetData", at = @At("TAIL"))
     public void writeNetData(FriendlyByteBuf buffer, CallbackInfo ci) {
-        buffer.writeBoolean(console);
+        buffer.writeBoolean(this.console);
     }
 
     @Inject(method = "readNetData", at = @At("TAIL"))
     public void readNetData(FriendlyByteBuf buffer, CallbackInfo ci) {
-        console = buffer.readBoolean();
+        this.console = buffer.readBoolean();
     }
 
     @Inject(method = "fillConfigGroup", at = @At("TAIL"))
     public void fillConfigGroup(ConfigGroup config, CallbackInfo ci) {
-        config.addBool("console", console, v -> console = v, false).setNameKey("extraquests.reward.command.console");
+        config.addBool("console", this.console, v -> this.console = v, false).setNameKey("extraquests.reward.command.console");
     }
 
     @Redirect(method = "claim", at = @At(value = "INVOKE", target = "Lnet/minecraft/commands/Commands;performPrefixedCommand(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"), remap = true)
     public int claim(Commands instance, CommandSourceStack source, String command) {
-        if (console) {
+        if (this.console) {
             ServerConfig config = ExtraQuests.getInstance().getConfig();
 
             if (config.isBlacklistConsole()) {

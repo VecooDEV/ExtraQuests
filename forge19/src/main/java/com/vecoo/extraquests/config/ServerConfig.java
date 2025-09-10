@@ -1,21 +1,19 @@
 package com.vecoo.extraquests.config;
 
+import com.google.common.collect.Sets;
 import com.vecoo.extralib.gson.UtilGson;
-import com.vecoo.extraquests.ExtraQuests;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Set;
 
 public class ServerConfig {
     private boolean blacklistConsole = false;
-    private List<String> blacklistConsoleList = Arrays.asList("op", "gamemode");
+    private Set<String> blacklistConsoleList = Sets.newHashSet("op", "gamemode");
 
     public boolean isBlacklistConsole() {
         return this.blacklistConsole;
     }
 
-    public List<String> getBlacklistConsoleList() {
+    public Set<String> getBlacklistConsoleList() {
         return this.blacklistConsoleList;
     }
 
@@ -24,18 +22,14 @@ public class ServerConfig {
     }
 
     public void init() {
-        try {
-            CompletableFuture<Boolean> future = UtilGson.readFileAsync("/config/ExtraQuests/", "config.json", el -> {
-                ServerConfig config = UtilGson.newGson().fromJson(el, ServerConfig.class);
+        boolean completed = UtilGson.readFileAsync("/config/ExtraQuests/", "config.json", el -> {
+            ServerConfig config = UtilGson.newGson().fromJson(el, ServerConfig.class);
 
-                this.blacklistConsole = config.isBlacklistConsole();
-                this.blacklistConsoleList = config.getBlacklistConsoleList();
-            });
-            if (!future.join()) {
-                write();
-            }
-        } catch (Exception e) {
-            ExtraQuests.getLogger().error("[ExtraQuests] Error in config.", e);
+            this.blacklistConsole = config.isBlacklistConsole();
+            this.blacklistConsoleList = config.getBlacklistConsoleList();
+        }).join();
+
+        if (!completed) {
             write();
         }
     }

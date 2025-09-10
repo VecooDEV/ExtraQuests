@@ -13,8 +13,8 @@ public class ExtraQuestsFactory {
             return ExtraQuests.getInstance().getTimerProvider().getTimers();
         }
 
-        public static boolean addTimerQuests(UUID playerUUID, String questID, int time) {
-            TimerStorage timer = new TimerStorage(playerUUID, questID, time);
+        public static boolean addTimerQuests(UUID playerUUID, String questID, int seconds) {
+            TimerStorage timer = new TimerStorage(playerUUID, questID, seconds);
 
             if (!ExtraQuests.getInstance().getTimerProvider().addTimer(timer)) {
                 return false;

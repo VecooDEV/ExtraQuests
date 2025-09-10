@@ -19,10 +19,10 @@ public abstract class CommandRewardMixin {
 
     @Inject(method = "claim", at = @At("HEAD"), cancellable = true)
     public void claim(ServerPlayer player, boolean notify, CallbackInfo ci) {
-        if (!playerCommand) {
+        if (!this.playerCommand) {
             if (ExtraQuests.getInstance().getConfig().isBlacklistConsole()) {
                 for (String blacklistCommand : ExtraQuests.getInstance().getConfig().getBlacklistConsoleList()) {
-                    if (command.contains(blacklistCommand)) {
+                    if (this.command.contains(blacklistCommand)) {
                         ci.cancel();
                     }
                 }

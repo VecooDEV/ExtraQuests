@@ -18,7 +18,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +40,7 @@ public class ExtraQuests {
     public ExtraQuests() {
         instance = this;
 
-        this.registerQuests();
+        registerQuests();
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -49,7 +48,7 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         this.server = event.getServer();
-        this.loadConfig();
+        loadConfig();
 
         PermissionAPI.registerNode("minecraft.command.equests", DefaultPermissionLevel.OP, "");
     }
@@ -61,7 +60,7 @@ public class ExtraQuests {
 
     @SubscribeEvent
     public void onServerStarted(FMLServerStartedEvent event) {
-        this.loadStorage();
+        loadStorage();
     }
 
     public void loadConfig() {

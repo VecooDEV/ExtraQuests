@@ -5,16 +5,20 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.permission.UtilPermission;
+import com.vecoo.extralib.player.UtilPlayer;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
+import dev.ftb.mods.ftbquests.quest.TeamData;
+import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ExtraQuestsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -22,7 +26,7 @@ public class ExtraQuestsCommand {
                 .requires(s -> UtilPermission.hasPermission(s, PermissionNodes.EXTRAQUESTS_COMMAND))
                 .then(Commands.literal("key_value")
                         .then(Commands.literal("add")
-                                .then(Commands.argument("player", EntityArgument.player())
+                                .then(Commands.argument("player", StringArgumentType.string())
                                         .suggests((s, builder) -> {
                                             for (String playerName : s.getSource().getOnlinePlayerNames()) {
                                                 if (playerName.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) {
@@ -39,22 +43,29 @@ public class ExtraQuestsCommand {
                                                             }
                                                             return builder.buildFuture();
                                                         })
-                                                        .executes(e -> executeKeyValueAdd(e.getSource(), EntityArgument.getPlayer(e, "player"), StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"))))))))
+                                                        .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"), StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"))))))))
                 .then(Commands.literal("reload")
                         .executes(e -> executeReload(e.getSource()))));
     }
 
-    private static int executeKeyValueAdd(CommandSourceStack source, ServerPlayer target, String key, int amount) {
-        for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
-            task.progress(ServerQuestFile.INSTANCE.getOrCreateTeamData(target), key, amount);
+    private static int executeKeyValueAdd(CommandSourceStack source, String target, String key, int amount) {
+        UUID targetUUID = UtilPlayer.getUUID(target);
+
+        if (targetUUID == null) {
+            source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getPlayerNotFound()
+                    .replace("%player%", target)));
+            return 0;
         }
 
-        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getAddKeyValueSource()
-                .replace("%player%", target.getGameProfile().getName())
-                .replace("%key%", key)
-                .replace("%value%", String.valueOf(amount))));
+        ServerQuestFile file = ServerQuestFile.INSTANCE;
+        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(targetUUID).map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(targetUUID));
 
-        target.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getAddKeyValueTarget()
+        for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
+            task.progress(teamData, key, amount);
+        }
+
+        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getAddKeyValue()
+                .replace("%player%", target)
                 .replace("%key%", key)
                 .replace("%value%", String.valueOf(amount))));
         return 1;
@@ -62,7 +73,6 @@ public class ExtraQuestsCommand {
 
     private static int executeReload(CommandSourceStack source) {
         ExtraQuests.getInstance().loadConfig();
-        ExtraQuests.getInstance().loadStorage();
 
         source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getReload()));
         return 1;

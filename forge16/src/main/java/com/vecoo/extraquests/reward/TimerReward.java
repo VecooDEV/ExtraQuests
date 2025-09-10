@@ -81,7 +81,7 @@ public class TimerReward extends Reward {
     @Override
     public void claim(ServerPlayerEntity player, boolean notify) {
         if (this.questID.isEmpty()) {
-            ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUUID(), this.quest.getCodeString(), this.time);
+            ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUUID(), quest.getCodeString(), this.time);
         } else {
             ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUUID(), this.questID, this.time);
         }

@@ -1,5 +1,6 @@
 package com.vecoo.extraquests.storage.quests;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class TimerStorage {
@@ -23,5 +24,25 @@ public class TimerStorage {
 
     public long getEndTime() {
         return this.endTime;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+
+        TimerStorage timerStorage = (TimerStorage) object;
+
+        return Objects.equals(this.playerUUID, timerStorage.playerUUID) && Objects.equals(this.questID, timerStorage.questID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.playerUUID, this.questID);
     }
 }

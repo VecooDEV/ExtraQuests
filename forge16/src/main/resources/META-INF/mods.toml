@@ -36,4 +36,4 @@ modId = "extralib"
 mandatory = true
 versionRange = "[1.7,)"
 ordering = "NONE"
-side = "SERVER"
+side = "BOTH"

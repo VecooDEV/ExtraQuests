@@ -26,30 +26,38 @@ public class TimerProvider {
 
     public boolean addTimer(TimerStorage timer) {
         if (!this.timers.add(timer)) {
-            ExtraQuests.getLogger().error("[ExtraQuests] Failed to add timer " + timer.toString());
+            ExtraQuests.getLogger().error("[ExtraQuests] Failed to add timer " + timer.getQuestID());
             return false;
         }
 
-        write();
+        write().thenAccept(success -> {
+            if (!success) {
+                ExtraQuests.getLogger().error("[ExtraQuests] Failed to write TimerStorage.");
+            }
+        });
         return true;
     }
 
     public boolean removeTimer(TimerStorage timer) {
         if (!this.timers.remove(timer)) {
-            ExtraQuests.getLogger().error("[ExtraQuests] Failed to remove timer " + timer.toString());
+            ExtraQuests.getLogger().error("[ExtraQuests] Failed to remove timer " + timer.getQuestID());
             return false;
         }
 
-        write();
+        write().thenAccept(success -> {
+            if (!success) {
+                ExtraQuests.getLogger().error("[ExtraQuests] Failed to write TimerStorage.");
+            }
+        });
         return true;
     }
 
-    private void write() {
-        UtilGson.writeFileAsync(filePath, "TimerStorage.json", UtilGson.newGson().toJson(this)).join();
+    private CompletableFuture<Boolean> write() {
+        return UtilGson.writeFileAsync(this.filePath, "TimerStorage.json", UtilGson.newGson().toJson(this));
     }
 
     public void init() {
-        CompletableFuture<Boolean> future = UtilGson.readFileAsync(filePath, "TimerStorage.json", el -> {
+        UtilGson.readFileAsync(this.filePath, "TimerStorage.json", el -> {
             TimerProvider provider = UtilGson.newGson().fromJson(el, TimerProvider.class);
             long time = System.currentTimeMillis();
 
@@ -61,11 +69,8 @@ public class TimerProvider {
                     Utils.questReset(timer);
                 }
             }
+        }).join();
 
-            write();
-        });
-        if (!future.join()) {
-            write();
-        }
+        write().join();
     }
 }

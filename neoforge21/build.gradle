@@ -1,6 +1,6 @@
 plugins {
     id 'net.neoforged.gradle.userdev' version '7.0.184'
-    id "com.modrinth.minotaur" version "2.8.7"
+    id "com.modrinth.minotaur" version "2.8.10"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -8,8 +8,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 version = "${project_version}-1.21.1-NeoForge"
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-repositories {}
 
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_21}"

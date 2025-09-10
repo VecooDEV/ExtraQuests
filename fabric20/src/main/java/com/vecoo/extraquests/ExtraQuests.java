@@ -35,14 +35,14 @@ public class ExtraQuests implements ModInitializer {
     public void onInitialize() {
         instance = this;
 
-        this.registerQuests();
+        registerQuests();
 
         CommandRegistrationCallback.EVENT.register(ExtraQuestsCommand::register);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             this.server = server;
-            this.loadConfig();
+            loadConfig();
         });
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> this.loadStorage());
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> loadStorage());
     }
 
     public void loadConfig() {

@@ -40,7 +40,7 @@ public class ExtraQuests {
     public ExtraQuests() {
         instance = this;
 
-        this.registerQuests();
+        registerQuests();
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -56,7 +56,7 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         this.server = event.getServer();
-        this.loadConfig();
+        loadConfig();
     }
 
     @SubscribeEvent
@@ -66,7 +66,7 @@ public class ExtraQuests {
 
     @SubscribeEvent
     public void onServerStarted(ServerStartedEvent event) {
-        this.loadStorage();
+        loadStorage();
     }
 
     public void loadConfig() {

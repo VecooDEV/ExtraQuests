@@ -91,14 +91,10 @@ public class KeyValueTask extends Task {
 
 
     public void progress(TeamData teamData, String key, long value) {
-        if (!this.key.equals(key)) {
-            return;
+        if (this.key.equals(key)) {
+            if (!teamData.isCompleted(this) && teamData.canStartTasks(quest)) {
+                teamData.addProgress(this, value);
+            }
         }
-
-        if (teamData.isCompleted(this) || !teamData.canStartTasks(this.quest)) {
-            return;
-        }
-
-        teamData.addProgress(this, value);
     }
 }
