@@ -52,7 +52,7 @@ public class TimerProvider {
         return true;
     }
 
-    private CompletableFuture<Boolean> write() {
+    public CompletableFuture<Boolean> write() {
         return UtilGson.writeFileAsync(this.filePath, "TimerStorage.json", UtilGson.newGson().toJson(this));
     }
 

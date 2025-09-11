@@ -69,6 +69,11 @@ public class ExtraQuests {
         loadStorage();
     }
 
+    @SubscribeEvent
+    public void onServerStopping(ServerStoppingEvent event) {
+        this.timerProvider.write();
+    }
+
     public void loadConfig() {
         try {
             this.config = new ServerConfig();

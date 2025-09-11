@@ -18,6 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 import org.apache.logging.log4j.LogManager;
@@ -61,6 +62,11 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onServerStarted(FMLServerStartedEvent event) {
         loadStorage();
+    }
+
+    @SubscribeEvent
+    public void onServerStopping(FMLServerStoppingEvent event) {
+        this.timerProvider.write();
     }
 
     public void loadConfig() {

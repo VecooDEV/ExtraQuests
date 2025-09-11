@@ -43,6 +43,7 @@ public class ExtraQuests implements ModInitializer {
             loadConfig();
         });
         ServerLifecycleEvents.SERVER_STARTED.register(server -> loadStorage());
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> this.timerProvider.write());
     }
 
     public void loadConfig() {
