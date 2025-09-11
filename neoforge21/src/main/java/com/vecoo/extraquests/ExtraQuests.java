@@ -5,7 +5,7 @@ import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.storage.quests.TimerProvider;
+import com.vecoo.extraquests.storage.TimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftblibrary.icon.Icon;
@@ -13,6 +13,7 @@ import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
@@ -41,6 +42,7 @@ public class ExtraQuests {
     public ExtraQuests() {
         instance = this;
 
+        loadConfig();
         registerQuests();
 
         NeoForge.EVENT_BUS.register(this);
@@ -56,7 +58,6 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         this.server = event.getServer();
-        loadConfig();
     }
 
     @SubscribeEvent
@@ -69,7 +70,7 @@ public class ExtraQuests {
         loadStorage();
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onServerStopping(ServerStoppingEvent event) {
         this.timerProvider.write();
     }

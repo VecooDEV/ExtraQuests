@@ -1,7 +1,7 @@
 package com.vecoo.extraquests.api.factory;
 
 import com.vecoo.extraquests.ExtraQuests;
-import com.vecoo.extraquests.storage.quests.TimerStorage;
+import com.vecoo.extraquests.storage.TimerStorage;
 import com.vecoo.extraquests.util.Utils;
 
 import java.util.Set;
@@ -9,8 +9,8 @@ import java.util.UUID;
 
 public class ExtraQuestsFactory {
     public static class TimerProvider {
-        public static Set<TimerStorage> getTimerQuests() {
-            return ExtraQuests.getInstance().getTimerProvider().getTimers();
+        public static Set<TimerStorage> getStorage() {
+            return ExtraQuests.getInstance().getTimerProvider().getStorage();
         }
 
         public static boolean addTimerQuests(UUID playerUUID, String questID, int seconds) {

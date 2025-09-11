@@ -5,7 +5,7 @@ import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.storage.quests.TimerProvider;
+import com.vecoo.extraquests.storage.TimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
@@ -35,13 +35,11 @@ public class ExtraQuests implements ModInitializer {
     public void onInitialize() {
         instance = this;
 
+        loadConfig();
         registerQuests();
 
         CommandRegistrationCallback.EVENT.register(ExtraQuestsCommand::register);
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-            this.server = server;
-            loadConfig();
-        });
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> this.server = server);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> loadStorage());
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> this.timerProvider.write());
     }

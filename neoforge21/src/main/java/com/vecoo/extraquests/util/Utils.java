@@ -3,7 +3,7 @@ package com.vecoo.extraquests.util;
 import com.vecoo.extralib.task.TaskTimer;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.api.factory.ExtraQuestsFactory;
-import com.vecoo.extraquests.storage.quests.TimerStorage;
+import com.vecoo.extraquests.storage.TimerStorage;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import dev.ftb.mods.ftbquests.quest.TeamData;

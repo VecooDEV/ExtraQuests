@@ -5,7 +5,7 @@ import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.storage.quests.TimerProvider;
+import com.vecoo.extraquests.storage.TimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
@@ -14,6 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
@@ -41,6 +42,7 @@ public class ExtraQuests {
     public ExtraQuests() {
         instance = this;
 
+        loadConfig();
         registerQuests();
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -49,7 +51,6 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         this.server = event.getServer();
-        loadConfig();
 
         PermissionAPI.registerNode("minecraft.command.equests", DefaultPermissionLevel.OP, "");
     }
@@ -64,7 +65,7 @@ public class ExtraQuests {
         loadStorage();
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onServerStopping(FMLServerStoppingEvent event) {
         this.timerProvider.write();
     }

@@ -19,7 +19,7 @@ subprojects {
         options.encoding = 'UTF-8'
     }
 
-    task versionedRelease(type: Copy) {
+    tasks.register('versionedRelease', Copy) {
         group "build"
 
         delete fileTree('../release/') {

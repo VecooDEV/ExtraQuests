@@ -1,4 +1,4 @@
-package com.vecoo.extraquests.storage.quests;
+package com.vecoo.extraquests.storage;
 
 import java.util.Objects;
 import java.util.UUID;
