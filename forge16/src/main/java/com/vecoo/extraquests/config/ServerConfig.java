@@ -2,6 +2,7 @@ package com.vecoo.extraquests.config;
 
 import com.google.common.collect.Sets;
 import com.vecoo.extralib.gson.UtilGson;
+import com.vecoo.extraquests.ExtraQuests;
 
 import java.util.Set;
 
@@ -30,6 +31,7 @@ public class ServerConfig {
         }).join();
 
         if (!completed) {
+            ExtraQuests.getLogger().error("[ExtraQuests] Failed init server config.");
             write();
         }
     }

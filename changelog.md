@@ -1,1 +1,3 @@
-* Now data is saved every few seconds, which allows avoiding multiple recordings and securing functionality on stable servers.
+* Update depends to ExtraLib 1.8+.
+* Unsupported 1.19.2 and Fabric 1.20.1.
+* Optimization storage.

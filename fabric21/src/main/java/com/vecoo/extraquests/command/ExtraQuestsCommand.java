@@ -71,7 +71,6 @@ public class ExtraQuestsCommand {
 
     private static int executeReload(CommandSourceStack source) {
         ExtraQuests.getInstance().loadConfig();
-        ExtraQuests.getInstance().loadStorage();
 
         source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getReload()));
         return 1;

@@ -1,6 +1,7 @@
 package com.vecoo.extraquests.config;
 
 import com.vecoo.extralib.gson.UtilGson;
+import com.vecoo.extraquests.ExtraQuests;
 
 public class LocaleConfig {
     private String reload = "&e(!) Configs have been reloaded.";
@@ -35,6 +36,7 @@ public class LocaleConfig {
         }).join();
 
         if (!completed) {
+            ExtraQuests.getLogger().error("[ExtraQuests] Failed init locale config.");
             write();
         }
     }

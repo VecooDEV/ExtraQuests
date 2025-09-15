@@ -88,7 +88,10 @@ public class ExtraQuests {
 
     public void loadStorage() {
         try {
-            this.timerProvider = new TimerProvider("/%directory%/storage/ExtraQuests/", this.server);
+            if (timerProvider == null) {
+                this.timerProvider = new TimerProvider("/%directory%/storage/ExtraQuests/", this.server);
+            }
+
             this.timerProvider.init();
         } catch (Exception e) {
             LOGGER.error("[ExtraQuests] Error load storage.", e);
