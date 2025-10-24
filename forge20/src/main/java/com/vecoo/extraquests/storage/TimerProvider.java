@@ -6,6 +6,7 @@ import com.vecoo.extralib.world.UtilWorld;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.util.Utils;
 import net.minecraft.server.MinecraftServer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,19 +18,20 @@ public class TimerProvider {
     private transient boolean intervalStarted = false;
     private transient volatile boolean dirty = false;
 
-    public TimerProvider(String filePath, MinecraftServer server) {
+    public TimerProvider(@NotNull String filePath, @NotNull MinecraftServer server) {
         this.filePath = UtilWorld.worldDirectory(filePath, server);
 
         this.timers = new HashSet<>();
     }
 
+    @NotNull
     public Set<TimerStorage> getStorage() {
         return this.timers;
     }
 
-    public boolean addTimer(TimerStorage timer) {
+    public boolean addTimer(@NotNull TimerStorage timer) {
         if (!this.timers.add(timer)) {
-            ExtraQuests.getLogger().error("[ExtraQuests] Failed to add timer " + timer.getQuestID());
+            ExtraQuests.getLogger().error("Failed to add timer " + timer.getQuestID());
             return false;
         }
 
@@ -37,9 +39,9 @@ public class TimerProvider {
         return true;
     }
 
-    public boolean removeTimer(TimerStorage timer) {
+    public boolean removeTimer(@NotNull TimerStorage timer) {
         if (!this.timers.remove(timer)) {
-            ExtraQuests.getLogger().error("[ExtraQuests] Failed to remove timer " + timer.getQuestID());
+            ExtraQuests.getLogger().error("Failed to remove timer " + timer.getQuestID());
             return false;
         }
 
@@ -55,11 +57,12 @@ public class TimerProvider {
         if (!this.intervalStarted) {
             TaskTimer.builder()
                     .withoutDelay()
-                    .interval(15 * 20L)
+                    .interval(30 * 20L)
                     .infinite()
                     .consume(task -> {
                         if (ExtraQuests.getInstance().getServer().isRunning() && this.dirty) {
-                            UtilGson.writeFileAsync(this.filePath, "TimerStorage.json", UtilGson.newGson().toJson(this)).thenRun(() -> this.dirty = false);
+                            UtilGson.writeFileAsync(this.filePath, "TimerStorage.json",
+                                    UtilGson.newGson().toJson(this)).thenRun(() -> this.dirty = false);
                         }
                     })
                     .build();

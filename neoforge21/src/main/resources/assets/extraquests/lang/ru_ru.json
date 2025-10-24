@@ -7,6 +7,8 @@
   "extraquests.key_value.key.tooltip": "Ключ для хранение значений",
   "extraquests.key_value.value": "Значение",
   "extraquests.key_value.value.tooltip": "Значение для ключа",
+  "extraquests.key_value.ignore": "Игнорировать?",
+  "extraquests.key_value.ignore.tooltip": "Будет ли награда игнорировать прогресс заданий?",
 
   "ftbquests.reward.extraquests.timer": "Таймер",
   "extraquests.timer.title": "Сброс раз в %s секунд",

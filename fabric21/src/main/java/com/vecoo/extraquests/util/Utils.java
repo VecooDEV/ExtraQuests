@@ -8,25 +8,27 @@ import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbquests.util.ProgressChange;
+import org.jetbrains.annotations.NotNull;
 
 public class Utils {
-    public static boolean questReset(TimerStorage timer) {
+    public static boolean questReset(@NotNull TimerStorage timer) {
         ServerQuestFile file = ServerQuestFile.INSTANCE;
         Quest quest = file.getQuest(file.getID(timer.getQuestID()));
 
         if (quest == null) {
-            ExtraQuests.getLogger().error("[ExtraQuests] No quest found for " + timer.getQuestID());
+            ExtraQuests.getLogger().error("No quest found for " + timer.getQuestID());
             ExtraQuestsFactory.TimerProvider.removeTimerQuests(timer);
             return false;
         }
 
-        TeamData teamData = dev.ftb.mods.ftbteams.api.FTBTeamsAPI.api().getManager().getTeamForPlayerID(timer.getPlayerUUID()).map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(timer.getPlayerUUID()));
+        TeamData teamData = dev.ftb.mods.ftbteams.api.FTBTeamsAPI.api().getManager().getTeamForPlayerID(timer.getPlayerUUID()).map(file::getOrCreateTeamData)
+                .orElse(file.getOrCreateTeamData(timer.getPlayerUUID()));
 
         quest.forceProgress(teamData, new ProgressChange(quest, timer.getPlayerUUID()).setReset(true));
         return true;
     }
 
-    public static void startTimer(TimerStorage timer) {
+    public static void startTimer(@NotNull TimerStorage timer) {
         TaskTimer.builder()
                 .delay((timer.getEndTime() - System.currentTimeMillis()) / 50L)
                 .consume(task -> {

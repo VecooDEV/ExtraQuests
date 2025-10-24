@@ -16,11 +16,13 @@ import net.neoforged.api.distmarker.OnlyIn;
 public class KeyValueTask extends Task {
     public static TaskType TYPE;
 
-    private String key = "key";
-    private long value = 100L;
+    private String key;
+    private long value;
 
     public KeyValueTask(long id, Quest quest) {
         super(id, quest);
+        this.key = "key";
+        this.value = 100L;
     }
 
     @Override
@@ -79,13 +81,15 @@ public class KeyValueTask extends Task {
     @OnlyIn(Dist.CLIENT)
     public void fillConfigGroup(ConfigGroup config) {
         super.fillConfigGroup(config);
-        config.addString("key", this.key, v -> this.key = v, this.key).setNameKey("extraquests.key_value.key");
-        config.addLong("value", this.value, v -> this.value = v, 100L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
+        config.addString("key", this.key, value -> this.key = value, this.key).setNameKey("extraquests.key_value.key");
+        config.addLong("value", this.value, value -> this.value = value, 100L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
     }
 
-    public void progress(TeamData teamData, String key, long value) {
-        if (this.key.equals(key)) {
-            if (!teamData.isCompleted(this) && checkTaskSequence(teamData) && teamData.canStartTasks(getQuest())) {
+    public void progress(TeamData teamData, String key, long value, boolean ignore) {
+        if (this.key.equals(key) && !teamData.isCompleted(this)) {
+            if (ignore) {
+                teamData.addProgress(this, value);
+            } else if (checkTaskSequence(teamData) && teamData.canStartTasks(getQuest())) {
                 teamData.addProgress(this, value);
             }
         }

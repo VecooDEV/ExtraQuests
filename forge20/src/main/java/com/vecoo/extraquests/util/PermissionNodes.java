@@ -1,12 +1,24 @@
 package com.vecoo.extraquests.util;
 
+import com.vecoo.extralib.permission.UtilPermission;
+import net.minecraftforge.server.permission.events.PermissionGatherEvent;
 import net.minecraftforge.server.permission.nodes.PermissionNode;
-import net.minecraftforge.server.permission.nodes.PermissionTypes;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class PermissionNodes {
-    public static PermissionNode<Boolean> EXTRAQUESTS_COMMAND = new PermissionNode<>(
-            "minecraft",
-            "command.equests",
-            PermissionTypes.BOOLEAN,
-            (p, uuid, permissionDynamicContexts) -> false);
+    public static final Set<PermissionNode<?>> PERMISSION_LIST = new HashSet<>();
+
+    public static PermissionNode<Boolean> EXTRAQUESTS_COMMAND = UtilPermission.getPermissionNode("minecraft.command.equests");
+
+    public static void registerPermission(PermissionGatherEvent.Nodes event) {
+        PERMISSION_LIST.add(EXTRAQUESTS_COMMAND);
+
+        for (PermissionNode<?> node : PERMISSION_LIST) {
+            if (!event.getNodes().contains(node)) {
+                event.addNodes(node);
+            }
+        }
+    }
 }

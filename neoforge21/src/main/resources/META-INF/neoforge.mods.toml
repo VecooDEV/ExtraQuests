@@ -14,16 +14,16 @@ description = "Sidemod for FTB Quests. Adds new tasks and rewards."
 config = "mixins.extraquests.json"
 
 [[dependencies.extraquests]]
-modId = "neoforge"
+modId = "minecraft"
 type = "required"
-versionRange = "[21.1,)"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.extraquests]]
-modId = "minecraft"
+modId = "neoforge"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[21.1,)"
 ordering = "NONE"
 side = "BOTH"
 

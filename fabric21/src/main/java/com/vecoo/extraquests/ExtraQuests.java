@@ -1,5 +1,6 @@
 package com.vecoo.extraquests;
 
+import com.mojang.logging.LogUtils;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
@@ -15,12 +16,11 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 public class ExtraQuests implements ModInitializer {
     public static final String MOD_ID = "extraquests";
-    private static final Logger LOGGER = LogManager.getLogger("ExtraQuests");
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private static ExtraQuests instance;
 
@@ -51,23 +51,23 @@ public class ExtraQuests implements ModInitializer {
             this.locale = new LocaleConfig();
             this.locale.init();
         } catch (Exception e) {
-            LOGGER.error("[ExtraQuests] Error load config.", e);
+            LOGGER.error("Error load config.", e);
         }
     }
 
     public void loadStorage() {
         try {
-            if (timerProvider == null) {
+            if (this.timerProvider == null) {
                 this.timerProvider = new TimerProvider("/%directory%/storage/ExtraQuests/", this.server);
             }
 
             this.timerProvider.init();
         } catch (Exception e) {
-            LOGGER.error("[ExtraQuests] Error load storage.", e);
+            LOGGER.error("Error load storage.", e);
         }
     }
 
-    public void registerQuests() {
+    private void registerQuests() {
         KeyValueTask.TYPE = TaskTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
         KeyValueReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
         TimerReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));

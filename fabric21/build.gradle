@@ -9,8 +9,6 @@ archivesBaseName = "${project_name}"
 
 version = "${project_version}-1.21.1-Fabric"
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 dependencies {
     minecraft "com.mojang:minecraft:1.21.1"
     mappings loom.officialMojangMappings()
@@ -18,9 +16,9 @@ dependencies {
     modCompileOnly "net.fabricmc:fabric-loader:${fabric_loader}"
     modCompileOnly "net.fabricmc.fabric-api:fabric-api:${fabric_api_21}"
 
-    modCompileOnly "curse.maven:ftb-quests-forge-438496:${ftbquests_fabric_21}"
-    modCompileOnly "curse.maven:ftb-library-forge-438495:${ftblibrary_fabric_21}"
-    modCompileOnly "curse.maven:ftb-teams-forge-438497:${ftbteams_fabric_21}"
+    modCompileOnly "curse.maven:ftb-quests-fabric-438496:${ftbquests_fabric_21}"
+    modCompileOnly "curse.maven:ftb-library-fabric-438495:${ftblibrary_fabric_21}"
+    modCompileOnly "curse.maven:ftb-teams-fabric-438497:${ftbteams_fabric_21}"
     modCompileOnly "maven.modrinth:extralib:${extralib}-fabric,1.21.1"
 }
 

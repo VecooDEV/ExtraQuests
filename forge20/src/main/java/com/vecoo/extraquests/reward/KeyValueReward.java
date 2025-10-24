@@ -17,11 +17,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeyValueReward extends Reward {
     public static RewardType TYPE;
 
-    private String key = "key";
-    private long value = 5L;
+    private String key;
+    private long value;
+    private boolean ignore;
 
     public KeyValueReward(long id, Quest quest) {
         super(id, quest);
+        this.key = "key";
+        this.value = 5L;
+        this.ignore = false;
     }
 
     @Override
@@ -34,6 +38,7 @@ public class KeyValueReward extends Reward {
         super.writeData(nbt);
         nbt.putString("key", this.key);
         nbt.putLong("value", this.value);
+        nbt.putBoolean("ignore", this.ignore);
     }
 
     @Override
@@ -41,6 +46,7 @@ public class KeyValueReward extends Reward {
         super.readData(nbt);
         this.key = nbt.getString("key");
         this.value = nbt.getLong("value");
+        this.ignore = nbt.getBoolean("ignore");
     }
 
     @Override
@@ -48,6 +54,7 @@ public class KeyValueReward extends Reward {
         super.writeNetData(buffer);
         buffer.writeUtf(this.key, Short.MAX_VALUE);
         buffer.writeVarLong(this.value);
+        buffer.writeBoolean(this.ignore);
     }
 
     @Override
@@ -55,6 +62,7 @@ public class KeyValueReward extends Reward {
         super.readNetData(buffer);
         this.key = buffer.readUtf(Short.MAX_VALUE);
         this.value = buffer.readVarLong();
+        this.ignore = buffer.readBoolean();
     }
 
     public String getKey() {
@@ -63,6 +71,10 @@ public class KeyValueReward extends Reward {
 
     public long getValue() {
         return this.value;
+    }
+
+    public boolean isIgnore() {
+        return this.ignore;
     }
 
     @Override
@@ -81,14 +93,15 @@ public class KeyValueReward extends Reward {
     @OnlyIn(Dist.CLIENT)
     public void fillConfigGroup(ConfigGroup config) {
         super.fillConfigGroup(config);
-        config.addString("key", this.key, v -> this.key = v, this.key).setNameKey("extraquests.key_value.key");
-        config.addLong("value", this.value, v -> this.value = v, 5L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
+        config.addString("key", this.key, value -> this.key = value, this.key).setNameKey("extraquests.key_value.key");
+        config.addLong("value", this.value, value -> this.value = value, 5L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
+        config.addBool("ignore", this.ignore, value -> this.ignore = value, false).setNameKey("extraquests.key_value.ignore");
     }
 
     @Override
     public void claim(ServerPlayer player, boolean notify) {
         for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
-            task.progress(ServerQuestFile.INSTANCE.getOrCreateTeamData(player), this.key, this.value);
+            task.progress(ServerQuestFile.INSTANCE.getOrCreateTeamData(player), this.key, this.value, this.ignore);
         }
     }
 }

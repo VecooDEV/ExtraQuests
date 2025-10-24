@@ -11,16 +11,16 @@ authors = "Vecoo"
 description = "Sidemod for FTB Quests. Adds new tasks and rewards."
 
 [[dependencies.extraquests]]
-modId = "forge"
+modId = "minecraft"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "[1.20,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.extraquests]]
-modId = "minecraft"
+modId = "forge"
 mandatory = true
-versionRange = "[1.20,)"
+versionRange = "[47,)"
 ordering = "NONE"
 side = "BOTH"
 
@@ -35,5 +35,12 @@ side = "BOTH"
 modId = "extralib"
 mandatory = true
 versionRange = "[1.8,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extraquests]]
+modId = "sdmshop"
+mandatory = false
+versionRange = "[1.20.1-7.1,)"
 ordering = "NONE"
 side = "BOTH"

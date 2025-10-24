@@ -13,14 +13,13 @@ minecraft {
     copyIdeResources = true
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 dependencies {
     minecraft "net.minecraftforge:forge:1.20.1-${forge_20}"
 
     compileOnly fg.deobf("curse.maven:ftb-quests-forge-289412:${ftbquests_forge_20}")
     compileOnly fg.deobf("curse.maven:ftb-library-forge-404465:${ftblibrary_forge_20}")
     compileOnly fg.deobf("curse.maven:ftb-teams-forge-404468:${ftbteams_forge_20}")
+    compileOnly fg.deobf("curse.maven:sdm-shop-948942:${sdmshop_forge_20}")
     compileOnly fg.deobf("maven.modrinth:extralib:${extralib}-forge,1.20.1")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
@@ -59,6 +58,7 @@ modrinth {
     loaders = ["forge"]
     dependencies {
         required.project "extralib"
+        optional.project "sdm-shop"
     }
 }
 

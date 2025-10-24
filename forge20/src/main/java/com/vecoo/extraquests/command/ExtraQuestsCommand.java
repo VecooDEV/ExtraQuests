@@ -1,6 +1,8 @@
 package com.vecoo.extraquests.command;
 
+import com.google.common.collect.Sets;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.vecoo.extralib.chat.UtilChat;
@@ -14,10 +16,8 @@ import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.UUID;
 
 public class ExtraQuestsCommand {
@@ -38,17 +38,20 @@ public class ExtraQuestsCommand {
                                         .then(Commands.argument("key", StringArgumentType.string())
                                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
                                                         .suggests((s, builder) -> {
-                                                            for (int amount : List.of(10, 50, 100)) {
+                                                            for (int amount : Sets.newHashSet(10, 50, 100)) {
                                                                 builder.suggest(amount);
                                                             }
                                                             return builder.buildFuture();
                                                         })
-                                                        .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"), StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"))))))))
+                                                        .then(Commands.argument("ignore", BoolArgumentType.bool())
+                                                                .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"),
+                                                                        StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"), BoolArgumentType.getBool(e, "ignore")))))))))
                 .then(Commands.literal("reload")
                         .executes(e -> executeReload(e.getSource()))));
     }
 
-    private static int executeKeyValueAdd(CommandSourceStack source, String target, String key, int amount) {
+    private static int executeKeyValueAdd(@NotNull CommandSourceStack source, @NotNull String target,
+                                          @NotNull String key, int amount, boolean ignore) {
         UUID targetUUID = UtilPlayer.getUUID(target);
 
         if (targetUUID == null) {
@@ -58,10 +61,11 @@ public class ExtraQuestsCommand {
         }
 
         ServerQuestFile file = ServerQuestFile.INSTANCE;
-        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(targetUUID).map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(targetUUID));
+        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(targetUUID).map(file::getOrCreateTeamData)
+                .orElse(file.getOrCreateTeamData(targetUUID));
 
         for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
-            task.progress(teamData, key, amount);
+            task.progress(teamData, key, amount, ignore);
         }
 
         source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getAddKeyValue()
@@ -71,7 +75,7 @@ public class ExtraQuestsCommand {
         return 1;
     }
 
-    private static int executeReload(CommandSourceStack source) {
+    private static int executeReload(@NotNull CommandSourceStack source) {
         ExtraQuests.getInstance().loadConfig();
 
         source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getReload()));

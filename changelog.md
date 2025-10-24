@@ -1,3 +1,6 @@
-* Update depends to ExtraLib 1.8+.
-* Unsupported 1.19.2 and Fabric 1.20.1.
-* Optimization storage.
+* Unsupported 1.16.5.
+* Update depends.
+* Added SDMShop 1.20.1 integration.
+* Update logger.
+* Added annotations.
+* Return option "Ignore?" key-value reward.

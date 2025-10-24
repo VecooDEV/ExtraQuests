@@ -36,7 +36,7 @@ public class LocaleConfig {
         }).join();
 
         if (!completed) {
-            ExtraQuests.getLogger().error("[ExtraQuests] Failed init locale config.");
+            ExtraQuests.getLogger().error("Failed init locale config.");
             write();
         }
     }
