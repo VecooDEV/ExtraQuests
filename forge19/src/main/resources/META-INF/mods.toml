@@ -1,0 +1,39 @@
+modLoader = "javafml"
+loaderVersion = "[43,)"
+license = "MIT"
+
+[[mods]]
+modId = "extraquests"
+version = "${project_version}"
+displayName = "${project_name}"
+logoFile = "logo.png"
+authors = "Vecoo"
+description = "Sidemod for FTB Quests. Adds new tasks and rewards."
+
+[[dependencies.extraquests]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extraquests]]
+modId = "forge"
+mandatory = true
+versionRange = "[43,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extraquests]]
+modId = "ftbquests"
+mandatory = true
+versionRange = "[1902,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extraquests]]
+modId = "extralib"
+mandatory = true
+versionRange = "[1.8,)"
+ordering = "NONE"
+side = "BOTH"

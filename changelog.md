@@ -1,6 +1,2 @@
-* Unsupported 1.16.5.
-* Update depends.
-* Added SDMShop 1.20.1 integration.
-* Update logger.
-* Added annotations.
-* Return option "Ignore?" key-value reward.
+## The mod for this version of Minecraft is limited/partially limited in functionality, support for such versions is provided at low priority. 
+* Backport 1.12.2/1.16.5/1.19.2/1.20.1 (Fabric).
