@@ -5,8 +5,6 @@ import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
-import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.storage.TimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftblibrary.icon.Icon;
@@ -18,9 +16,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.server.permission.events.PermissionGatherEvent;
 import org.slf4j.Logger;
 
@@ -34,8 +30,6 @@ public class ExtraQuests {
 
     private ServerConfig config;
     private LocaleConfig locale;
-
-    private TimerProvider timerProvider;
 
     private MinecraftServer server;
 
@@ -63,16 +57,6 @@ public class ExtraQuests {
         ExtraQuestsCommand.register(event.getDispatcher());
     }
 
-    @SubscribeEvent
-    public void onServerStarted(ServerStartedEvent event) {
-        loadStorage();
-    }
-
-    @SubscribeEvent
-    public void onServerStopping(ServerStoppingEvent event) {
-        this.timerProvider.write();
-    }
-
     public void loadConfig() {
         try {
             this.config = new ServerConfig();
@@ -84,22 +68,9 @@ public class ExtraQuests {
         }
     }
 
-    public void loadStorage() {
-        try {
-            if (this.timerProvider == null) {
-                this.timerProvider = new TimerProvider("/%directory%/storage/ExtraQuests/", this.server);
-            }
-
-            this.timerProvider.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load storage.", e);
-        }
-    }
-
     private void registerQuests() {
         KeyValueTask.TYPE = TaskTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
         KeyValueReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
-        TimerReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
     }
 
     public static ExtraQuests getInstance() {
@@ -116,10 +87,6 @@ public class ExtraQuests {
 
     public LocaleConfig getLocale() {
         return instance.locale;
-    }
-
-    public TimerProvider getTimerProvider() {
-        return instance.timerProvider;
     }
 
     public MinecraftServer getServer() {

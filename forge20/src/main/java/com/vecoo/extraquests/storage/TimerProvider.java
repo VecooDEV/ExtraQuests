@@ -72,6 +72,8 @@ public class TimerProvider {
     }
 
     public void init() {
+        this.timers.clear();
+
         UtilGson.readFileAsync(this.filePath, "TimerStorage.json", el -> {
             TimerProvider provider = UtilGson.newGson().fromJson(el, TimerProvider.class);
             long time = System.currentTimeMillis();

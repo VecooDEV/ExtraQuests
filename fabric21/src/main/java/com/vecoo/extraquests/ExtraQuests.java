@@ -5,8 +5,6 @@ import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
-import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.storage.TimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
@@ -27,8 +25,6 @@ public class ExtraQuests implements ModInitializer {
     private ServerConfig config;
     private LocaleConfig locale;
 
-    private TimerProvider timerProvider;
-
     private MinecraftServer server;
 
     @Override
@@ -40,8 +36,6 @@ public class ExtraQuests implements ModInitializer {
 
         CommandRegistrationCallback.EVENT.register(ExtraQuestsCommand::register);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> this.server = server);
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> loadStorage());
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> this.timerProvider.write());
     }
 
     public void loadConfig() {
@@ -55,22 +49,9 @@ public class ExtraQuests implements ModInitializer {
         }
     }
 
-    public void loadStorage() {
-        try {
-            if (this.timerProvider == null) {
-                this.timerProvider = new TimerProvider("/%directory%/storage/ExtraQuests/", this.server);
-            }
-
-            this.timerProvider.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load storage.", e);
-        }
-    }
-
     private void registerQuests() {
         KeyValueTask.TYPE = TaskTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
         KeyValueReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
-        TimerReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
     }
 
     public static ExtraQuests getInstance() {
@@ -87,10 +68,6 @@ public class ExtraQuests implements ModInitializer {
 
     public LocaleConfig getLocale() {
         return instance.locale;
-    }
-
-    public TimerProvider getTimerProvider() {
-        return instance.timerProvider;
     }
 
     public MinecraftServer getServer() {

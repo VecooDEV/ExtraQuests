@@ -20,34 +20,56 @@ public abstract class CommandRewardMixin {
     @Unique
     private boolean console;
 
-    @Inject(method = "writeData", at = @At("TAIL"))
+    @Inject(
+            method = "writeData",
+            at = @At("TAIL")
+    )
     public void writeData(CompoundTag nbt, CallbackInfo ci) {
         if (this.console) {
             nbt.putBoolean("console", true);
         }
     }
 
-    @Inject(method = "readData", at = @At("TAIL"))
+    @Inject(
+            method = "readData",
+            at = @At("TAIL")
+    )
     public void readData(CompoundTag nbt, CallbackInfo ci) {
         this.console = nbt.getBoolean("console");
     }
 
-    @Inject(method = "writeNetData", at = @At("TAIL"))
+    @Inject(
+            method = "writeNetData",
+            at = @At("TAIL")
+    )
     public void writeNetData(FriendlyByteBuf buffer, CallbackInfo ci) {
         buffer.writeBoolean(this.console);
     }
 
-    @Inject(method = "readNetData", at = @At("TAIL"))
+    @Inject(
+            method = "readNetData",
+            at = @At("TAIL")
+    )
     public void readNetData(FriendlyByteBuf buffer, CallbackInfo ci) {
         this.console = buffer.readBoolean();
     }
 
-    @Inject(method = "fillConfigGroup", at = @At("TAIL"))
+    @Inject(
+            method = "fillConfigGroup",
+            at = @At("TAIL")
+    )
     public void fillConfigGroup(ConfigGroup config, CallbackInfo ci) {
         config.addBool("console", this.console, v -> this.console = v, false).setNameKey("extraquests.reward.command.console");
     }
 
-    @Redirect(method = "claim", at = @At(value = "INVOKE", target = "Lnet/minecraft/commands/Commands;performPrefixedCommand(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"), remap = true)
+    @Redirect(
+            method = "claim",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/commands/Commands;performPrefixedCommand(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"
+            ),
+            remap = true
+    )
     public int claim(Commands instance, CommandSourceStack source, String command) {
         if (this.console) {
             ServerConfig config = ExtraQuests.getInstance().getConfig();

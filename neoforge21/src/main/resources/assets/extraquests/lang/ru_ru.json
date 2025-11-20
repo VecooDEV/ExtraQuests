@@ -10,13 +10,6 @@
   "extraquests.key_value.ignore": "Игнорировать?",
   "extraquests.key_value.ignore.tooltip": "Будет ли награда игнорировать прогресс заданий?",
 
-  "ftbquests.reward.extraquests.timer": "Таймер",
-  "extraquests.timer.title": "Сброс раз в %s секунд",
-  "extraquests.timer.questid": "ID квеста, который будет сброшен",
-  "extraquests.timer.questid.tooltip": "Оставьте поле пустым, чтобы сбросить текущий квест",
-  "extraquests.timer.time": "Время до сброса",
-  "extraquests.timer.time.tooltip": "Количество секунд до сброса квеста. Если задание командное, то сделайте награду командной",
-
   "extraquests.reward.command.console": "Консоль",
   "extraquests.reward.command.console.tooltip": "Запуск команды от консоли"
 }

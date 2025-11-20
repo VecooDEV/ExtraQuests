@@ -31,7 +31,7 @@ public class ServerConfig {
         }).join();
 
         if (!completed) {
-            ExtraQuests.getLogger().error("Failed init server config.");
+            ExtraQuests.getLogger().error("Error init config, generating new config.");
             write();
         }
     }

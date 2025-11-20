@@ -1,6 +1,5 @@
 package com.vecoo.extraquests.command;
 
-import com.google.common.collect.Sets;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -8,6 +7,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.permission.UtilPermission;
 import com.vecoo.extralib.player.UtilPlayer;
+import com.vecoo.extralib.server.UtilCommand;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
@@ -16,6 +16,7 @@ import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import org.apache.commons.compress.utils.Sets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -27,22 +28,10 @@ public class ExtraQuestsCommand {
                 .then(Commands.literal("key_value")
                         .then(Commands.literal("add")
                                 .then(Commands.argument("player", StringArgumentType.string())
-                                        .suggests((s, builder) -> {
-                                            for (String playerName : s.getSource().getOnlinePlayerNames()) {
-                                                if (playerName.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) {
-                                                    builder.suggest(playerName);
-                                                }
-                                            }
-                                            return builder.buildFuture();
-                                        })
+                                        .suggests(UtilCommand.suggestOnlinePlayers())
                                         .then(Commands.argument("key", StringArgumentType.string())
                                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                        .suggests((s, builder) -> {
-                                                            for (int amount : Sets.newHashSet(10, 50, 100)) {
-                                                                builder.suggest(amount);
-                                                            }
-                                                            return builder.buildFuture();
-                                                        })
+                                                        .suggests(UtilCommand.suggestAmount(Sets.newHashSet(10, 50, 100)))
                                                         .then(Commands.argument("ignore", BoolArgumentType.bool())
                                                                 .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"),
                                                                         StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"), BoolArgumentType.getBool(e, "ignore")))))))))
@@ -77,6 +66,7 @@ public class ExtraQuestsCommand {
 
     private static int executeReload(@NotNull CommandSourceStack source) {
         ExtraQuests.getInstance().loadConfig();
+        ExtraQuests.getInstance().loadStorage();
 
         source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getReload()));
         return 1;

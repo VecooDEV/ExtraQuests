@@ -9,13 +9,6 @@
   "extraquests.key_value.ignore": "Ignore?",
   "extraquests.key_value.ignore.tooltip": "Will rewards ignore quest progress?",
 
-  "ftbquests.reward.extraquests.timer": "Timer",
-  "extraquests.timer.title": "Reset every %s second",
-  "extraquests.timer.questid": "The quest ID to reset",
-  "extraquests.timer.questid.tooltip": "Leave blank to reset the current quest",
-  "extraquests.timer.time": "Time to quest reset",
-  "extraquests.timer.time.tooltip": "Number of second until the quest resets. If the task is team-based, then make the reward team-based.",
-
   "extraquests.reward.command.console": "Console",
   "extraquests.reward.command.console.tooltip": "Execute a command from the console"
 }

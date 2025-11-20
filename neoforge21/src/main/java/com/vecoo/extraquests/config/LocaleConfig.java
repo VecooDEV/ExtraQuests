@@ -5,7 +5,6 @@ import com.vecoo.extraquests.ExtraQuests;
 
 public class LocaleConfig {
     private String reload = "&e(!) Configs have been reloaded.";
-
     private String addKeyValue = "&e(!) You have added a key %key% value %value% to the player %player%.";
 
     private String playerNotFound = "&c(!) Player %player% not found.";
@@ -36,7 +35,7 @@ public class LocaleConfig {
         }).join();
 
         if (!completed) {
-            ExtraQuests.getLogger().error("Failed init locale config.");
+            ExtraQuests.getLogger().error("Error init locale config, generating new locale config.");
             write();
         }
     }

@@ -1,6 +1,4 @@
-* Unsupported 1.16.5.
-* Update depends.
-* Added SDMShop 1.20.1 integration.
-* Update logger.
-* Added annotations.
-* Return option "Ignore?" key-value reward.
+* Update gradle depends.
+* Update mod depends.
+* Remove timer reward (1.21.1). This feature has been implemented in the main mod.
+* Improve logger.
