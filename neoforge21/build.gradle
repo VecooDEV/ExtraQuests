@@ -1,5 +1,5 @@
 plugins {
-    id 'net.neoforged.gradle.userdev' version '7.1.4'
+    id 'net.neoforged.moddev' version '2.0.119'
     id "com.modrinth.minotaur" version "2.8.10"
 }
 
@@ -7,9 +7,11 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 version = "${project_version}-1.21.1-NeoForge"
 
-dependencies {
-    implementation "net.neoforged:neoforge:${neoforge_21}"
+neoForge {
+    version = "${neoforge_21}"
+}
 
+dependencies {
     compileOnly "curse.maven:ftb-quests-forge-289412:${ftbquests_neoforge_21}"
     compileOnly "curse.maven:ftb-library-forge-404465:${ftblibrary_neoforge_21}"
     compileOnly "curse.maven:ftb-teams-forge-404468:${ftbteams_neoforge_21}"
