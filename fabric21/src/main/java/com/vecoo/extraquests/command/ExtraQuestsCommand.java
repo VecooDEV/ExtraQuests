@@ -1,5 +1,6 @@
 package com.vecoo.extraquests.command;
 
+import com.google.common.collect.Sets;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -16,7 +17,6 @@ import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import org.apache.commons.compress.utils.Sets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
