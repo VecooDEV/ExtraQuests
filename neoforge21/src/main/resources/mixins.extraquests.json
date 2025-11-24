@@ -1,7 +1,6 @@
 {
   "required": true,
   "package": "com.vecoo.extraquests.mixin",
-  "refmap": "mixins.extraquests.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "CommandRewardMixin"
