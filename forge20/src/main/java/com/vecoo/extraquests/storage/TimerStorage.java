@@ -17,16 +17,16 @@ public class TimerStorage {
     }
 
     @NotNull
-    public UUID getPlayerUUID() {
+    public UUID playerUUID() {
         return this.playerUUID;
     }
 
     @NotNull
-    public String getQuestID() {
+    public String questID() {
         return this.questID;
     }
 
-    public long getEndTime() {
+    public long endTime() {
         return this.endTime;
     }
 

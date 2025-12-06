@@ -1,6 +1,4 @@
-![](https://i.ibb.co/F4gZSMQ2/Extra-Quests.png)   
-[![](https://i.imgur.com/B4evs2K.png)](https://discord.gg/VSGEVagRPq) [![](https://i.imgur.com/uquQMuU.png)](https://github.com/VecooDEV/ExtraQuests/wiki) [![](https://i.imgur.com/eaHjYUQ.png)](https://www.patreon.com/Vecoo) [![](https://i.imgur.com/yPBPV5c.png)](https://ko-fi.com/vecoo)
-
+![](https://i.ibb.co/F4gZSMQ2/Extra-Quests.png)
 ![](https://i.imgur.com/Hy28Vmo.png)
 * Task a key-value for convenient control of the player’s development progress.
 * Reward with a key-value for task of the same type.
@@ -17,6 +15,3 @@
 ![](https://i.imgur.com/Ig5sHbd.png)   
 [<img height="150" src="https://i.imgur.com/aSqsHxj.png" width="150"/>](https://www.curseforge.com/minecraft/mc-mods/ftb-quests-forge)
 [<img height="150" src="https://i.imgur.com/suGlOwq.png" width="150"/>](https://www.curseforge.com/minecraft/mc-mods/extralib)
-
-![](https://i.imgur.com/kSvxvGt.png)   
-[![](https://i.imgur.com/x3JMFRv.png)](https://www.curseforge.com/minecraft/mc-mods/extraquests) [![](https://i.imgur.com/Q6tm4Fv.png)](https://modrinth.com/mod/extraquests)

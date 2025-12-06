@@ -32,7 +32,7 @@ public class ExtraQuests {
     private static ExtraQuests instance;
 
     private ServerConfig config;
-    private LocaleConfig locale;
+    private LocaleConfig localeConfig;
 
     private TimerProvider timerProvider;
 
@@ -76,8 +76,8 @@ public class ExtraQuests {
         try {
             this.config = new ServerConfig();
             this.config.init();
-            this.locale = new LocaleConfig();
-            this.locale.init();
+            this.localeConfig = new LocaleConfig();
+            this.localeConfig.init();
         } catch (Exception e) {
             LOGGER.error("Error load config.", e);
         }
@@ -101,27 +101,27 @@ public class ExtraQuests {
         TimerReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
     }
 
-    public static ExtraQuests getInstance() {
+    public static ExtraQuests instance() {
         return instance;
     }
 
-    public static Logger getLogger() {
+    public static Logger logger() {
         return LOGGER;
     }
 
-    public ServerConfig getConfig() {
+    public ServerConfig config() {
         return instance.config;
     }
 
-    public LocaleConfig getLocale() {
-        return instance.locale;
+    public LocaleConfig localeConfig() {
+        return instance.localeConfig;
     }
 
-    public TimerProvider getTimerProvider() {
+    public TimerProvider timerProvider() {
         return instance.timerProvider;
     }
 
-    public MinecraftServer getServer() {
+    public MinecraftServer server() {
         return instance.server;
     }
 }

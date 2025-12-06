@@ -63,11 +63,11 @@ public class KeyValueTask extends Task {
         this.value = buffer.readVarLong();
     }
 
-    public String getKey() {
+    public String key() {
         return this.key;
     }
 
-    public long getValue() {
+    public long value() {
         return this.value;
     }
 

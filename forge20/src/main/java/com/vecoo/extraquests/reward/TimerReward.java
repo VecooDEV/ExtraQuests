@@ -58,11 +58,11 @@ public class TimerReward extends Reward {
         this.time = buffer.readVarInt();
     }
 
-    public String getQuestID() {
+    public String questID() {
         return this.questID;
     }
 
-    public int getTime() {
+    public int time() {
         return this.time;
     }
 

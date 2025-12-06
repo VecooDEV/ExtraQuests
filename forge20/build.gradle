@@ -26,8 +26,8 @@ dependencies {
 }
 
 mixin {
-    add sourceSets.main, 'mixins.extraquests.refmap.json'
-    config 'mixins.extraquests.json'
+    add sourceSets.main, 'extraquests.mixins.refmap.json'
+    config 'extraquests.mixins.json'
 }
 
 processResources {

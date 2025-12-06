@@ -61,10 +61,10 @@ public abstract class SDMShopMixin {
     )
     public int onBuy(Commands instance, CommandSourceStack source, String command) {
         if (this.console) {
-            ServerConfig config = ExtraQuests.getInstance().getConfig();
+            ServerConfig config = ExtraQuests.instance().config();
 
             if (config.isBlacklistConsole()) {
-                for (String blacklistCommand : config.getBlacklistConsoleList()) {
+                for (String blacklistCommand : config.blacklistConsoleList()) {
                     if (command.contains(blacklistCommand)) {
                         return 0;
                     }

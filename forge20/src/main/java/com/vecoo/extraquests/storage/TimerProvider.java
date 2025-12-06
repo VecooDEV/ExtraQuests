@@ -19,19 +19,19 @@ public class TimerProvider {
     private transient volatile boolean dirty = false;
 
     public TimerProvider(@NotNull String filePath, @NotNull MinecraftServer server) {
-        this.filePath = UtilWorld.worldDirectory(filePath, server);
+        this.filePath = UtilWorld.resolveWorldDirectory(filePath, server);
 
         this.timers = new HashSet<>();
     }
 
     @NotNull
-    public Set<TimerStorage> getStorage() {
+    public Set<TimerStorage> storage() {
         return this.timers;
     }
 
-    public boolean addTimer(@NotNull TimerStorage timer) {
-        if (!this.timers.add(timer)) {
-            ExtraQuests.getLogger().error("Failed to add timer " + timer.getQuestID());
+    public boolean addTimer(@NotNull TimerStorage timerStorage) {
+        if (!this.timers.add(timerStorage)) {
+            ExtraQuests.logger().error("Failed to add timer {}.", timerStorage.questID());
             return false;
         }
 
@@ -39,9 +39,9 @@ public class TimerProvider {
         return true;
     }
 
-    public boolean removeTimer(@NotNull TimerStorage timer) {
-        if (!this.timers.remove(timer)) {
-            ExtraQuests.getLogger().error("Failed to remove timer " + timer.getQuestID());
+    public boolean removeTimer(@NotNull TimerStorage timerStorage) {
+        if (!this.timers.remove(timerStorage)) {
+            ExtraQuests.logger().error("Failed to remove timer {}.", timerStorage.questID());
             return false;
         }
 
@@ -50,7 +50,7 @@ public class TimerProvider {
     }
 
     public void write() {
-        UtilGson.writeFileAsync(this.filePath, "TimerStorage.json", UtilGson.newGson().toJson(this)).join();
+        UtilGson.writeFileAsync(this.filePath, "TimerStorage.json", UtilGson.gson().toJson(this)).join();
     }
 
     private void writeInterval() {
@@ -60,9 +60,9 @@ public class TimerProvider {
                     .interval(30 * 20L)
                     .infinite()
                     .consume(task -> {
-                        if (ExtraQuests.getInstance().getServer().isRunning() && this.dirty) {
+                        if (ExtraQuests.instance().server().isRunning() && this.dirty) {
                             UtilGson.writeFileAsync(this.filePath, "TimerStorage.json",
-                                    UtilGson.newGson().toJson(this)).thenRun(() -> this.dirty = false);
+                                    UtilGson.gson().toJson(this)).thenRun(() -> this.dirty = false);
                         }
                     })
                     .build();
@@ -75,13 +75,13 @@ public class TimerProvider {
         this.timers.clear();
 
         UtilGson.readFileAsync(this.filePath, "TimerStorage.json", el -> {
-            TimerProvider provider = UtilGson.newGson().fromJson(el, TimerProvider.class);
+            TimerProvider provider = UtilGson.gson().fromJson(el, TimerProvider.class);
             long time = System.currentTimeMillis();
 
-            for (TimerStorage timer : provider.getStorage()) {
-                if (timer.getEndTime() > time) {
+            for (TimerStorage timer : provider.storage()) {
+                if (timer.endTime() > time) {
                     this.timers.add(timer);
-                    Utils.startTimer(timer);
+                    Utils.startQuestTimer(timer);
                 } else {
                     Utils.questReset(timer);
                 }

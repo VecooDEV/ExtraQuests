@@ -11,23 +11,23 @@ import java.util.UUID;
 public class ExtraQuestsFactory {
     public static class TimerProvider {
         @NotNull
-        public static Set<TimerStorage> getStorage() {
-            return ExtraQuests.getInstance().getTimerProvider().getStorage();
+        public static Set<TimerStorage> storage() {
+            return ExtraQuests.instance().timerProvider().storage();
         }
 
         public static boolean addTimerQuests(@NotNull UUID playerUUID, @NotNull String questID, int seconds) {
             TimerStorage timer = new TimerStorage(playerUUID, questID, seconds);
 
-            if (!ExtraQuests.getInstance().getTimerProvider().addTimer(timer)) {
+            if (!ExtraQuests.instance().timerProvider().addTimer(timer)) {
                 return false;
             }
 
-            Utils.startTimer(timer);
+            Utils.startQuestTimer(timer);
             return true;
         }
 
-        public static boolean removeTimerQuests(@NotNull TimerStorage timer) {
-            return ExtraQuests.getInstance().getTimerProvider().removeTimer(timer);
+        public static boolean removeTimerQuests(@NotNull TimerStorage timerStorage) {
+            return ExtraQuests.instance().timerProvider().removeTimer(timerStorage);
         }
     }
 }

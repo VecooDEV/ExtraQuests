@@ -35,16 +35,17 @@ public class ExtraQuestsCommand {
                                                         .then(Commands.argument("ignore", BoolArgumentType.bool())
                                                                 .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"),
                                                                         StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"), BoolArgumentType.getBool(e, "ignore")))))))))
+
                 .then(Commands.literal("reload")
                         .executes(e -> executeReload(e.getSource()))));
     }
 
     private static int executeKeyValueAdd(@NotNull CommandSourceStack source, @NotNull String target,
                                           @NotNull String key, int amount, boolean ignore) {
-        UUID targetUUID = UtilPlayer.getUUID(target);
+        UUID targetUUID = UtilPlayer.findUUID(target);
 
         if (targetUUID == null) {
-            source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getPlayerNotFound()
+            source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.instance().localeConfig().playerNotFound()
                     .replace("%player%", target)));
             return 0;
         }
@@ -57,7 +58,7 @@ public class ExtraQuestsCommand {
             task.progress(teamData, key, amount, ignore);
         }
 
-        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getAddKeyValue()
+        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.instance().localeConfig().addKeyValue()
                 .replace("%player%", target)
                 .replace("%key%", key)
                 .replace("%value%", String.valueOf(amount))));
@@ -65,10 +66,10 @@ public class ExtraQuestsCommand {
     }
 
     private static int executeReload(@NotNull CommandSourceStack source) {
-        ExtraQuests.getInstance().loadConfig();
-        ExtraQuests.getInstance().loadStorage();
+        ExtraQuests.instance().loadConfig();
+        ExtraQuests.instance().loadStorage();
 
-        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getReload()));
+        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.instance().localeConfig().reload()));
         return 1;
     }
 }

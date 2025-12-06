@@ -12,33 +12,33 @@ import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
 import org.jetbrains.annotations.NotNull;
 
 public class Utils {
-    public static boolean questReset(@NotNull TimerStorage timer) {
+    public static boolean questReset(@NotNull TimerStorage timerStorage) {
         ServerQuestFile file = ServerQuestFile.INSTANCE;
-        Quest quest = file.getQuest(file.getID(timer.getQuestID()));
+        Quest quest = file.getQuest(file.getID(timerStorage.questID()));
 
         if (quest == null) {
-            ExtraQuests.getLogger().error("No quest found for " + timer.getQuestID());
-            ExtraQuestsFactory.TimerProvider.removeTimerQuests(timer);
+            ExtraQuests.logger().error("No quest found for {}.", timerStorage.questID());
+            ExtraQuestsFactory.TimerProvider.removeTimerQuests(timerStorage);
             return false;
         }
 
-        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(timer.getPlayerUUID())
-                .map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(timer.getPlayerUUID()));
+        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(timerStorage.playerUUID())
+                .map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(timerStorage.playerUUID()));
 
-        quest.forceProgress(teamData, new ProgressChange(file, quest, timer.getPlayerUUID()).setReset(true));
+        quest.forceProgress(teamData, new ProgressChange(file, quest, timerStorage.playerUUID()).setReset(true));
         return true;
     }
 
-    public static void startTimer(@NotNull TimerStorage timer) {
+    public static void startQuestTimer(@NotNull TimerStorage timerStorage) {
         TaskTimer.builder()
-                .delay((timer.getEndTime() - System.currentTimeMillis()) / 50L)
+                .delay((timerStorage.endTime() - System.currentTimeMillis()) / 50L)
                 .consume(task -> {
-                    if (!Utils.questReset(timer)) {
+                    if (!Utils.questReset(timerStorage)) {
                         task.cancel();
                         return;
                     }
 
-                    ExtraQuestsFactory.TimerProvider.removeTimerQuests(timer);
+                    ExtraQuestsFactory.TimerProvider.removeTimerQuests(timerStorage);
                 }).build();
     }
 }
