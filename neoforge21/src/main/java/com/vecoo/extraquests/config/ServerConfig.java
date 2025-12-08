@@ -7,15 +7,8 @@ import com.vecoo.extraquests.ExtraQuests;
 import java.util.Set;
 
 public class ServerConfig {
-    private static final int CURRENT_CONFIG_VERSION = 1;
-
-    private int configVersion = 1;
     private boolean blacklistConsole = false;
     private Set<String> blacklistConsoleList = Sets.newHashSet("op", "gamemode");
-
-    public int configVersion() {
-        return configVersion;
-    }
 
     public boolean isBlacklistConsole() {
         return this.blacklistConsole;
@@ -33,7 +26,6 @@ public class ServerConfig {
         boolean completed = UtilGson.readFileAsync("/config/ExtraQuests/", "config.json", el -> {
             ServerConfig config = UtilGson.gson().fromJson(el, ServerConfig.class);
 
-            this.configVersion = config.configVersion();
             this.blacklistConsole = config.isBlacklistConsole();
             this.blacklistConsoleList = config.blacklistConsoleList();
         }).join();

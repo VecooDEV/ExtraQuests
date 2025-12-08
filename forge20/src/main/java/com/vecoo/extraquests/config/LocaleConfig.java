@@ -4,17 +4,10 @@ import com.vecoo.extralib.gson.UtilGson;
 import com.vecoo.extraquests.ExtraQuests;
 
 public class LocaleConfig {
-    private static final int CURRENT_CONFIG_VERSION = 1;
-
-    private int configVersion = 1;
     private String reload = "&e(!) Configs have been reloaded.";
     private String addKeyValue = "&e(!) You have added a key %key% value %value% to the player %player%.";
 
     private String playerNotFound = "&c(!) Player %player% not found.";
-
-    public int configVersion() {
-        return configVersion;
-    }
 
     public String reload() {
         return this.reload;
@@ -36,7 +29,6 @@ public class LocaleConfig {
         boolean completed = UtilGson.readFileAsync("/config/ExtraQuests/", "locale.json", el -> {
             LocaleConfig config = UtilGson.gson().fromJson(el, LocaleConfig.class);
 
-            this.configVersion = config.configVersion();
             this.reload = config.reload();
             this.addKeyValue = config.addKeyValue();
             this.playerNotFound = config.playerNotFound();
