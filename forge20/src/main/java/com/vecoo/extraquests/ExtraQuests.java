@@ -6,7 +6,7 @@ import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.storage.TimerProvider;
+import com.vecoo.extraquests.storage.QuestTimerProvider;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftblibrary.icon.Icon;
@@ -34,7 +34,7 @@ public class ExtraQuests {
     private ServerConfig config;
     private LocaleConfig localeConfig;
 
-    private TimerProvider timerProvider;
+    private QuestTimerProvider questTimerProvider;
 
     private MinecraftServer server;
 
@@ -69,7 +69,7 @@ public class ExtraQuests {
 
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
-        this.timerProvider.write();
+        this.questTimerProvider.write();
     }
 
     public void loadConfig() {
@@ -85,11 +85,11 @@ public class ExtraQuests {
 
     public void loadStorage() {
         try {
-            if (this.timerProvider == null) {
-                this.timerProvider = new TimerProvider("/%directory%/storage/ExtraQuests/", this.server);
+            if (this.questTimerProvider == null) {
+                this.questTimerProvider = new QuestTimerProvider("/%directory%/storage/ExtraQuests/", this.server);
             }
 
-            this.timerProvider.init();
+            this.questTimerProvider.init();
         } catch (Exception e) {
             LOGGER.error("Error load storage.", e);
         }
@@ -117,8 +117,8 @@ public class ExtraQuests {
         return instance.localeConfig;
     }
 
-    public TimerProvider timerProvider() {
-        return instance.timerProvider;
+    public QuestTimerProvider questTimerProvider() {
+        return instance.questTimerProvider;
     }
 
     public MinecraftServer server() {

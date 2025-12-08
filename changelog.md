@@ -1,1 +1,1 @@
-* Remove versioned config.
+* Update name methods 1.20.1 forge.

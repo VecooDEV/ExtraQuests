@@ -5,12 +5,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.UUID;
 
-public class TimerStorage {
+public class QuestTimer {
     private final UUID playerUUID;
     private final String questID;
     private final long endTime;
 
-    public TimerStorage(@NotNull UUID playerUUID, @NotNull String questID, int secondsTimer) {
+    public QuestTimer(@NotNull UUID playerUUID, @NotNull String questID, int secondsTimer) {
         this.playerUUID = playerUUID;
         this.questID = questID;
         this.endTime = System.currentTimeMillis() + (secondsTimer * 1000L);
@@ -40,7 +40,7 @@ public class TimerStorage {
             return false;
         }
 
-        TimerStorage timerStorage = (TimerStorage) object;
+        QuestTimer timerStorage = (QuestTimer) object;
 
         return Objects.equals(this.playerUUID, timerStorage.playerUUID) && Objects.equals(this.questID, timerStorage.questID);
     }
