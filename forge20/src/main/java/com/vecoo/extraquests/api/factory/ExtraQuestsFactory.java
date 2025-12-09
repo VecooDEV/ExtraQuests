@@ -11,14 +11,14 @@ import java.util.UUID;
 public class ExtraQuestsFactory {
     public static class QuestTimerProvider {
         @NotNull
-        public static Set<QuestTimer> storage() {
-            return ExtraQuests.instance().questTimerProvider().storage();
+        public static Set<QuestTimer> getQuestTimers() {
+            return ExtraQuests.getInstance().getQuestTimerProvider().getQuestTimers();
         }
 
-        public static boolean add(@NotNull UUID playerUUID, @NotNull String questID, int seconds) {
+        public static boolean addQuestTimer(@NotNull UUID playerUUID, @NotNull String questID, int seconds) {
             QuestTimer timer = new QuestTimer(playerUUID, questID, seconds);
 
-            if (!ExtraQuests.instance().questTimerProvider().add(timer)) {
+            if (!ExtraQuests.getInstance().getQuestTimerProvider().addQuestTimer(timer)) {
                 return false;
             }
 
@@ -26,8 +26,8 @@ public class ExtraQuestsFactory {
             return true;
         }
 
-        public static boolean remove(@NotNull QuestTimer questTimer) {
-            return ExtraQuests.instance().questTimerProvider().remove(questTimer);
+        public static boolean removeQuestTimer(@NotNull QuestTimer questTimer) {
+            return ExtraQuests.getInstance().getQuestTimerProvider().removeQuestTimer(questTimer);
         }
     }
 }

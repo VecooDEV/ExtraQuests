@@ -69,7 +69,7 @@ public class ExtraQuests {
 
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
-        this.questTimerProvider.write();
+        this.questTimerProvider.save();
     }
 
     public void loadConfig() {
@@ -101,27 +101,27 @@ public class ExtraQuests {
         TimerReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
     }
 
-    public static ExtraQuests instance() {
+    public static ExtraQuests getInstance() {
         return instance;
     }
 
-    public static Logger logger() {
+    public static Logger getLogger() {
         return LOGGER;
     }
 
-    public ServerConfig config() {
+    public ServerConfig getConfig() {
         return instance.config;
     }
 
-    public LocaleConfig localeConfig() {
+    public LocaleConfig getLocaleConfig() {
         return instance.localeConfig;
     }
 
-    public QuestTimerProvider questTimerProvider() {
+    public QuestTimerProvider getQuestTimerProvider() {
         return instance.questTimerProvider;
     }
 
-    public MinecraftServer server() {
+    public MinecraftServer getServer() {
         return instance.server;
     }
 }

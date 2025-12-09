@@ -25,13 +25,13 @@ public class QuestTimerProvider {
     }
 
     @NotNull
-    public Set<QuestTimer> storage() {
+    public Set<QuestTimer> getQuestTimers() {
         return this.questTimers;
     }
 
-    public boolean add(@NotNull QuestTimer questTimer) {
+    public boolean addQuestTimer(@NotNull QuestTimer questTimer) {
         if (!this.questTimers.add(questTimer)) {
-            ExtraQuests.logger().error("Failed to add timer {}.", questTimer.questID());
+            ExtraQuests.getLogger().error("Failed to add quest timer {}.", questTimer.questID());
             return false;
         }
 
@@ -39,9 +39,9 @@ public class QuestTimerProvider {
         return true;
     }
 
-    public boolean remove(@NotNull QuestTimer questTimer) {
+    public boolean removeQuestTimer(@NotNull QuestTimer questTimer) {
         if (!this.questTimers.remove(questTimer)) {
-            ExtraQuests.logger().error("Failed to remove timer {}.", questTimer.questID());
+            ExtraQuests.getLogger().error("Failed to remove quest timer {}.", questTimer.questID());
             return false;
         }
 
@@ -49,20 +49,20 @@ public class QuestTimerProvider {
         return true;
     }
 
-    public void write() {
-        UtilGson.writeFileAsync(this.filePath, "Timers.json", UtilGson.gson().toJson(this)).join();
+    public void save() {
+        UtilGson.writeFileAsync(this.filePath, "quest_timers.json", UtilGson.getGson().toJson(this)).join();
     }
 
-    private void writeInterval() {
+    private void saveInternal() {
         if (!this.intervalStarted) {
             TaskTimer.builder()
                     .withoutDelay()
                     .interval(30 * 20L)
                     .infinite()
                     .consume(task -> {
-                        if (ExtraQuests.instance().server().isRunning() && this.dirty) {
-                            UtilGson.writeFileAsync(this.filePath, "Timers.json",
-                                    UtilGson.gson().toJson(this)).thenRun(() -> this.dirty = false);
+                        if (ExtraQuests.getInstance().getServer().isRunning() && this.dirty) {
+                            UtilGson.writeFileAsync(this.filePath, "quest_timers.json",
+                                    UtilGson.getGson().toJson(this)).thenRun(() -> this.dirty = false);
                         }
                     })
                     .build();
@@ -74,11 +74,11 @@ public class QuestTimerProvider {
     public void init() {
         this.questTimers.clear();
 
-        UtilGson.readFileAsync(this.filePath, "Timers.json", el -> {
-            QuestTimerProvider provider = UtilGson.gson().fromJson(el, QuestTimerProvider.class);
+        UtilGson.readFileAsync(this.filePath, "quest_timers.json", el -> {
+            QuestTimerProvider provider = UtilGson.getGson().fromJson(el, QuestTimerProvider.class);
             long time = System.currentTimeMillis();
 
-            for (QuestTimer questTimer : provider.storage()) {
+            for (QuestTimer questTimer : provider.getQuestTimers()) {
                 if (questTimer.endTime() > time) {
                     this.questTimers.add(questTimer);
                     Utils.startQuestTimer(questTimer);
@@ -88,7 +88,7 @@ public class QuestTimerProvider {
             }
         }).join();
 
-        write();
-        writeInterval();
+        save();
+        saveInternal();
     }
 }

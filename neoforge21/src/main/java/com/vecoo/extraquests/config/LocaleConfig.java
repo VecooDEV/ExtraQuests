@@ -9,34 +9,34 @@ public class LocaleConfig {
 
     private String playerNotFound = "&c(!) Player %player% not found.";
 
-    public String reload() {
+    public String getReload() {
         return this.reload;
     }
 
-    public String addKeyValue() {
+    public String getAddKeyValue() {
         return this.addKeyValue;
     }
 
-    public String playerNotFound() {
+    public String getPlayerNotFound() {
         return this.playerNotFound;
     }
 
-    private void write() {
-        UtilGson.writeFileAsync("/config/ExtraQuests/", "locale.json", UtilGson.gson().toJson(this)).join();
+    private void save() {
+        UtilGson.writeFileAsync("/config/ExtraQuests/", "locale.json", UtilGson.getGson().toJson(this)).join();
     }
 
     public void init() {
         boolean completed = UtilGson.readFileAsync("/config/ExtraQuests/", "locale.json", el -> {
-            LocaleConfig config = UtilGson.gson().fromJson(el, LocaleConfig.class);
+            LocaleConfig config = UtilGson.getGson().fromJson(el, LocaleConfig.class);
 
-            this.reload = config.reload();
-            this.addKeyValue = config.addKeyValue();
-            this.playerNotFound = config.playerNotFound();
+            this.reload = config.getReload();
+            this.addKeyValue = config.getAddKeyValue();
+            this.playerNotFound = config.getPlayerNotFound();
         }).join();
 
         if (!completed) {
-            ExtraQuests.logger().error("Error init locale config, generating new locale config.");
-            write();
+            ExtraQuests.getLogger().error("Error init locale config, generating new locale config.");
+            save();
         }
     }
 }

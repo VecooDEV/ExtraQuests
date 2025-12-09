@@ -34,7 +34,7 @@ side = "BOTH"
 [[dependencies.extraquests]]
 modId = "extralib"
 mandatory = true
-versionRange = "[2.0,)"
+versionRange = "[2.0.1,)"
 ordering = "NONE"
 side = "BOTH"
 

@@ -65,11 +65,11 @@ public class KeyValueReward extends Reward {
         this.ignore = buffer.readBoolean();
     }
 
-    public String key() {
+    public String getKey() {
         return this.key;
     }
 
-    public long value() {
+    public long getValue() {
         return this.value;
     }
 

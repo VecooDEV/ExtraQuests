@@ -14,25 +14,25 @@ public class ServerConfig {
         return this.blacklistConsole;
     }
 
-    public Set<String> blacklistConsoleList() {
+    public Set<String> getBlacklistConsoleList() {
         return this.blacklistConsoleList;
     }
 
-    private void write() {
-        UtilGson.writeFileAsync("/config/ExtraQuests/", "config.json", UtilGson.gson().toJson(this)).join();
+    private void save() {
+        UtilGson.writeFileAsync("/config/ExtraQuests/", "config.json", UtilGson.getGson().toJson(this)).join();
     }
 
     public void init() {
         boolean completed = UtilGson.readFileAsync("/config/ExtraQuests/", "config.json", el -> {
-            ServerConfig config = UtilGson.gson().fromJson(el, ServerConfig.class);
+            ServerConfig config = UtilGson.getGson().fromJson(el, ServerConfig.class);
 
             this.blacklistConsole = config.isBlacklistConsole();
-            this.blacklistConsoleList = config.blacklistConsoleList();
+            this.blacklistConsoleList = config.getBlacklistConsoleList();
         }).join();
 
         if (!completed) {
-            ExtraQuests.logger().error("Error init config, generating new config.");
-            write();
+            ExtraQuests.getLogger().error("Error init config, generating new config.");
+            save();
         }
     }
 }

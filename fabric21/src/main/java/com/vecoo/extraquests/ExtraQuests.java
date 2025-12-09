@@ -54,23 +54,23 @@ public class ExtraQuests implements ModInitializer {
         KeyValueReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
     }
 
-    public static ExtraQuests instance() {
+    public static ExtraQuests getInstance() {
         return instance;
     }
 
-    public static Logger logger() {
+    public static Logger getLogger() {
         return LOGGER;
     }
 
-    public ServerConfig config() {
+    public ServerConfig getConfig() {
         return instance.config;
     }
 
-    public LocaleConfig localeConfig() {
+    public LocaleConfig getLocaleConfig() {
         return instance.localeConfig;
     }
 
-    public MinecraftServer server() {
+    public MinecraftServer getServer() {
         return instance.server;
     }
 }

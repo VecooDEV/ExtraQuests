@@ -58,11 +58,11 @@ public class TimerReward extends Reward {
         this.time = buffer.readVarInt();
     }
 
-    public String questID() {
+    public String getQuestID() {
         return this.questID;
     }
 
-    public int time() {
+    public int getTime() {
         return this.time;
     }
 
@@ -83,9 +83,9 @@ public class TimerReward extends Reward {
     @Override
     public void claim(ServerPlayer player, boolean notify) {
         if (this.questID.isEmpty()) {
-            ExtraQuestsFactory.QuestTimerProvider.add(player.getUUID(), quest.getCodeString(), this.time);
+            ExtraQuestsFactory.QuestTimerProvider.addQuestTimer(player.getUUID(), quest.getCodeString(), this.time);
         } else {
-            ExtraQuestsFactory.QuestTimerProvider.add(player.getUUID(), this.questID, this.time);
+            ExtraQuestsFactory.QuestTimerProvider.addQuestTimer(player.getUUID(), this.questID, this.time);
         }
     }
 }

@@ -12,33 +12,33 @@ import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
 import org.jetbrains.annotations.NotNull;
 
 public class Utils {
-    public static boolean questReset(@NotNull QuestTimer timerStorage) {
+    public static boolean questReset(@NotNull QuestTimer questTimer) {
         ServerQuestFile file = ServerQuestFile.INSTANCE;
-        Quest quest = file.getQuest(file.getID(timerStorage.questID()));
+        Quest quest = file.getQuest(file.getID(questTimer.questID()));
 
         if (quest == null) {
-            ExtraQuests.logger().error("No quest found for {}.", timerStorage.questID());
-            ExtraQuestsFactory.QuestTimerProvider.remove(timerStorage);
+            ExtraQuests.getLogger().error("No quest found for {}.", questTimer.questID());
+            ExtraQuestsFactory.QuestTimerProvider.removeQuestTimer(questTimer);
             return false;
         }
 
-        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(timerStorage.playerUUID())
-                .map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(timerStorage.playerUUID()));
+        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(questTimer.playerUUID())
+                .map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(questTimer.playerUUID()));
 
-        quest.forceProgress(teamData, new ProgressChange(file, quest, timerStorage.playerUUID()).setReset(true));
+        quest.forceProgress(teamData, new ProgressChange(file, quest, questTimer.playerUUID()).setReset(true));
         return true;
     }
 
-    public static void startQuestTimer(@NotNull QuestTimer timerStorage) {
+    public static void startQuestTimer(@NotNull QuestTimer questTimer) {
         TaskTimer.builder()
-                .delay((timerStorage.endTime() - System.currentTimeMillis()) / 50L)
+                .delay((questTimer.endTime() - System.currentTimeMillis()) / 50L)
                 .consume(task -> {
-                    if (!Utils.questReset(timerStorage)) {
+                    if (!Utils.questReset(questTimer)) {
                         task.cancel();
                         return;
                     }
 
-                    ExtraQuestsFactory.QuestTimerProvider.remove(timerStorage);
+                    ExtraQuestsFactory.QuestTimerProvider.removeQuestTimer(questTimer);
                 }).build();
     }
 }
