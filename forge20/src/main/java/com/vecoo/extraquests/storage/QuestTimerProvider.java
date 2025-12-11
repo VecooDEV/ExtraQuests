@@ -57,7 +57,7 @@ public class QuestTimerProvider {
         if (!this.intervalStarted) {
             TaskTimer.builder()
                     .withoutDelay()
-                    .interval(30 * 20L)
+                    .interval(75 * 20L)
                     .infinite()
                     .consume(task -> {
                         if (ExtraQuests.getInstance().getServer().isRunning() && this.dirty) {
@@ -75,10 +75,10 @@ public class QuestTimerProvider {
         this.questTimers.clear();
 
         UtilGson.readFileAsync(this.filePath, "quest_timers.json", el -> {
-            QuestTimerProvider provider = UtilGson.getGson().fromJson(el, QuestTimerProvider.class);
+            QuestTimerProvider questTimerProvider = UtilGson.getGson().fromJson(el, QuestTimerProvider.class);
             long time = System.currentTimeMillis();
 
-            for (QuestTimer questTimer : provider.getQuestTimers()) {
+            for (QuestTimer questTimer : questTimerProvider.getQuestTimers()) {
                 if (questTimer.endTime() > time) {
                     this.questTimers.add(questTimer);
                     Utils.startQuestTimer(questTimer);
