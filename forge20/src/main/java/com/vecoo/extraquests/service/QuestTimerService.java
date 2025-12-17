@@ -4,7 +4,7 @@ import com.vecoo.extralib.gson.UtilGson;
 import com.vecoo.extralib.task.TaskTimer;
 import com.vecoo.extralib.world.UtilWorld;
 import com.vecoo.extraquests.ExtraQuests;
-import com.vecoo.extraquests.api.factory.ExtraQuestsService;
+import com.vecoo.extraquests.api.service.ExtraQuestsService;
 import lombok.val;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;

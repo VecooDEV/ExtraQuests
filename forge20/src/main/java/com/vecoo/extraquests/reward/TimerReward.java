@@ -1,6 +1,6 @@
 package com.vecoo.extraquests.reward;
 
-import com.vecoo.extraquests.api.factory.ExtraQuestsService;
+import com.vecoo.extraquests.api.service.ExtraQuestsService;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;

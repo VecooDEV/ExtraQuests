@@ -1,4 +1,4 @@
-package com.vecoo.extraquests.api.factory;
+package com.vecoo.extraquests.api.service;
 
 import com.vecoo.extralib.task.TaskTimer;
 import com.vecoo.extraquests.ExtraQuests;
