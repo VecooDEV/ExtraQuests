@@ -5,6 +5,7 @@ import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbquests.quest.task.Task;
 import dev.ftb.mods.ftbquests.quest.task.TaskType;
+import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.HolderLookup;
@@ -13,6 +14,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
+@Getter
 public class KeyValueTask extends Task {
     public static TaskType TYPE;
 
@@ -61,14 +63,6 @@ public class KeyValueTask extends Task {
         super.readNetData(buffer);
         this.key = buffer.readUtf(Short.MAX_VALUE);
         this.value = buffer.readVarLong();
-    }
-
-    public String getKey() {
-        return this.key;
-    }
-
-    public long getValue() {
-        return this.value;
     }
 
     @Override

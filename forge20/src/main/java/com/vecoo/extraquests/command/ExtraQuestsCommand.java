@@ -13,13 +13,11 @@ import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
-import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
+import lombok.val;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 public class ExtraQuestsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -42,7 +40,7 @@ public class ExtraQuestsCommand {
 
     private static int executeKeyValueAdd(@NotNull CommandSourceStack source, @NotNull String target,
                                           @NotNull String key, int amount, boolean ignore) {
-        UUID targetUUID = UtilPlayer.findUUID(target);
+        val targetUUID = UtilPlayer.findUUID(target);
 
         if (targetUUID == null) {
             source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocaleConfig().getPlayerNotFound()
@@ -50,8 +48,8 @@ public class ExtraQuestsCommand {
             return 0;
         }
 
-        ServerQuestFile file = ServerQuestFile.INSTANCE;
-        TeamData teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(targetUUID).map(file::getOrCreateTeamData)
+        val file = ServerQuestFile.INSTANCE;
+        val teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(targetUUID).map(file::getOrCreateTeamData)
                 .orElse(file.getOrCreateTeamData(targetUUID));
 
         for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
@@ -66,10 +64,17 @@ public class ExtraQuestsCommand {
     }
 
     private static int executeReload(@NotNull CommandSourceStack source) {
-        ExtraQuests.getInstance().loadConfig();
-        ExtraQuests.getInstance().loadStorage();
+        val localeConfig = ExtraQuests.getInstance().getLocaleConfig();
 
-        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocaleConfig().getReload()));
+        try {
+            ExtraQuests.getInstance().loadConfig();
+        } catch (Exception e) {
+            source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getErrorReload()));
+            ExtraQuests.getLogger().error(e.getMessage());
+            return 0;
+        }
+
+        source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getReload()));
         return 1;
     }
 }

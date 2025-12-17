@@ -1,9 +1,9 @@
 package com.vecoo.extraquests.mixin;
 
 import com.vecoo.extraquests.ExtraQuests;
-import com.vecoo.extraquests.config.ServerConfig;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.reward.CommandReward;
+import lombok.val;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.nbt.CompoundTag;
@@ -72,10 +72,10 @@ public abstract class CommandRewardMixin {
     )
     public int claim(Commands instance, CommandSourceStack source, String command) {
         if (this.console) {
-            ServerConfig config = ExtraQuests.getInstance().getConfig();
+            val serverConfig = ExtraQuests.getInstance().getServerConfig();
 
-            if (config.isBlacklistConsole()) {
-                for (String blacklistCommand : config.getBlacklistConsoleList()) {
+            if (serverConfig.isBlacklistConsole()) {
+                for (String blacklistCommand : serverConfig.getBlacklistConsoleList()) {
                     if (command.contains(blacklistCommand)) {
                         return 0;
                     }

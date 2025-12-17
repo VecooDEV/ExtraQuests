@@ -5,6 +5,7 @@ import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbquests.quest.task.Task;
 import dev.ftb.mods.ftbquests.quest.task.TaskType;
+import lombok.Getter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -13,6 +14,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+@Getter
 public class KeyValueTask extends Task {
     public static TaskType TYPE;
 
@@ -61,14 +63,6 @@ public class KeyValueTask extends Task {
         super.readNetData(buffer);
         this.key = buffer.readUtf(Short.MAX_VALUE);
         this.value = buffer.readVarLong();
-    }
-
-    public String getKey() {
-        return this.key;
-    }
-
-    public long getValue() {
-        return this.value;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.vecoo.extraquests;
 
 import com.mojang.logging.LogUtils;
+import com.vecoo.extralib.config.YamlConfigFactory;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
@@ -9,6 +10,7 @@ import com.vecoo.extraquests.task.KeyValueTask;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
+import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -16,13 +18,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 
+import java.nio.file.Path;
+
 public class ExtraQuests implements ModInitializer {
     public static final String MOD_ID = "extraquests";
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    @Getter
     private static ExtraQuests instance;
 
-    private ServerConfig config;
+    private ServerConfig serverConfig;
     private LocaleConfig localeConfig;
 
     private MinecraftServer server;
@@ -39,14 +44,8 @@ public class ExtraQuests implements ModInitializer {
     }
 
     public void loadConfig() {
-        try {
-            this.config = new ServerConfig();
-            this.config.init();
-            this.localeConfig = new LocaleConfig();
-            this.localeConfig.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load config.", e);
-        }
+        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, Path.of("config/ExtraQuests/config.yml"));
+        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, Path.of("config/ExtraQuests/locale.yml"));
     }
 
     private void registerQuests() {
@@ -54,16 +53,12 @@ public class ExtraQuests implements ModInitializer {
         KeyValueReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
     }
 
-    public static ExtraQuests getInstance() {
-        return instance;
-    }
-
     public static Logger getLogger() {
         return LOGGER;
     }
 
-    public ServerConfig getConfig() {
-        return instance.config;
+    public ServerConfig getServerConfig() {
+        return instance.serverConfig;
     }
 
     public LocaleConfig getLocaleConfig() {

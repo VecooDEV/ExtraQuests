@@ -6,6 +6,7 @@ import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
 import dev.ftb.mods.ftbquests.quest.reward.RewardType;
+import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -14,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+@Getter
 public class KeyValueReward extends Reward {
     public static RewardType TYPE;
 
@@ -63,18 +65,6 @@ public class KeyValueReward extends Reward {
         this.key = buffer.readUtf(Short.MAX_VALUE);
         this.value = buffer.readVarLong();
         this.ignore = buffer.readBoolean();
-    }
-
-    public String getKey() {
-        return this.key;
-    }
-
-    public long getValue() {
-        return this.value;
-    }
-
-    public boolean isIgnore() {
-        return this.ignore;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.vecoo.extraquests.storage;
+package com.vecoo.extraquests.service;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,13 +16,11 @@ public record QuestTimer(@NotNull UUID playerUUID, @NotNull String questID, long
             return true;
         }
 
-        if (object == null || getClass() != object.getClass()) {
+        if (!(object instanceof QuestTimer timerStorage)) {
             return false;
         }
 
-        QuestTimer timerStorage = (QuestTimer) object;
-
-        return Objects.equals(this.playerUUID, timerStorage.playerUUID) && Objects.equals(this.questID, timerStorage.questID);
+        return this.playerUUID.equals(timerStorage.playerUUID) && this.questID.equals(timerStorage.questID);
     }
 
     @Override

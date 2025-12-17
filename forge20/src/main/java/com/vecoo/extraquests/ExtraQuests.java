@@ -1,17 +1,19 @@
 package com.vecoo.extraquests;
 
 import com.mojang.logging.LogUtils;
+import com.vecoo.extralib.config.YamlConfigFactory;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.storage.QuestTimerProvider;
+import com.vecoo.extraquests.service.QuestTimerService;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
+import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,17 +26,20 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.permission.events.PermissionGatherEvent;
 import org.slf4j.Logger;
 
+import java.nio.file.Path;
+
 @Mod(ExtraQuests.MOD_ID)
 public class ExtraQuests {
     public static final String MOD_ID = "extraquests";
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    @Getter
     private static ExtraQuests instance;
 
-    private ServerConfig config;
+    private ServerConfig serverConfig;
     private LocaleConfig localeConfig;
 
-    private QuestTimerProvider questTimerProvider;
+    private QuestTimerService questTimerService;
 
     private MinecraftServer server;
 
@@ -69,27 +74,18 @@ public class ExtraQuests {
 
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
-        this.questTimerProvider.save();
+        this.questTimerService.save();
     }
 
     public void loadConfig() {
-        try {
-            this.config = new ServerConfig();
-            this.config.init();
-            this.localeConfig = new LocaleConfig();
-            this.localeConfig.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load config.", e);
-        }
+        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, Path.of("config/ExtraQuests/config.yml"));
+        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, Path.of("config/ExtraQuests/locale.yml"));
     }
 
-    public void loadStorage() {
+    private void loadStorage() {
         try {
-            if (this.questTimerProvider == null) {
-                this.questTimerProvider = new QuestTimerProvider("/%directory%/storage/ExtraQuests/", this.server);
-            }
-
-            this.questTimerProvider.init();
+            this.questTimerService = new QuestTimerService("/%directory%/storage/ExtraQuests/", this.server);
+            this.questTimerService.init();
         } catch (Exception e) {
             LOGGER.error("Error load storage.", e);
         }
@@ -101,24 +97,20 @@ public class ExtraQuests {
         TimerReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
     }
 
-    public static ExtraQuests getInstance() {
-        return instance;
-    }
-
     public static Logger getLogger() {
         return LOGGER;
     }
 
-    public ServerConfig getConfig() {
-        return instance.config;
+    public ServerConfig getServerConfig() {
+        return instance.serverConfig;
     }
 
     public LocaleConfig getLocaleConfig() {
         return instance.localeConfig;
     }
 
-    public QuestTimerProvider getQuestTimerProvider() {
-        return instance.questTimerProvider;
+    public QuestTimerService getQuestTimerService() {
+        return instance.questTimerService;
     }
 
     public MinecraftServer getServer() {
