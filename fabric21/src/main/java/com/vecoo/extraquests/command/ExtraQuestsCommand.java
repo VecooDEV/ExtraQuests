@@ -40,10 +40,11 @@ public class ExtraQuestsCommand {
 
     private static int executeKeyValueAdd(@NotNull CommandSourceStack source, @NotNull String target,
                                           @NotNull String key, int amount, boolean ignore) {
+        val localeConfig = ExtraQuests.getInstance().getLocaleConfig();
         val targetUUID = UtilPlayer.findUUID(target);
 
         if (targetUUID == null) {
-            source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocaleConfig().getPlayerNotFound()
+            source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getPlayerNotFound()
                     .replace("%player%", target)));
             return 0;
         }
@@ -56,7 +57,7 @@ public class ExtraQuestsCommand {
             task.progress(teamData, key, amount, ignore);
         }
 
-        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocaleConfig().getAddKeyValue()
+        source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getAddKeyValue()
                 .replace("%player%", target)
                 .replace("%key%", key)
                 .replace("%value%", String.valueOf(amount))));

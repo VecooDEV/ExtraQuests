@@ -67,8 +67,10 @@ public class ExtraQuests {
     }
 
     private void registerQuests() {
-        KeyValueTask.TYPE = TaskTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
-        KeyValueReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"), KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
+        KeyValueTask.TYPE = TaskTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"),
+                KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
+        KeyValueReward.TYPE = RewardTypes.register(ResourceLocation.fromNamespaceAndPath(ExtraQuests.MOD_ID, "key_value"),
+                KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
     }
 
     public static Logger getLogger() {

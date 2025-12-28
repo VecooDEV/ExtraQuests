@@ -16,11 +16,11 @@ public record QuestTimer(@NotNull UUID playerUUID, @NotNull String questID, long
             return true;
         }
 
-        if (!(object instanceof QuestTimer timerStorage)) {
+        if (!(object instanceof QuestTimer questTimer)) {
             return false;
         }
 
-        return this.playerUUID.equals(timerStorage.playerUUID) && this.questID.equals(timerStorage.questID);
+        return this.playerUUID.equals(questTimer.playerUUID) && this.questID.equals(questTimer.questID);
     }
 
     @Override

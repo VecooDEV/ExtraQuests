@@ -5,6 +5,7 @@ import com.vecoo.extralib.task.TaskTimer;
 import com.vecoo.extralib.world.UtilWorld;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.api.service.ExtraQuestsService;
+import lombok.Getter;
 import lombok.val;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +13,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public class QuestTimerService {
+    @NotNull
     private transient final String filePath;
+    @NotNull
     private final Set<QuestTimer> questTimers;
 
     private transient volatile boolean dirty = false;
@@ -22,11 +26,6 @@ public class QuestTimerService {
         this.filePath = UtilWorld.resolveWorldDirectory(filePath, server);
 
         this.questTimers = new HashSet<>();
-    }
-
-    @NotNull
-    public Set<QuestTimer> getQuestTimers() {
-        return this.questTimers;
     }
 
     public boolean addQuestTimer(@NotNull QuestTimer questTimer) {
@@ -71,10 +70,10 @@ public class QuestTimerService {
         this.questTimers.clear();
 
         UtilGson.readFileAsync(this.filePath, "quest_timers.json", el -> {
-            val questTimerProvider = UtilGson.getGson().fromJson(el, QuestTimerService.class);
+            val questTimerService = UtilGson.getGson().fromJson(el, QuestTimerService.class);
             val time = System.currentTimeMillis();
 
-            for (QuestTimer questTimer : questTimerProvider.getQuestTimers()) {
+            for (QuestTimer questTimer : questTimerService.getQuestTimers()) {
                 if (questTimer.endTime() > time) {
                     this.questTimers.add(questTimer);
                     ExtraQuestsService.startQuestTimer(questTimer);

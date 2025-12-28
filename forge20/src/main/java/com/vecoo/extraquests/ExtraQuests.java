@@ -92,9 +92,12 @@ public class ExtraQuests {
     }
 
     private void registerQuests() {
-        KeyValueTask.TYPE = TaskTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "key_value"), KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
-        KeyValueReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "key_value"), KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
-        TimerReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
+        KeyValueTask.TYPE = TaskTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "key_value"),
+                KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
+        KeyValueReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "key_value"),
+                KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
+        TimerReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "timer"),
+                TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
     }
 
     public static Logger getLogger() {
