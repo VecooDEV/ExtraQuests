@@ -19,14 +19,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = CommandReward.class, remap = false)
 public abstract class CommandRewardMixin {
     @Unique
-    private boolean console;
+    private boolean extraQuests$console;
 
     @Inject(
             method = "writeData",
             at = @At("TAIL")
     )
     public void writeData(CompoundTag nbt, HolderLookup.Provider provider, CallbackInfo ci) {
-        if (this.console) {
+        if (this.extraQuests$console) {
             nbt.putBoolean("console", true);
         }
     }
@@ -36,7 +36,7 @@ public abstract class CommandRewardMixin {
             at = @At("TAIL")
     )
     public void readData(CompoundTag nbt, HolderLookup.Provider provider, CallbackInfo ci) {
-        this.console = nbt.getBoolean("console");
+        this.extraQuests$console = nbt.getBoolean("console");
     }
 
     @Inject(
@@ -44,7 +44,7 @@ public abstract class CommandRewardMixin {
             at = @At("TAIL")
     )
     public void writeNetData(RegistryFriendlyByteBuf buffer, CallbackInfo ci) {
-        buffer.writeBoolean(this.console);
+        buffer.writeBoolean(this.extraQuests$console);
     }
 
     @Inject(
@@ -52,7 +52,7 @@ public abstract class CommandRewardMixin {
             at = @At("TAIL")
     )
     public void readNetData(RegistryFriendlyByteBuf buffer, CallbackInfo ci) {
-        this.console = buffer.readBoolean();
+        this.extraQuests$console = buffer.readBoolean();
     }
 
     @Inject(
@@ -60,7 +60,7 @@ public abstract class CommandRewardMixin {
             at = @At("TAIL")
     )
     public void fillConfigGroup(ConfigGroup config, CallbackInfo ci) {
-        config.addBool("console", this.console, v -> this.console = v, false).setNameKey("extraquests.reward.command.console");
+        config.addBool("console", this.extraQuests$console, v -> this.extraQuests$console = v, false).setNameKey("extraquests.reward.command.console");
     }
 
     @Redirect(
@@ -72,7 +72,7 @@ public abstract class CommandRewardMixin {
             remap = true
     )
     public void claim(Commands instance, CommandSourceStack source, String command) {
-        if (this.console) {
+        if (this.extraQuests$console) {
             val serverConfig = ExtraQuests.getInstance().getServerConfig();
 
             if (serverConfig.isBlacklistConsole()) {

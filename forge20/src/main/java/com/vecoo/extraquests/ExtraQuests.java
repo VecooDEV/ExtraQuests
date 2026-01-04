@@ -26,8 +26,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.permission.events.PermissionGatherEvent;
 import org.slf4j.Logger;
 
-import java.nio.file.Path;
-
 @Mod(ExtraQuests.MOD_ID)
 public class ExtraQuests {
     public static final String MOD_ID = "extraquests";
@@ -78,8 +76,8 @@ public class ExtraQuests {
     }
 
     public void loadConfig() {
-        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, Path.of("config/ExtraQuests/config.yml"));
-        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, Path.of("config/ExtraQuests/locale.yml"));
+        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, "config/ExtraQuests/config.yml");
+        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, "config/ExtraQuests/locale.yml");
     }
 
     private void loadStorage() {

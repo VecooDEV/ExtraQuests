@@ -1,6 +1,6 @@
 subprojects {
-    apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'java'
 
     group = 'com.vecoo.extraquests'
     version = project_version
