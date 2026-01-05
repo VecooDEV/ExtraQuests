@@ -9,12 +9,14 @@ import com.feed_the_beast.ftbquests.quest.task.Task;
 import com.feed_the_beast.ftbquests.quest.task.TaskData;
 import com.feed_the_beast.ftbquests.quest.task.TaskType;
 import com.vecoo.extraquests.integration.QuestsIntegration;
+import lombok.Getter;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 
+@Getter
 public class KeyValueTask extends Task {
     private String key;
     private long value;
@@ -33,7 +35,7 @@ public class KeyValueTask extends Task {
 
     @Override
     @Nonnull
-    public TaskData createData(@Nonnull QuestData questData) {
+    public TaskData<KeyValueTask> createData(@Nonnull QuestData questData) {
         return new Data(this, questData);
     }
 
@@ -68,14 +70,6 @@ public class KeyValueTask extends Task {
         super.readNetData(buffer);
         this.key = buffer.readString();
         this.value = buffer.readVarLong();
-    }
-
-    public String getKey() {
-        return this.key;
-    }
-
-    public long getValue() {
-        return this.value;
     }
 
     @Override

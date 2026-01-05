@@ -1,15 +1,17 @@
 package com.vecoo.extraquests;
 
+import com.vecoo.extralib.config.YamlConfigFactory;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.storage.TimerProvider;
+import com.vecoo.extraquests.service.QuestTimerService;
 import com.vecoo.extraquests.task.KeyValueTask;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
+import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,12 +31,13 @@ public class ExtraQuests {
     public static final String MOD_ID = "extraquests";
     private static final Logger LOGGER = LogManager.getLogger();
 
+    @Getter
     private static ExtraQuests instance;
 
-    private ServerConfig config;
-    private LocaleConfig locale;
+    private ServerConfig serverConfig;
+    private LocaleConfig localeConfig;
 
-    private TimerProvider timerProvider;
+    private QuestTimerService questTimerService;
 
     private MinecraftServer server;
 
@@ -48,7 +51,7 @@ public class ExtraQuests {
     }
 
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
+    public void onFMLServerStarting(FMLServerStartingEvent event) {
         this.server = event.getServer();
 
         PermissionAPI.registerNode("minecraft.command.equests", DefaultPermissionLevel.OP, "");
@@ -60,33 +63,24 @@ public class ExtraQuests {
     }
 
     @SubscribeEvent
-    public void onServerStarted(FMLServerStartedEvent event) {
+    public void onFMLServerStarted(FMLServerStartedEvent event) {
         loadStorage();
     }
 
     @SubscribeEvent
     public void onServerStopping(FMLServerStoppingEvent event) {
-        this.timerProvider.write();
+        this.questTimerService.save();
     }
 
     public void loadConfig() {
-        try {
-            this.config = new ServerConfig();
-            this.config.init();
-            this.locale = new LocaleConfig();
-            this.locale.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load config.", e);
-        }
+        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, "config/ExtraQuests/config.yml");
+        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, "config/ExtraQuests/locale.yml");
     }
 
-    public void loadStorage() {
+    private void loadStorage() {
         try {
-            if (this.timerProvider == null) {
-                this.timerProvider = new TimerProvider("/%directory%/storage/ExtraQuests/", this.server);
-            }
-
-            this.timerProvider.init();
+            this.questTimerService = new QuestTimerService("/%directory%/storage/ExtraQuests/", this.server);
+            this.questTimerService.init();
         } catch (Exception e) {
             LOGGER.error("Error load storage.", e);
         }
@@ -98,24 +92,20 @@ public class ExtraQuests {
         TimerReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "timer"), TimerReward::new, () -> Icon.getIcon("minecraft:item/clock_07"));
     }
 
-    public static ExtraQuests getInstance() {
-        return instance;
-    }
-
     public static Logger getLogger() {
         return LOGGER;
     }
 
-    public ServerConfig getConfig() {
-        return instance.config;
+    public ServerConfig getServerConfig() {
+        return instance.serverConfig;
     }
 
-    public LocaleConfig getLocale() {
-        return instance.locale;
+    public LocaleConfig getLocaleConfig() {
+        return instance.localeConfig;
     }
 
-    public TimerProvider getTimerProvider() {
-        return instance.timerProvider;
+    public QuestTimerService getQuestTimerService() {
+        return instance.questTimerService;
     }
 
     public MinecraftServer getServer() {

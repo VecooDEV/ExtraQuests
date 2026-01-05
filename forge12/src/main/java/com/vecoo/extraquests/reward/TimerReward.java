@@ -6,8 +6,9 @@ import com.feed_the_beast.ftblib.lib.io.DataOut;
 import com.feed_the_beast.ftbquests.quest.Quest;
 import com.feed_the_beast.ftbquests.quest.reward.Reward;
 import com.feed_the_beast.ftbquests.quest.reward.RewardType;
-import com.vecoo.extraquests.api.factory.ExtraQuestsFactory;
+import com.vecoo.extraquests.api.service.ExtraQuestsService;
 import com.vecoo.extraquests.integration.QuestsIntegration;
+import lombok.Getter;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +16,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 
+@Getter
 public class TimerReward extends Reward {
     private String questID;
     private int time;
@@ -26,6 +28,7 @@ public class TimerReward extends Reward {
     }
 
     @Override
+    @Nonnull
     public RewardType getType() {
         return QuestsIntegration.TIMER_REWARD;
     }
@@ -58,14 +61,6 @@ public class TimerReward extends Reward {
         this.time = buffer.readVarInt();
     }
 
-    public String getQuestID() {
-        return this.questID;
-    }
-
-    public int getTime() {
-        return this.time;
-    }
-
     @Override
     @Nonnull
     public String getAltTitle() {
@@ -82,9 +77,9 @@ public class TimerReward extends Reward {
     @Override
     public void claim(@Nonnull EntityPlayerMP player, boolean notify) {
         if (this.questID.isEmpty()) {
-            ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUniqueID(), quest.getCodeString(), this.time);
+            ExtraQuestsService.addQuestTimer(player.getUniqueID(), quest.getCodeString(), this.time);
         } else {
-            ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUniqueID(), this.questID, this.time);
+            ExtraQuestsService.addQuestTimer(player.getUniqueID(), this.questID, this.time);
         }
     }
 }

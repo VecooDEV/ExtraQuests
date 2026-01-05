@@ -1,8 +1,8 @@
 [
   {
     "modid": "extraquests",
-    "name": "${project_name}",
-    "description": "Sidemod for FTB Quests. Adds new tasks and rewards.",
+    "name": "${project_name} [FTB Quests]",
+    "description": "Addon adds new tasks, rewards and functions.",
     "version": "${project_version}",
     "mcversion": "1.12.2",
     "authorList": ["Vecoo"],

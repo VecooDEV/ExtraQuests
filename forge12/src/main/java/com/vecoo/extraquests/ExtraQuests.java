@@ -1,9 +1,8 @@
 package com.vecoo.extraquests;
 
-import com.vecoo.extraquests.config.LocaleConfig;
-import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.integration.QuestsIntegration;
-import com.vecoo.extraquests.storage.TimerProvider;
+import com.vecoo.extraquests.service.QuestTimerService;
+import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -18,12 +17,10 @@ public class ExtraQuests {
     public static final String MOD_ID = "extraquests";
     private static Logger LOGGER;
 
+    @Getter
     private static ExtraQuests instance;
 
-    private ServerConfig config;
-    private LocaleConfig locale;
-
-    private TimerProvider timerProvider;
+    private QuestTimerService questTimerService;
 
     private MinecraftServer server;
 
@@ -36,61 +33,35 @@ public class ExtraQuests {
     }
 
     @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event) {
+    public void onFMLServerStarting(FMLServerStartingEvent event) {
         this.server = event.getServer();
     }
 
     @Mod.EventHandler
-    public void onServerStarted(FMLServerStartedEvent event) {
+    public void onFMLServerStarted(FMLServerStartedEvent event) {
         loadStorage();
     }
 
     @Mod.EventHandler
     public void onServerStopping(FMLServerStoppingEvent event) {
-        this.timerProvider.write();
+        this.questTimerService.save();
     }
 
-    public void loadConfig() {
+    private void loadStorage() {
         try {
-            this.config = new ServerConfig();
-            this.config.init();
-            this.locale = new LocaleConfig();
-            this.locale.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load config.", e);
-        }
-    }
-
-    public void loadStorage() {
-        try {
-            if (this.timerProvider == null) {
-                this.timerProvider = new TimerProvider("/%directory%/storage/ExtraQuests/", this.server);
-            }
-
-            this.timerProvider.init();
+            this.questTimerService = new QuestTimerService("/%directory%/storage/ExtraQuests/", this.server);
+            this.questTimerService.init();
         } catch (Exception e) {
             LOGGER.error("Error load storage.", e);
         }
-    }
-
-    public static ExtraQuests getInstance() {
-        return instance;
     }
 
     public static Logger getLogger() {
         return LOGGER;
     }
 
-    public ServerConfig getConfig() {
-        return instance.config;
-    }
-
-    public LocaleConfig getLocale() {
-        return instance.locale;
-    }
-
-    public TimerProvider getTimerProvider() {
-        return instance.timerProvider;
+    public QuestTimerService getQuestTimerService() {
+        return instance.questTimerService;
     }
 
     public MinecraftServer getServer() {

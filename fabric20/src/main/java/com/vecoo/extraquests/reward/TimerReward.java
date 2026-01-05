@@ -1,10 +1,11 @@
 package com.vecoo.extraquests.reward;
 
-import com.vecoo.extraquests.api.factory.ExtraQuestsFactory;
+import com.vecoo.extraquests.api.service.ExtraQuestsService;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.reward.Reward;
 import dev.ftb.mods.ftbquests.quest.reward.RewardType;
+import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 
+@Getter
 public class TimerReward extends Reward {
     public static RewardType TYPE;
 
@@ -58,14 +60,6 @@ public class TimerReward extends Reward {
         this.time = buffer.readVarInt();
     }
 
-    public String getQuestID() {
-        return this.questID;
-    }
-
-    public int getTime() {
-        return this.time;
-    }
-
     @Override
     @Environment(EnvType.CLIENT)
     public MutableComponent getAltTitle() {
@@ -83,9 +77,9 @@ public class TimerReward extends Reward {
     @Override
     public void claim(ServerPlayer player, boolean notify) {
         if (this.questID.isEmpty()) {
-            ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUUID(), quest.getCodeString(), this.time);
+            ExtraQuestsService.addQuestTimer(player.getUUID(), quest.getCodeString(), this.time);
         } else {
-            ExtraQuestsFactory.TimerProvider.addTimerQuests(player.getUUID(), this.questID, this.time);
+            ExtraQuestsService.addQuestTimer(player.getUUID(), this.questID, this.time);
         }
     }
 }

@@ -11,6 +11,7 @@ import com.feed_the_beast.ftbquests.quest.reward.RewardType;
 import com.feed_the_beast.ftbquests.quest.task.TaskData;
 import com.vecoo.extraquests.integration.QuestsIntegration;
 import com.vecoo.extraquests.task.KeyValueTask;
+import lombok.Getter;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +19,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
 
+@Getter
 public class KeyValueReward extends Reward {
     private String key;
     private long value;
@@ -66,18 +68,6 @@ public class KeyValueReward extends Reward {
         this.key = buffer.readString();
         this.value = buffer.readVarLong();
         this.ignore = buffer.readBoolean();
-    }
-
-    public String getKey() {
-        return this.key;
-    }
-
-    public long getValue() {
-        return this.value;
-    }
-
-    public boolean isIgnore() {
-        return this.ignore;
     }
 
     @Override

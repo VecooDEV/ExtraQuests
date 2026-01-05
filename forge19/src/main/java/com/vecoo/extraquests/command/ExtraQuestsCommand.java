@@ -8,16 +8,17 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.vecoo.extralib.chat.UtilChat;
 import com.vecoo.extralib.permission.UtilPermission;
 import com.vecoo.extralib.player.UtilPlayer;
+import com.vecoo.extralib.server.UtilCommand;
 import com.vecoo.extraquests.ExtraQuests;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import dev.ftb.mods.ftbteams.FTBTeamsAPI;
+import lombok.val;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
+import javax.annotation.Nonnull;
 
 public class ExtraQuestsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -26,35 +27,25 @@ public class ExtraQuestsCommand {
                 .then(Commands.literal("key_value")
                         .then(Commands.literal("add")
                                 .then(Commands.argument("player", StringArgumentType.string())
-                                        .suggests((s, builder) -> {
-                                            for (String playerName : s.getSource().getOnlinePlayerNames()) {
-                                                if (playerName.toLowerCase().startsWith(builder.getRemaining().toLowerCase())) {
-                                                    builder.suggest(playerName);
-                                                }
-                                            }
-                                            return builder.buildFuture();
-                                        })
+                                        .suggests(UtilCommand.suggestOnlinePlayers())
                                         .then(Commands.argument("key", StringArgumentType.string())
                                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                        .suggests((s, builder) -> {
-                                                            for (int amount : Sets.newHashSet(10, 50, 100)) {
-                                                                builder.suggest(amount);
-                                                            }
-                                                            return builder.buildFuture();
-                                                        })
+                                                        .suggests(UtilCommand.suggestAmount(Sets.newHashSet(10, 50, 100)))
                                                         .then(Commands.argument("ignore", BoolArgumentType.bool())
                                                                 .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"),
                                                                         StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"), BoolArgumentType.getBool(e, "ignore")))))))))
+
                 .then(Commands.literal("reload")
                         .executes(e -> executeReload(e.getSource()))));
     }
 
-    private static int executeKeyValueAdd(@NotNull CommandSourceStack source, @NotNull String target,
-                                          @NotNull String key, int amount, boolean ignore) {
-        UUID targetUUID = UtilPlayer.getUUID(target);
+    private static int executeKeyValueAdd(@Nonnull CommandSourceStack source, @Nonnull String target,
+                                          @Nonnull String key, int amount, boolean ignore) {
+        val localeConfig = ExtraQuests.getInstance().getLocaleConfig();
+        val targetUUID = UtilPlayer.findUUID(target);
 
         if (targetUUID == null) {
-            source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getPlayerNotFound()
+            source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getPlayerNotFound()
                     .replace("%player%", target)));
             return 0;
         }
@@ -63,17 +54,25 @@ public class ExtraQuestsCommand {
             task.progress(ServerQuestFile.INSTANCE.getData(FTBTeamsAPI.getPlayerTeamID(targetUUID)), key, amount, ignore);
         }
 
-        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getAddKeyValue()
+        source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getAddKeyValue()
                 .replace("%player%", target)
                 .replace("%key%", key)
                 .replace("%value%", String.valueOf(amount))));
         return 1;
     }
 
-    private static int executeReload(@NotNull CommandSourceStack source) {
-        ExtraQuests.getInstance().loadConfig();
+    private static int executeReload(@Nonnull CommandSourceStack source) {
+        val localeConfig = ExtraQuests.getInstance().getLocaleConfig();
 
-        source.sendSystemMessage(UtilChat.formatMessage(ExtraQuests.getInstance().getLocale().getReload()));
+        try {
+            ExtraQuests.getInstance().loadConfig();
+        } catch (Exception e) {
+            source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getErrorReload()));
+            ExtraQuests.getLogger().error(e.getMessage());
+            return 0;
+        }
+
+        source.sendSystemMessage(UtilChat.formatMessage(localeConfig.getReload()));
         return 1;
     }
 }
