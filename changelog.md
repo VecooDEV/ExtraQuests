@@ -1,2 +1,1 @@
-* Update depends.
-* Improve code.
+* @p is now replaced with the player's name when console mode is active while collecting command reward.
