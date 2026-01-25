@@ -82,6 +82,10 @@ public abstract class CommandRewardMixin {
                 }
             }
 
+            if (source.getPlayer() != null) {
+                command = command.replace("@p", source.getPlayer().getName().getString());
+            }
+
             instance.performPrefixedCommand(source.getServer().createCommandSourceStack(), command);
         } else {
             instance.performPrefixedCommand(source, command);
