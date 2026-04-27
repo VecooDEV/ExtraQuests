@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @ConfigSerializable
+@SuppressWarnings("FieldMayBeFinal")
 public class LocaleConfig {
     private String reload = "&e(!) Configs have been reloaded.";
     private String addKeyValue = "&e(!) You have added a key %key% value %value% to the player %player%.";

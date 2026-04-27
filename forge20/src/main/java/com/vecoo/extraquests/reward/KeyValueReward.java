@@ -36,35 +36,35 @@ public class KeyValueReward extends Reward {
     }
 
     @Override
-    public void writeData(CompoundTag nbt) {
-        super.writeData(nbt);
-        nbt.putString("key", this.key);
-        nbt.putLong("value", this.value);
-        nbt.putBoolean("ignore", this.ignore);
+    public void writeData(CompoundTag compoundTag) {
+        super.writeData(compoundTag);
+        compoundTag.putString("key", this.key);
+        compoundTag.putLong("value", this.value);
+        compoundTag.putBoolean("ignore", this.ignore);
     }
 
     @Override
-    public void readData(CompoundTag nbt) {
-        super.readData(nbt);
-        this.key = nbt.getString("key");
-        this.value = nbt.getLong("value");
-        this.ignore = nbt.getBoolean("ignore");
+    public void readData(CompoundTag compoundTag) {
+        super.readData(compoundTag);
+        this.key = compoundTag.getString("key");
+        this.value = compoundTag.getLong("value");
+        this.ignore = compoundTag.getBoolean("ignore");
     }
 
     @Override
-    public void writeNetData(FriendlyByteBuf buffer) {
-        super.writeNetData(buffer);
-        buffer.writeUtf(this.key, Short.MAX_VALUE);
-        buffer.writeVarLong(this.value);
-        buffer.writeBoolean(this.ignore);
+    public void writeNetData(FriendlyByteBuf byteBuf) {
+        super.writeNetData(byteBuf);
+        byteBuf.writeUtf(this.key, Short.MAX_VALUE);
+        byteBuf.writeVarLong(this.value);
+        byteBuf.writeBoolean(this.ignore);
     }
 
     @Override
-    public void readNetData(FriendlyByteBuf buffer) {
-        super.readNetData(buffer);
-        this.key = buffer.readUtf(Short.MAX_VALUE);
-        this.value = buffer.readVarLong();
-        this.ignore = buffer.readBoolean();
+    public void readNetData(FriendlyByteBuf byteBuf) {
+        super.readNetData(byteBuf);
+        this.key = byteBuf.readUtf(Short.MAX_VALUE);
+        this.value = byteBuf.readVarLong();
+        this.ignore = byteBuf.readBoolean();
     }
 
     @Override

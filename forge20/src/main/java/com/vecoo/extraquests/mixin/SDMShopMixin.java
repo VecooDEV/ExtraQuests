@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(value = CommandEntryType.class, remap = false)
 public abstract class SDMShopMixin {
     @Unique
-    private boolean console;
+    private boolean extraQuests$console;
 
     @Inject(
             method = "serialize()Lnet/minecraft/nbt/CompoundTag;",
@@ -27,7 +27,7 @@ public abstract class SDMShopMixin {
             locals = LocalCapture.CAPTURE_FAILHARD
     )
     public void serialize(CallbackInfoReturnable<CompoundTag> cir, CompoundTag nbt) {
-        if (this.console) {
+        if (this.extraQuests$console) {
             nbt.putBoolean("console", true);
         }
     }
@@ -37,7 +37,7 @@ public abstract class SDMShopMixin {
             at = @At("TAIL")
     )
     public void deserialize(CompoundTag nbt, CallbackInfo ci) {
-        this.console = nbt.getBoolean("console");
+        this.extraQuests$console = nbt.getBoolean("console");
     }
 
     @Inject(
@@ -48,19 +48,19 @@ public abstract class SDMShopMixin {
             )
     )
     public void fillConfigGroup(ConfigGroup config, CallbackInfo ci) {
-        config.addBool("console", this.console, v -> this.console = v, false).setNameKey("extraquests.reward.command.console");
+        config.addBool("console", this.extraQuests$console, v -> this.extraQuests$console = v, false).setNameKey("extraquests.reward.command.console");
     }
 
     @Redirect(
             method = "onBuy",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/commands/Commands;performPrefixedCommand(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"
+                    target = "Lnet/minecraft/commands/Commands;m_230957_(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"
             ),
             remap = true
     )
     public int onBuy(Commands instance, CommandSourceStack source, String command) {
-        if (this.console) {
+        if (this.extraQuests$console) {
             val serverConfig = ExtraQuests.getInstance().getServerConfig();
 
             if (serverConfig.isBlacklistConsole()) {
@@ -79,6 +79,7 @@ public abstract class SDMShopMixin {
         } else {
             instance.performPrefixedCommand(source, command);
         }
+
         return 1;
     }
 }

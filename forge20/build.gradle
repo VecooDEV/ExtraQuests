@@ -25,7 +25,7 @@ dependencies {
     compileOnly renamer.dependency("curse.maven:ftb-library-forge-404465:${ftblibrary_forge_20}")
     compileOnly renamer.dependency("curse.maven:ftb-teams-forge-404468:${ftbteams_forge_20}")
     compileOnly renamer.dependency("curse.maven:sdm-shop-948942:${sdmshop_forge_20}")
-    compileOnly renamer.dependency("maven.modrinth:extralib:${extralib}-forge,1.20.1")
+    compileOnly "maven.modrinth:extralib:${extralib}-forge,1.20.1"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }
