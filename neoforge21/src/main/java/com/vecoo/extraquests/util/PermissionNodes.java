@@ -11,7 +11,7 @@ import java.util.Set;
 public class PermissionNodes {
     private static final Set<PermissionNode<?>> PERMISSION_LIST = new HashSet<>();
 
-    public static PermissionNode<Boolean> EXTRAQUESTS_COMMAND = PermissionUtil.getPermissionNode("minecraft.command.equests", true);
+    public static PermissionNode<Boolean> EXTRAQUESTS_COMMAND = PermissionUtil.getPermissionNode("minecraft.command.extraquests", false);
 
     public static void registerPermission(@NotNull PermissionGatherEvent.Nodes event) {
         PERMISSION_LIST.add(EXTRAQUESTS_COMMAND);

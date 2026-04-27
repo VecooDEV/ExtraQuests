@@ -21,21 +21,23 @@ import org.jetbrains.annotations.NotNull;
 
 public class ExtraQuestsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("equests")
-                .requires(s -> PermissionUtil.hasPermission(s, PermissionNodes.EXTRAQUESTS_COMMAND))
-                .then(Commands.literal("key_value")
-                        .then(Commands.literal("add")
-                                .then(Commands.argument("player", StringArgumentType.string())
-                                        .suggests(CommandUtil.suggestOnlinePlayers())
-                                        .then(Commands.argument("key", StringArgumentType.string())
-                                                .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                                        .suggests(CommandUtil.suggestAmount(Sets.newHashSet(10, 50, 100)))
-                                                        .then(Commands.argument("ignore", BoolArgumentType.bool())
-                                                                .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"),
-                                                                        StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"), BoolArgumentType.getBool(e, "ignore")))))))))
+        for (String command : Sets.newHashSet("extraquests", "equests")) {
+            dispatcher.register(Commands.literal(command)
+                    .requires(s -> PermissionUtil.hasPermission(s, PermissionNodes.EXTRAQUESTS_COMMAND))
+                    .then(Commands.literal("key_value")
+                            .then(Commands.literal("add")
+                                    .then(Commands.argument("player", StringArgumentType.string())
+                                            .suggests(CommandUtil.suggestOnlinePlayers())
+                                            .then(Commands.argument("key", StringArgumentType.string())
+                                                    .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                                                            .suggests(CommandUtil.suggestAmount(Sets.newHashSet(10, 50, 100)))
+                                                            .then(Commands.argument("ignore", BoolArgumentType.bool())
+                                                                    .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"),
+                                                                            StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"), BoolArgumentType.getBool(e, "ignore")))))))))
 
-                .then(Commands.literal("reload")
-                        .executes(e -> executeReload(e.getSource()))));
+                    .then(Commands.literal("reload")
+                            .executes(e -> executeReload(e.getSource()))));
+        }
     }
 
     private static int executeKeyValueAdd(@NotNull CommandSourceStack source, @NotNull String target,
