@@ -1,7 +1,7 @@
 package com.vecoo.extraquests;
 
 import com.mojang.logging.LogUtils;
-import com.vecoo.extralib.config.YamlConfigFactory;
+import com.vecoo.extralib.loader.YamlLoader;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
@@ -21,6 +21,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.server.permission.events.PermissionGatherEvent;
 import org.slf4j.Logger;
+
+import java.io.IOException;
 
 @Mod(ExtraQuests.MOD_ID)
 public class ExtraQuests {
@@ -60,8 +62,12 @@ public class ExtraQuests {
     }
 
     public void loadConfig() {
-        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, "config/ExtraQuests/config.yml");
-        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, "config/ExtraQuests/locale.yml");
+        try {
+            this.serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
+            this.localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     private void registerQuests() {
