@@ -67,8 +67,7 @@ public abstract class CommandRewardMixin {
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/commands/Commands;m_230957_(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"
-            ),
-            remap = true
+            )
     )
     public int claim(Commands instance, CommandSourceStack source, String command) {
         if (this.extraQuests$console) {

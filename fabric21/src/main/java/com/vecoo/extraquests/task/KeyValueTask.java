@@ -3,9 +3,11 @@ package com.vecoo.extraquests.task;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.TeamData;
+import dev.ftb.mods.ftbquests.quest.task.ISingleLongValueTask;
 import dev.ftb.mods.ftbquests.quest.task.Task;
 import dev.ftb.mods.ftbquests.quest.task.TaskType;
 import lombok.Getter;
+import lombok.Setter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.HolderLookup;
@@ -15,10 +17,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 @Getter
-public class KeyValueTask extends Task {
+public class KeyValueTask extends Task implements ISingleLongValueTask {
     public static TaskType TYPE;
 
     private String key;
+    @Setter
     private long value;
 
     public KeyValueTask(long id, Quest quest) {
@@ -38,31 +41,31 @@ public class KeyValueTask extends Task {
     }
 
     @Override
-    public void writeData(CompoundTag nbt, HolderLookup.Provider provider) {
-        super.writeData(nbt, provider);
-        nbt.putString("key", this.key);
-        nbt.putLong("value", this.value);
+    public void writeData(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.writeData(compoundTag, provider);
+        compoundTag.putString("key", this.key);
+        compoundTag.putLong("value", this.value);
     }
 
     @Override
-    public void readData(CompoundTag nbt, HolderLookup.Provider provider) {
-        super.readData(nbt, provider);
-        this.key = nbt.getString("key");
-        this.value = nbt.getLong("value");
+    public void readData(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.readData(compoundTag, provider);
+        this.key = compoundTag.getString("key");
+        this.value = compoundTag.getLong("value");
     }
 
     @Override
-    public void writeNetData(RegistryFriendlyByteBuf buffer) {
-        super.writeNetData(buffer);
-        buffer.writeUtf(this.key, Short.MAX_VALUE);
-        buffer.writeVarLong(this.value);
+    public void writeNetData(RegistryFriendlyByteBuf byteBuf) {
+        super.writeNetData(byteBuf);
+        byteBuf.writeUtf(this.key, Short.MAX_VALUE);
+        byteBuf.writeVarLong(this.value);
     }
 
     @Override
-    public void readNetData(RegistryFriendlyByteBuf buffer) {
-        super.readNetData(buffer);
-        this.key = buffer.readUtf(Short.MAX_VALUE);
-        this.value = buffer.readVarLong();
+    public void readNetData(RegistryFriendlyByteBuf byteBuf) {
+        super.readNetData(byteBuf);
+        this.key = byteBuf.readUtf(Short.MAX_VALUE);
+        this.value = byteBuf.readVarLong();
     }
 
     @Override

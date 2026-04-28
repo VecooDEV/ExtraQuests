@@ -75,6 +75,12 @@ public class KeyValueTask extends Task implements ISingleLongValueTask {
 
     @Override
     @OnlyIn(Dist.CLIENT)
+    public MutableComponent getButtonText() {
+        return Component.translatable(String.valueOf(this.value));
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
     public void fillConfigGroup(ConfigGroup config) {
         super.fillConfigGroup(config);
         config.addString("key", this.key, value -> this.key = value, this.key).setNameKey("extraquests.key_value.key");

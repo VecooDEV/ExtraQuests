@@ -1,7 +1,7 @@
 package com.vecoo.extraquests;
 
 import com.mojang.logging.LogUtils;
-import com.vecoo.extralib.config.YamlConfigFactory;
+import com.vecoo.extralib.loader.YamlLoader;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
@@ -17,6 +17,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
+
+import java.io.IOException;
 
 public class ExtraQuests implements ModInitializer {
     public static final String MOD_ID = "extraquests";
@@ -42,8 +44,12 @@ public class ExtraQuests implements ModInitializer {
     }
 
     public void loadConfig() {
-        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, "config/ExtraQuests/config.yml");
-        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, "config/ExtraQuests/locale.yml");
+        try {
+            this.serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
+            this.localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     private void registerQuests() {

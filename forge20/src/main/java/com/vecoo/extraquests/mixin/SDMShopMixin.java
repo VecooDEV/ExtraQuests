@@ -56,8 +56,7 @@ public abstract class SDMShopMixin {
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/commands/Commands;m_230957_(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"
-            ),
-            remap = true
+            )
     )
     public int onBuy(Commands instance, CommandSourceStack source, String command) {
         if (this.extraQuests$console) {
