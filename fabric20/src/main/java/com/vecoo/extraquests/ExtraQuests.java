@@ -1,13 +1,13 @@
 package com.vecoo.extraquests;
 
 import com.mojang.logging.LogUtils;
-import com.vecoo.extralib.config.YamlConfigFactory;
+import com.vecoo.extralib.loader.YamlLoader;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.service.QuestTimerService;
+import com.vecoo.extraquests.service.PlayerService;
 import com.vecoo.extraquests.task.KeyValueTask;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
@@ -20,6 +20,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 
+import java.io.IOException;
+
 public class ExtraQuests implements ModInitializer {
     public static final String MOD_ID = "extraquests";
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -30,7 +32,7 @@ public class ExtraQuests implements ModInitializer {
     private ServerConfig serverConfig;
     private LocaleConfig localeConfig;
 
-    private QuestTimerService questTimerService;
+    private PlayerService playerService;
 
     private MinecraftServer server;
 
@@ -44,20 +46,25 @@ public class ExtraQuests implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(ExtraQuestsCommand::register);
         ServerLifecycleEvents.SERVER_STARTING.register(server -> this.server = server);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> loadStorage());
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> this.questTimerService.save());
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> this.playerService.save(true));
     }
 
     public void loadConfig() {
-        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, "config/ExtraQuests/config.yml");
-        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, "config/ExtraQuests/locale.yml");
+        try {
+            this.serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
+            this.localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     private void loadStorage() {
+        this.playerService = new PlayerService("%directory%/storage/extraquests/", this.server);
+
         try {
-            this.questTimerService = new QuestTimerService("/%directory%/storage/ExtraQuests/", this.server);
-            this.questTimerService.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load storage.", e);
+            this.playerService.init();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -82,8 +89,8 @@ public class ExtraQuests implements ModInitializer {
         return instance.localeConfig;
     }
 
-    public QuestTimerService getQuestTimerService() {
-        return instance.questTimerService;
+    public PlayerService getPlayerService() {
+        return instance.playerService;
     }
 
     public MinecraftServer getServer() {

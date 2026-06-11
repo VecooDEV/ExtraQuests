@@ -99,7 +99,7 @@ public class KeyValueReward extends Reward {
         }
 
         for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
-            TaskData taskData = data.getTaskData(task);
+            TaskData<?> taskData = data.getTaskData(task);
 
             if (taskData.progress < task.getMaxProgress()) {
                 if (!this.ignore) {

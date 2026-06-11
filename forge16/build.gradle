@@ -1,7 +1,7 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.spongepowered.mixin' version '0.7.+'
-    id "com.modrinth.minotaur" version "2.8.10"
+    id 'net.minecraftforge.gradle' version '[7.0.17,8.0)'
+    id 'net.minecraftforge.renamer' version '1.0.14'
+    id 'com.modrinth.minotaur' version '2.9.0'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
@@ -10,23 +10,34 @@ version = "${project_version}-1.16.5-Forge"
 
 minecraft {
     mappings channel: 'official', version: '1.16.5'
-    copyIdeResources = true
+}
+
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.5-${forge_16}"
+    compileOnly minecraft.dependency("net.minecraftforge:forge:1.16.5-${forge_16}")
 
-    compileOnly fg.deobf("curse.maven:ftb-quests-forge-289412:${ftbquests_forge_16}")
-    compileOnly fg.deobf("curse.maven:ftb-library-forge-404465:${ftblibrary_forge_16}")
-    compileOnly fg.deobf("curse.maven:ftb-teams-forge-404468:${ftbteams_forge_16}")
-    compileOnly fg.deobf("maven.modrinth:extralib:${extralib}-forge,1.16.5")
+    compileOnly "curse.maven:ftb-quests-forge-289412:${ftbquests_16}"
+    compileOnly "curse.maven:ftb-library-forge-404465:${ftblibrary_16}"
+    compileOnly "curse.maven:ftb-teams-forge-404468:${ftbteams_16}"
+    compileOnly "maven.modrinth:extralib:${extralib}-forge,1.16.5"
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }
 
-mixin {
-    add sourceSets.main, 'extraquests.mixins.refmap.json'
-    config 'extraquests.mixins.json'
+renamer.mappings.from minecraft.dependency.toSrgFile
+
+renamer.classes('renameJarToSrg', tasks.named('jar', Jar)) {
+    mappings(minecraft.dependency.toSrg.get())
+    output = layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar").get().asFile
+}
+
+renamer.enableMixinRefmaps {
+    config "extraquests.mixins.json"
 }
 
 processResources {
@@ -60,5 +71,4 @@ modrinth {
     }
 }
 
-jar.finalizedBy('reobfJar')
 build.finalizedBy('versionedRelease')

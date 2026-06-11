@@ -10,6 +10,7 @@ import com.feed_the_beast.ftbquests.quest.task.TaskData;
 import com.feed_the_beast.ftbquests.quest.task.TaskType;
 import com.vecoo.extraquests.integration.QuestsIntegration;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -19,6 +20,7 @@ import javax.annotation.Nonnull;
 @Getter
 public class KeyValueTask extends Task {
     private String key;
+    @Setter
     private long value;
 
     public KeyValueTask(Quest quest) {

@@ -1,66 +1,33 @@
 package com.vecoo.extraquests.api.service;
 
-import com.vecoo.extralib.task.TaskTimer;
 import com.vecoo.extraquests.ExtraQuests;
-import com.vecoo.extraquests.service.QuestTimer;
-import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
-import dev.ftb.mods.ftbquests.util.ProgressChange;
-import dev.ftb.mods.ftbteams.FTBTeamsAPI;
+import com.vecoo.extraquests.manager.ExtraQuestsManager;
+import com.vecoo.extraquests.service.PlayerStorage;
 import lombok.val;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 public class ExtraQuestsService {
     @Nonnull
-    public static Set<QuestTimer> getQuestTimers() {
-        return ExtraQuests.getInstance().getQuestTimerService().getQuestTimers();
+    public static Map<UUID, PlayerStorage> getStorage() {
+        return ExtraQuests.getInstance().getPlayerService().getStorage();
     }
 
-    public static boolean addQuestTimer(@Nonnull UUID playerUUID, @Nonnull String questID, int seconds) {
-        val timer = new QuestTimer(playerUUID, questID, seconds);
-
-        if (!ExtraQuests.getInstance().getQuestTimerService().addQuestTimer(timer)) {
-            return false;
-        }
-
-        startQuestTimer(timer);
-        return true;
+    @Nonnull
+    public static Map<String, Long> getQuestTimers(@Nonnull UUID playerUUID) {
+        return ExtraQuests.getInstance().getPlayerService().getStorage(playerUUID).getQuestTimers();
     }
 
-    public static boolean removeQuestTimer(@Nonnull QuestTimer questTimer) {
-        return ExtraQuests.getInstance().getQuestTimerService().removeQuestTimer(questTimer);
+    public static void addQuestTimer(@Nonnull UUID playerUUID, @Nonnull String questID, int seconds) {
+        val endTime = System.currentTimeMillis() + (seconds * 1000L);
+
+        ExtraQuests.getInstance().getPlayerService().modifyStorage(playerUUID, storage -> storage.addQuestTimer(questID, endTime));
+        ExtraQuestsManager.startQuestTimer(playerUUID, questID, endTime);
     }
 
-    public static boolean questReset(@Nonnull QuestTimer questTimer) {
-        val file = ServerQuestFile.INSTANCE;
-        val quest = file.getQuest(file.getID(questTimer.getQuestID()));
-
-        if (quest == null) {
-            ExtraQuests.getLogger().error("No quest found for {}.", questTimer.getQuestID());
-            ExtraQuestsService.removeQuestTimer(questTimer);
-            return false;
-        }
-
-        val progressChange = new ProgressChange(file);
-        progressChange.origin = quest;
-        progressChange.player = questTimer.getPlayerUUID();
-
-        quest.forceProgress(file.getData(FTBTeamsAPI.getPlayerTeamID(questTimer.getPlayerUUID())), progressChange);
-        return true;
-    }
-
-    public static void startQuestTimer(@Nonnull QuestTimer questTimer) {
-        TaskTimer.builder()
-                .delay((questTimer.getEndTime() - System.currentTimeMillis()) / 50L)
-                .consume(task -> {
-                    if (!questReset(questTimer)) {
-                        task.cancel();
-                        return;
-                    }
-
-                    ExtraQuestsService.removeQuestTimer(questTimer);
-                }).build();
+    public static void removeQuestTimer(@Nonnull UUID playerUUID, @Nonnull String questID) {
+        ExtraQuests.getInstance().getPlayerService().modifyStorage(playerUUID, storage -> storage.removeQuestTimer(questID));
     }
 }

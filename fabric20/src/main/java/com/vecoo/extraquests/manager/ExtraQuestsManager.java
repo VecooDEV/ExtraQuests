@@ -1,0 +1,44 @@
+package com.vecoo.extraquests.manager;
+
+import com.vecoo.extralib.scheduler.TaskTimer;
+import com.vecoo.extraquests.ExtraQuests;
+import com.vecoo.extraquests.api.service.ExtraQuestsService;
+import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
+import dev.ftb.mods.ftbquests.util.ProgressChange;
+import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
+import lombok.val;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
+
+public class ExtraQuestsManager {
+    public static void startQuestTimer(@NotNull UUID playerUUID, @NotNull String questID, long endTime) {
+        TaskTimer.builder()
+                .delay((endTime - System.currentTimeMillis()) / 50L)
+                .consume(task -> {
+                    if (!questReset(playerUUID, questID)) {
+                        task.cancel();
+                        return;
+                    }
+
+                    ExtraQuestsService.removeQuestTimer(playerUUID, questID);
+                }).build();
+    }
+
+    public static boolean questReset(@NotNull UUID playerUUID, @NotNull String questID) {
+        val file = ServerQuestFile.INSTANCE;
+        val quest = file.getQuest(file.getID(questID));
+
+        if (quest == null) {
+            ExtraQuests.getLogger().error("No quest found for {}.", quest);
+            ExtraQuestsService.removeQuestTimer(playerUUID, questID);
+            return false;
+        }
+
+        val teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(playerUUID)
+                .map(file::getOrCreateTeamData).orElse(file.getOrCreateTeamData(playerUUID));
+
+        quest.forceProgress(teamData, new ProgressChange(file, quest, playerUUID).setReset(true));
+        return true;
+    }
+}

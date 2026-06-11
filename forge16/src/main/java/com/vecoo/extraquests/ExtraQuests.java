@@ -1,12 +1,12 @@
 package com.vecoo.extraquests;
 
-import com.vecoo.extralib.config.YamlConfigFactory;
+import com.vecoo.extralib.loader.YamlLoader;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.reward.TimerReward;
-import com.vecoo.extraquests.service.QuestTimerService;
+import com.vecoo.extraquests.service.PlayerService;
 import com.vecoo.extraquests.task.KeyValueTask;
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
@@ -26,6 +26,8 @@ import net.minecraftforge.server.permission.PermissionAPI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+
 @Mod(ExtraQuests.MOD_ID)
 public class ExtraQuests {
     public static final String MOD_ID = "extraquests";
@@ -37,7 +39,7 @@ public class ExtraQuests {
     private ServerConfig serverConfig;
     private LocaleConfig localeConfig;
 
-    private QuestTimerService questTimerService;
+    private PlayerService playerService;
 
     private MinecraftServer server;
 
@@ -54,7 +56,7 @@ public class ExtraQuests {
     public void onFMLServerStarting(FMLServerStartingEvent event) {
         this.server = event.getServer();
 
-        PermissionAPI.registerNode("minecraft.command.equests", DefaultPermissionLevel.OP, "");
+        PermissionAPI.registerNode("minecraft.command.extraquests", DefaultPermissionLevel.OP, "");
     }
 
     @SubscribeEvent
@@ -69,20 +71,25 @@ public class ExtraQuests {
 
     @SubscribeEvent
     public void onServerStopping(FMLServerStoppingEvent event) {
-        this.questTimerService.save();
+        this.playerService.save(true);
     }
 
     public void loadConfig() {
-        this.serverConfig = YamlConfigFactory.load(ServerConfig.class, "config/ExtraQuests/config.yml");
-        this.localeConfig = YamlConfigFactory.load(LocaleConfig.class, "config/ExtraQuests/locale.yml");
+        try {
+            this.serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
+            this.localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     private void loadStorage() {
+        this.playerService = new PlayerService("%directory%/storage/extraquests/", this.server);
+
         try {
-            this.questTimerService = new QuestTimerService("/%directory%/storage/ExtraQuests/", this.server);
-            this.questTimerService.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load storage.", e);
+            this.playerService.init();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -104,8 +111,8 @@ public class ExtraQuests {
         return instance.localeConfig;
     }
 
-    public QuestTimerService getQuestTimerService() {
-        return instance.questTimerService;
+    public PlayerService getPlayerService() {
+        return instance.playerService;
     }
 
     public MinecraftServer getServer() {

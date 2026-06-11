@@ -24,6 +24,6 @@
     "minecraft": ">=1.20",
     "java": ">=17",
     "ftbquests": ">=2001",
-    "extralib": ">=2.1.4"
+    "extralib": ">=3.0.2"
   }
 }

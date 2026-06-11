@@ -6,6 +6,7 @@ import dev.ftb.mods.ftbquests.quest.TeamData;
 import dev.ftb.mods.ftbquests.quest.task.Task;
 import dev.ftb.mods.ftbquests.quest.task.TaskType;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -18,6 +19,7 @@ public class KeyValueTask extends Task {
     public static TaskType TYPE;
 
     private String key;
+    @Setter
     private long value;
 
     public KeyValueTask(Quest quest) {

@@ -1,7 +1,7 @@
 package com.vecoo.extraquests;
 
 import com.vecoo.extraquests.integration.QuestsIntegration;
-import com.vecoo.extraquests.service.QuestTimerService;
+import com.vecoo.extraquests.service.PlayerService;
 import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+
 @Mod(modid = ExtraQuests.MOD_ID, acceptableRemoteVersions = "*", useMetadata = true)
 public class ExtraQuests {
     public static final String MOD_ID = "extraquests";
@@ -20,7 +22,7 @@ public class ExtraQuests {
     @Getter
     private static ExtraQuests instance;
 
-    private QuestTimerService questTimerService;
+    private PlayerService playerService;
 
     private MinecraftServer server;
 
@@ -44,15 +46,16 @@ public class ExtraQuests {
 
     @Mod.EventHandler
     public void onServerStopping(FMLServerStoppingEvent event) {
-        this.questTimerService.save();
+        this.playerService.save(true);
     }
 
     private void loadStorage() {
+        this.playerService = new PlayerService("%directory%/storage/extraquests/", this.server);
+
         try {
-            this.questTimerService = new QuestTimerService("/%directory%/storage/ExtraQuests/", this.server);
-            this.questTimerService.init();
-        } catch (Exception e) {
-            LOGGER.error("Error load storage.", e);
+            this.playerService.init();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -60,8 +63,8 @@ public class ExtraQuests {
         return LOGGER;
     }
 
-    public QuestTimerService getQuestTimerService() {
-        return instance.questTimerService;
+    public PlayerService getPlayerService() {
+        return instance.playerService;
     }
 
     public MinecraftServer getServer() {
