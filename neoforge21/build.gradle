@@ -1,6 +1,5 @@
 plugins {
-    id 'net.neoforged.moddev' version '2.0.141'
-    id 'com.modrinth.minotaur' version '2.9.0'
+    id 'net.neoforged.moddev'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -9,44 +8,54 @@ version = "${project_version}-1.21.1-NeoForge"
 
 neoForge {
     version = "${neoforge_21}"
+
+    mods {
+        extraquests {
+            sourceSet sourceSets.main
+        }
+    }
+
+    runs {
+        client {
+            client()
+            gameDirectory = layout.projectDirectory.dir('run/client')
+        }
+
+        server {
+            server()
+            gameDirectory = layout.projectDirectory.dir('run/server')
+            programArgument '--nogui'
+        }
+    }
 }
 
+sourceSets.main.java.srcDir(rootProject.file('common21/src/main/java'))
+sourceSets.main.resources.srcDir(rootProject.file('common21/src/main/resources'))
+
 dependencies {
-    compileOnly "curse.maven:ftb-quests-forge-289412:${ftbquests_neoforge_21}"
-    compileOnly "curse.maven:ftb-library-forge-404465:${ftblibrary_neoforge_21}"
-    compileOnly "curse.maven:ftb-teams-forge-404468:${ftbteams_neoforge_21}"
-    compileOnly "maven.modrinth:extralib:${extralib}-neoforge,1.21.1"
+    implementation "curse.maven:ftb-quests-forge-289412:${ftbquests_neoforge_21}"
+    implementation "curse.maven:ftb-library-forge-404465:${ftblibrary_neoforge_21}"
+    implementation "curse.maven:ftb-teams-forge-404468:${ftbteams_neoforge_21}"
+    implementation "maven.modrinth:extralib:${extralib}-neoforge,1.21.1"
+
+    runtimeOnly "maven.modrinth:architectury-api:${architectury_21}+neoforge"
+}
+
+tasks.named('runServer', JavaExec) {
+    standardInput = System.in
 }
 
 processResources {
     filesMatching('META-INF/neoforge.mods.toml') {
         expand(
                 'project_name': project_name,
-                'project_version': project_version
+                'project_version': project_version,
+                'extralib': extralib
         )
     }
 }
 
-def gradleProperties = new Properties()
-def gradlePropertiesFile = new File(rootProject.file("/.gradle/gradle.properties").path)
-
-if (gradlePropertiesFile.exists()) {
-    gradlePropertiesFile.withInputStream { gradleProperties.load(it) }
-}
-
-modrinth {
-    token = gradleProperties.getProperty("MODRINTH_API_KEY")
-    projectId = "extraquests"
-    versionName = "${project_name}-${version}"
-    versionNumber = project_version
-    versionType = "release"
-    changelog = rootProject.file("changelog.md").text
-    uploadFile = jar
-    gameVersions = ["1.21.1"]
-    loaders = ["neoforge"]
-    dependencies {
-        required.project "extralib"
-    }
-}
-
 build.finalizedBy('versionedRelease')
+
+apply from: rootProject.file('gradle/modrinth.gradle')
+apply from: rootProject.file('gradle/curseforge.gradle')

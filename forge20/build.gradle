@@ -1,7 +1,6 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '[7.0.17,8.0)'
-    id 'net.minecraftforge.renamer' version '1.0.14'
-    id 'com.modrinth.minotaur' version '2.9.0'
+    id 'net.minecraftforge.gradle' version '[7.0.31,8.0)'
+    id 'net.minecraftforge.renamer' version '1.1.7'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -10,6 +9,28 @@ version = "${project_version}-1.20.1-Forge"
 
 minecraft {
     mappings channel: 'official', version: '1.20.1'
+
+    runs {
+        configureEach {
+            workingDir = layout.projectDirectory.dir("run/${name}")
+
+            environment 'MOD_CLASSES', sourceSets.main.output.files.collect {
+                "extraquests%%${it.absolutePath}"
+            }.join(File.pathSeparator)
+
+            mods {
+                extraquests {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {}
+
+        server {
+            args '--nogui'
+        }
+    }
 }
 
 repositories {
@@ -18,59 +39,76 @@ repositories {
     maven fg.minecraftLibsMaven
 }
 
+sourceSets.main.java.srcDir(rootProject.file('common20/src/main/java'))
+sourceSets.main.resources.srcDir(rootProject.file('common20/src/main/resources'))
+
 dependencies {
-    compileOnly minecraft.dependency("net.minecraftforge:forge:1.20.1-${forge_20}")
+    implementation minecraft.dependency("net.minecraftforge:forge:1.20.1-${forge_20}")
 
-    compileOnly renamer.dependency("curse.maven:ftb-quests-forge-289412:${ftbquests_forge_20}")
-    compileOnly renamer.dependency("curse.maven:ftb-library-forge-404465:${ftblibrary_forge_20}")
-    compileOnly renamer.dependency("curse.maven:ftb-teams-forge-404468:${ftbteams_forge_20}")
-    compileOnly renamer.dependency("curse.maven:sdm-shop-948942:${sdmshop_forge_20}")
-    compileOnly "maven.modrinth:extralib:${extralib}-forge,1.20.1"
+    implementation renamer.dependency("curse.maven:ftb-quests-forge-289412:${ftbquests_forge_20}")
+    implementation renamer.dependency("curse.maven:ftb-library-forge-404465:${ftblibrary_forge_20}")
+    implementation renamer.dependency("curse.maven:ftb-teams-forge-404468:${ftbteams_forge_20}")
+    implementation renamer.dependency("maven.modrinth:extralib:${extralib}-forge,1.20.1")
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+    runtimeOnly renamer.dependency("maven.modrinth:architectury-api:${architectury_20}+forge")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
-renamer.mappings.from minecraft.dependency.toSrgFile
+jar {
+    archiveClassifier = 'dev'
+
+    manifest {
+        attributes 'MixinConfigs': 'extraquests.mixins.json'
+    }
+}
+
+renamer {
+    mappings(minecraft.dependency.toSrg.get())
+
+    enableMixinRefmaps {
+        source(sourceSets.main) {
+            refMap = 'extraquests.mixins.refmap.json'
+        }
+        config 'extraquests.mixins.json'
+        jar(tasks.named('jar', Jar))
+
+        minecraft.runs.each { runConfig ->
+            run(runConfig)
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    outputs.file(layout.buildDirectory.file('tmp/compileJava/compileJava-refmap.json')).withPropertyName('mixinRefmap')
+    outputs.file(layout.buildDirectory.file('tmp/compileJava/compileJava-mappings.tsrg')).withPropertyName('mixinMappings')
+}
+
+renamer.mixin.generatedMappings.configure {
+    dependsOn(tasks.named('compileJava'))
+}
 
 renamer.classes('renameJarToSrg', tasks.named('jar', Jar)) {
-    mappings(minecraft.dependency.toSrg.get())
+    mappings(renamer.mixin.generatedMappings)
+    dependsOn(tasks.named('compileJava'))
     output = layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar").get().asFile
-}
-
-renamer.enableMixinRefmaps {
-    config "extraquests.mixins.json"
 }
 
 processResources {
     filesMatching('META-INF/mods.toml') {
         expand(
                 'project_name': project_name,
-                'project_version': project_version
+                'project_version': project_version,
+                'extralib': extralib
         )
     }
 }
 
-def gradleProperties = new Properties()
-def gradlePropertiesFile = new File(rootProject.file("/.gradle/gradle.properties").path)
-
-if (gradlePropertiesFile.exists()) {
-    gradlePropertiesFile.withInputStream { gradleProperties.load(it) }
-}
-
-modrinth {
-    token = gradleProperties.getProperty("MODRINTH_API_KEY")
-    projectId = "extraquests"
-    versionName = "${project_name}-${version}"
-    versionNumber = project_version
-    versionType = "release"
-    changelog = rootProject.file("changelog.md").text
-    uploadFile = jar
-    gameVersions = ["1.20.1"]
-    loaders = ["forge"]
-    dependencies {
-        required.project "extralib"
-        optional.project "sdm-shop"
-    }
+tasks.matching { it.name == 'runServer' }.configureEach {
+    standardInput = System.in
 }
 
 build.finalizedBy('versionedRelease')
+
+apply from: rootProject.file('gradle/modrinth.gradle')
+apply from: rootProject.file('gradle/curseforge.gradle')

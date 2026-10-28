@@ -1,0 +1,9 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+neoForge {
+    neoFormVersion = '26.1-1'
+}

@@ -1,0 +1,57 @@
+apply plugin: 'me.modmuss50.mod-publish-plugin'
+
+def gradleProperties = new Properties()
+def gradlePropertiesFile = rootProject.file('.gradle/gradle.properties')
+
+if (gradlePropertiesFile.exists()) {
+    gradlePropertiesFile.withInputStream { gradleProperties.load(it) }
+}
+
+def modrinthExtension = project.extensions.getByName('modrinth')
+
+def curseforgeToken = providers.environmentVariable('CURSEFORGE_API_KEY').orElse(providers.provider {
+    gradleProperties.getProperty('CURSEFORGE_API_KEY')
+})
+def curseforgeDryRun = providers.gradleProperty('curseforgeDryRun').map { it.toBoolean() }.orElse(false)
+
+def releaseTask = tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name.startsWith('fabric') ? 'remapJar' : 'jar')
+
+publishMods {
+    if (project.name == 'forge20') {
+        file = layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar")
+    } else {
+        file = releaseTask.flatMap { it.archiveFile }
+    }
+
+    version = project_version
+    displayName = "${project_name}-${project.version}"
+    changelog = rootProject.file('changelog.md').text
+    type = STABLE
+    dryRun = curseforgeDryRun
+    modLoaders.addAll(modrinthExtension.loaders)
+
+    curseforge {
+        projectId = "${curseforge_project_id}"
+        accessToken = curseforgeToken
+        minecraftVersions.addAll(modrinthExtension.gameVersions)
+        javaVersions.add(JavaVersion.toVersion(java.toolchain.languageVersion.get().asInt()))
+        client = true
+        server = true
+
+        requires('extralib', project.name == 'fabric21' ? 'ftb-quests-fabric' : 'ftb-quests-forge')
+
+        if (project.name.startsWith('fabric')) {
+            requires('fabric-api')
+        }
+    }
+}
+
+tasks.named('publishCurseforge') {
+    dependsOn(releaseTask)
+
+    doFirst {
+        if (!curseforgeDryRun.get() && !curseforgeToken.isPresent()) {
+            throw new GradleException('Set CURSEFORGE_API_KEY in the environment or .gradle/gradle.properties before publishing.')
+        }
+    }
+}

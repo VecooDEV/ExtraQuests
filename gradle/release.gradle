@@ -1,0 +1,35 @@
+tasks.register('versionedRelease', Copy) {
+    group = 'build'
+    description = 'Collects the current mod JAR and removes previous releases of this module.'
+
+    dependsOn {
+        tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name.startsWith('fabric') ? 'remapJar' : 'jar')
+    }
+
+    def moduleProject = project
+
+    def oldReleases = providers.provider {
+        def suffix = moduleProject.version.toString().substring(moduleProject.property('project_version').toString().length())
+
+        moduleProject.rootProject.fileTree('release') {
+            include "${moduleProject.rootProject.name}-*${suffix}.jar"
+            exclude "${moduleProject.rootProject.name}-${moduleProject.version}.jar"
+        }
+    }
+
+    from(providers.provider {
+        moduleProject.layout.buildDirectory.file("libs/${moduleProject.rootProject.name}-${moduleProject.version}.jar").get()
+    })
+
+    into(moduleProject.rootProject.layout.projectDirectory.dir('release'))
+
+    outputs.upToDateWhen {
+        oldReleases.get().isEmpty()
+    }
+
+    doFirst {
+        oldReleases.get().files.each {
+            java.nio.file.Files.delete(it.toPath())
+        }
+    }
+}

@@ -19,15 +19,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = CommandReward.class, remap = false)
 public abstract class CommandRewardMixin {
     @Unique
-    private boolean console;
+    private boolean extraQuests$console;
 
     @Inject(
             method = "writeData",
             at = @At("TAIL")
     )
-    public void writeData(CompoundTag nbt, HolderLookup.Provider provider, CallbackInfo ci) {
-        if (this.console) {
-            nbt.putBoolean("console", true);
+    public void writeData(CompoundTag compoundTag, HolderLookup.Provider provider, CallbackInfo ci) {
+        if (this.extraQuests$console) {
+            compoundTag.putBoolean("console", true);
         }
     }
 
@@ -35,24 +35,24 @@ public abstract class CommandRewardMixin {
             method = "readData",
             at = @At("TAIL")
     )
-    public void readData(CompoundTag nbt, HolderLookup.Provider provider, CallbackInfo ci) {
-        this.console = nbt.getBoolean("console");
+    public void readData(CompoundTag compoundTag, HolderLookup.Provider provider, CallbackInfo ci) {
+        this.extraQuests$console = compoundTag.getBoolean("console");
     }
 
     @Inject(
             method = "writeNetData",
             at = @At("TAIL")
     )
-    public void writeNetData(RegistryFriendlyByteBuf buffer, CallbackInfo ci) {
-        buffer.writeBoolean(this.console);
+    public void writeNetData(RegistryFriendlyByteBuf byteBuf, CallbackInfo ci) {
+        byteBuf.writeBoolean(this.extraQuests$console);
     }
 
     @Inject(
             method = "readNetData",
             at = @At("TAIL")
     )
-    public void readNetData(RegistryFriendlyByteBuf buffer, CallbackInfo ci) {
-        this.console = buffer.readBoolean();
+    public void readNetData(RegistryFriendlyByteBuf byteBuf, CallbackInfo ci) {
+        this.extraQuests$console = byteBuf.readBoolean();
     }
 
     @Inject(
@@ -60,7 +60,7 @@ public abstract class CommandRewardMixin {
             at = @At("TAIL")
     )
     public void fillConfigGroup(ConfigGroup config, CallbackInfo ci) {
-        config.addBool("console", this.console, v -> this.console = v, false).setNameKey("extraquests.reward.command.console");
+        config.addBool("console", this.extraQuests$console, v -> this.extraQuests$console = v, false).setNameKey("extraquests.reward.command.console");
     }
 
     @Redirect(
@@ -72,7 +72,7 @@ public abstract class CommandRewardMixin {
             remap = true
     )
     public void claim(Commands instance, CommandSourceStack source, String command) {
-        if (this.console) {
+        if (this.extraQuests$console) {
             val serverConfig = ExtraQuests.getInstance().getServerConfig();
 
             if (serverConfig.isBlacklistConsole()) {

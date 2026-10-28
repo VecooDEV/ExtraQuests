@@ -23,7 +23,7 @@
     "fabric": "*",
     "minecraft": ">=1.21",
     "java": ">=21",
-    "ftbquests": ">=2101",
-    "extralib": ">=3.0.0"
+    "ftbquests": ">=2101.1.37",
+    "extralib": ">=${extralib}"
   }
 }

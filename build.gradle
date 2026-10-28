@@ -1,3 +1,11 @@
+plugins {
+    id 'fabric-loom' version '1.19+' apply false
+    id 'net.fabricmc.fabric-loom' version '1.19+' apply false
+    id 'net.neoforged.moddev' version '2.0.148' apply false
+    id 'com.modrinth.minotaur' version '2.10.0' apply false
+    id 'me.modmuss50.mod-publish-plugin' version '2.2.1' apply false
+}
+
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
@@ -5,42 +13,75 @@ subprojects {
     group = 'com.vecoo.extraquests'
     version = project_version
 
-    jar {
-        setArchiveBaseName("${rootProject.name}")
+    base {
+        archivesName = project.name.startsWith('common') ? "${rootProject.name}-${project.name}" : rootProject.name
     }
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
+        options.incremental = true
     }
 
     repositories {
         mavenCentral()
-        maven { url = "https://cursemaven.com" }
-        maven { url = "https://api.modrinth.com/maven" }
+        maven { url = 'https://cursemaven.com' }
+        maven { url = 'https://api.modrinth.com/maven' }
     }
 
     dependencies {
-        implementation "org.projectlombok:lombok:${lombok}"
+        compileOnly "org.projectlombok:lombok:${lombok}"
         annotationProcessor "org.projectlombok:lombok:${lombok}"
     }
+}
 
-    tasks.register('versionedRelease', Copy) {
-        group "build"
+def loaderModules = subprojects.findAll {
+    (it.name.startsWith('forge') || it.name.startsWith('neoforge') || it.name.startsWith('fabric')) &&
+            it.file('src/main/java/com/vecoo/extraquests/ExtraQuests.java').isFile()
+}
 
-        delete fileTree('../release/') {
-            include '**/*.jar'
-        }
-
-        from(fileTree("build/libs") {
-            include '*Forge.jar'
-            include '*NeoForge.jar'
-            include '*Fabric.jar'
-        })
-
-        into('../release/')
-
-        doLast {
-            delete "build/libs"
-        }
+configure(loaderModules) {
+    tasks.named('processResources') {
+        inputs.properties(project_name: project_name, project_version: project_version, extralib: extralib)
     }
+
+    apply from: rootProject.file('gradle/release.gradle')
+}
+
+tasks.register('build') {
+    group = 'build'
+    description = 'Builds every shared module and every implemented loader.'
+    dependsOn(subprojects.collect {
+        "${it.path}:build"
+    })
+}
+
+tasks.register('clean') {
+    group = 'build'
+    dependsOn(subprojects.collect {
+        "${it.path}:clean"
+    })
+}
+
+tasks.register('versionedRelease') {
+    group = 'build'
+    description = 'Builds and collects every implemented loader.'
+    dependsOn(loaderModules.collect {
+        "${it.path}:build"
+    })
+}
+
+tasks.register('publishCurseforge') {
+    group = 'publishing'
+    description = 'Publishes every implemented loader to CurseForge.'
+    dependsOn(loaderModules.collect {
+        "${it.path}:publishCurseforge"
+    })
+}
+
+tasks.register('publishMods') {
+    group = 'publishing'
+    description = 'Runs the configured publishers for every implemented loader.'
+    dependsOn(loaderModules.collect {
+        "${it.path}:publishMods"
+    })
 }

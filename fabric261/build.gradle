@@ -1,0 +1,7 @@
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+description = 'Reserved for Fabric 26.1. The mod has not been ported yet.'
+
+jar {
+    enabled = false
+}

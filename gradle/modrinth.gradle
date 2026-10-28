@@ -1,0 +1,38 @@
+apply plugin: 'com.modrinth.minotaur'
+
+def gradleProperties = new Properties()
+def gradlePropertiesFile = rootProject.file('.gradle/gradle.properties')
+
+if (gradlePropertiesFile.exists()) {
+    gradlePropertiesFile.withInputStream { gradleProperties.load(it) }
+}
+
+def modrinthToken = providers.environmentVariable('MODRINTH_API_KEY').orElse(providers.provider {
+    gradleProperties.getProperty('MODRINTH_API_KEY')
+})
+
+def releaseTask = tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name.startsWith('fabric') ? 'remapJar' : 'jar')
+
+modrinth {
+    token = modrinthToken.orNull
+    projectId = 'extraquests'
+    versionName = "${project_name}-${project.version}"
+    versionNumber = project_version
+    versionType = 'release'
+    changelog = rootProject.file('changelog.md').text
+    uploadFile = project.name == 'forge20' ? layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar") : releaseTask
+    gameVersions = [project.name == 'forge20' ? '1.20.1' : '1.21.1']
+    loaders = [project.name == 'forge20' ? 'forge' : project.name.startsWith('fabric') ? 'fabric' : 'neoforge']
+
+    dependencies {
+        required.project 'extralib'
+
+        if (project.name.startsWith('fabric')) {
+            required.project 'fabric-api'
+        }
+    }
+}
+
+tasks.named('modrinth') {
+    dependsOn(releaseTask)
+}

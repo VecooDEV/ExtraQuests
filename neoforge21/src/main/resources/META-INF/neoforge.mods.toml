@@ -30,13 +30,13 @@ side = "BOTH"
 [[dependencies.extraquests]]
 modId = "ftbquests"
 type = "required"
-versionRange = "[2101,)"
+versionRange = "[2101.1.37,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.extraquests]]
 modId = "extralib"
 type = "required"
-versionRange = "[3.0.0,)"
+versionRange = "[${extralib},)"
 ordering = "NONE"
 side = "BOTH"

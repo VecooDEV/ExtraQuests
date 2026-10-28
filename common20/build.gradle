@@ -1,0 +1,32 @@
+plugins {
+    id 'fabric-loom'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+repositories {
+    maven { url = 'https://maven.ftb.dev/releases' }
+}
+
+dependencies {
+    minecraft 'com.mojang:minecraft:1.20.1'
+    mappings loom.officialMojangMappings()
+
+    compileOnly 'org.jetbrains:annotations:26.0.2'
+    compileOnly "net.fabricmc:fabric-loader:${fabric_loader}"
+
+    modCompileOnly("dev.ftb.mods:ftb-quests-fabric:${ftbquests_common_20}") {
+        transitive = false
+    }
+    modCompileOnly("dev.ftb.mods:ftb-library-fabric:${ftblibrary_common_20}") {
+        transitive = false
+    }
+    modCompileOnly("dev.ftb.mods:ftb-teams-fabric:${ftbteams_common_20}") {
+        transitive = false
+    }
+    modCompileOnly "maven.modrinth:extralib:${extralib}-fabric,1.20.1"
+}
+
+tasks.named('remapJar') {
+    enabled = false
+}

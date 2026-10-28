@@ -1,0 +1,18 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    neoFormVersion = '1.21.1-20240808.144430'
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:26.0.2'
+
+    compileOnly "curse.maven:ftb-quests-forge-289412:${ftbquests_neoforge_21}"
+    compileOnly "curse.maven:ftb-library-forge-404465:${ftblibrary_neoforge_21}"
+    compileOnly "curse.maven:ftb-teams-forge-404468:${ftbteams_neoforge_21}"
+    compileOnly "maven.modrinth:extralib:${extralib}-neoforge,1.21.1"
+}
