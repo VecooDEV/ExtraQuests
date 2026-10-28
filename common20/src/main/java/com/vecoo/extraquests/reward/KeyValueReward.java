@@ -1,6 +1,6 @@
 package com.vecoo.extraquests.reward;
 
-import com.vecoo.extraquests.task.KeyValueTask;
+import com.vecoo.extraquests.util.KeyValueUtil;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.Quest;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
@@ -85,8 +85,6 @@ public class KeyValueReward extends Reward {
 
     @Override
     public void claim(ServerPlayer player, boolean notify) {
-        for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
-            task.progress(ServerQuestFile.INSTANCE.getOrCreateTeamData(player), this.key, this.value, this.ignore);
-        }
+        KeyValueUtil.addProgress(player, ServerQuestFile.INSTANCE.getOrCreateTeamData(player), this.key, this.value, this.ignore);
     }
 }

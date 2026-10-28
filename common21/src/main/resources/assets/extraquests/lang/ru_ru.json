@@ -8,7 +8,7 @@
   "extraquests.key_value.value": "Значение",
   "extraquests.key_value.value.tooltip": "Значение для ключа",
   "extraquests.key_value.ignore": "Игнорировать?",
-  "extraquests.key_value.ignore.tooltip": "Будет ли награда игнорировать прогресс заданий?",
+  "extraquests.key_value.ignore.tooltip": "Игнорировать условия и порядок заданий? Задержка повторения сохраняется.",
 
   "extraquests.reward.command.console": "Консоль",
   "extraquests.reward.command.console.tooltip": "Запуск команды от консоли"

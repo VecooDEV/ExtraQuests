@@ -8,7 +8,7 @@
   "extraquests.key_value.value": "Value",
   "extraquests.key_value.value.tooltip": "Key value",
   "extraquests.key_value.ignore": "Ignore?",
-  "extraquests.key_value.ignore.tooltip": "Will rewards ignore quest progress?",
+  "extraquests.key_value.ignore.tooltip": "Ignore quest requirements and task order? The repeat cooldown still applies.",
 
   "extraquests.reward.command.console": "Console",
   "extraquests.reward.command.console.tooltip": "Execute a command from the console"

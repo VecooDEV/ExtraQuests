@@ -12,13 +12,12 @@ import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
 import lombok.Getter;
+import lombok.val;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.server.permission.events.PermissionGatherEvent;
 import org.slf4j.Logger;
 
@@ -34,8 +33,6 @@ public class ExtraQuests {
 
     private ServerConfig serverConfig;
     private LocaleConfig localeConfig;
-
-    private MinecraftServer server;
 
     public ExtraQuests() {
         instance = this;
@@ -56,17 +53,15 @@ public class ExtraQuests {
         ExtraQuestsCommand.register(event.getDispatcher());
     }
 
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        this.server = event.getServer();
-    }
-
     public void loadConfig() {
         try {
-            this.serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
-            this.localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+            val serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
+            val localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+
+            this.serverConfig = serverConfig;
+            this.localeConfig = localeConfig;
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -87,9 +82,5 @@ public class ExtraQuests {
 
     public LocaleConfig getLocaleConfig() {
         return instance.localeConfig;
-    }
-
-    public MinecraftServer getServer() {
-        return instance.server;
     }
 }

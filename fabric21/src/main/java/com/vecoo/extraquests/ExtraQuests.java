@@ -11,11 +11,10 @@ import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
 import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
 import lombok.Getter;
+import lombok.val;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -30,8 +29,6 @@ public class ExtraQuests implements ModInitializer {
     private ServerConfig serverConfig;
     private LocaleConfig localeConfig;
 
-    private MinecraftServer server;
-
     @Override
     public void onInitialize() {
         instance = this;
@@ -40,15 +37,17 @@ public class ExtraQuests implements ModInitializer {
         registerQuests();
 
         CommandRegistrationCallback.EVENT.register(ExtraQuestsCommand::register);
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> this.server = server);
     }
 
     public void loadConfig() {
         try {
-            this.serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
-            this.localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+            val serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
+            val localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+
+            this.serverConfig = serverConfig;
+            this.localeConfig = localeConfig;
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -69,9 +68,5 @@ public class ExtraQuests implements ModInitializer {
 
     public LocaleConfig getLocaleConfig() {
         return instance.localeConfig;
-    }
-
-    public MinecraftServer getServer() {
-        return instance.server;
     }
 }

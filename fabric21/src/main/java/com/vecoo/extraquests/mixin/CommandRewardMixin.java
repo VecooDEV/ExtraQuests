@@ -1,6 +1,7 @@
 package com.vecoo.extraquests.mixin;
 
 import com.vecoo.extraquests.ExtraQuests;
+import com.vecoo.extraquests.util.ConsoleCommandUtil;
 import dev.ftb.mods.ftblibrary.config.ConfigGroup;
 import dev.ftb.mods.ftbquests.quest.reward.CommandReward;
 import lombok.val;
@@ -75,12 +76,8 @@ public abstract class CommandRewardMixin {
         if (this.extraQuests$console) {
             val serverConfig = ExtraQuests.getInstance().getServerConfig();
 
-            if (serverConfig.isBlacklistConsole()) {
-                for (String blacklistCommand : serverConfig.getBlacklistConsoleList()) {
-                    if (command.contains(blacklistCommand)) {
-                        return;
-                    }
-                }
+            if (serverConfig.isBlacklistConsole() && ConsoleCommandUtil.isBlocked(source, command, serverConfig.getBlacklistConsoleList())) {
+                return;
             }
 
             if (source.getPlayer() != null) {

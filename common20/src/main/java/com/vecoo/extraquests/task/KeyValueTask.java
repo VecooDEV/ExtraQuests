@@ -8,6 +8,7 @@ import dev.ftb.mods.ftbquests.quest.task.Task;
 import dev.ftb.mods.ftbquests.quest.task.TaskType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -83,11 +84,14 @@ public class KeyValueTask extends Task implements ISingleLongValueTask {
     }
 
     public void progress(TeamData teamData, String key, long value, boolean ignore) {
-        if (this.key.equals(key) && !teamData.isCompleted(this)) {
-            if (ignore) {
-                teamData.addProgress(this, value);
-            } else if (checkTaskSequence(teamData) && teamData.canStartTasks(getQuest())) {
-                teamData.addProgress(this, value);
+        if (this.key.equals(key) && value > 0L && !teamData.isCompleted(this)
+                && teamData.getMilliSecondsUntilRepeatable(getQuest()) == 0L
+                && (ignore || checkTaskSequence(teamData) && teamData.canStartTasks(getQuest()))) {
+            val progress = teamData.getProgress(this);
+            val maxProgress = getMaxProgress();
+
+            if (progress < maxProgress) {
+                teamData.addProgress(this, Math.min(value, maxProgress - progress));
             }
         }
     }

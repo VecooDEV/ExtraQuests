@@ -13,6 +13,6 @@ import java.util.Set;
 public class ServerConfig {
     @Comment("Will there be a blacklist of console commands to execute from the command reward?")
     private boolean blacklistConsole = false;
-    @Comment("All commands that will be banned.")
+    @Comment("Command names to block, optionally including their namespace. Nested execute commands are checked too.")
     private Set<String> blacklistConsoleList = Sets.newHashSet("op", "gamemode");
 }

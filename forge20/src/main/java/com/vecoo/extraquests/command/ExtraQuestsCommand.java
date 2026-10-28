@@ -10,7 +10,7 @@ import com.vecoo.extralib.util.PermissionUtil;
 import com.vecoo.extralib.util.PlayerUtil;
 import com.vecoo.extralib.util.TextUtil;
 import com.vecoo.extraquests.ExtraQuests;
-import com.vecoo.extraquests.task.KeyValueTask;
+import com.vecoo.extraquests.util.KeyValueUtil;
 import com.vecoo.extraquests.util.PermissionNodes;
 import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
 import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
@@ -53,11 +53,9 @@ public class ExtraQuestsCommand {
 
         val file = ServerQuestFile.INSTANCE;
         val teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(targetUUID).map(file::getOrCreateTeamData)
-                .orElse(file.getOrCreateTeamData(targetUUID));
+                .orElseGet(() -> file.getOrCreateTeamData(targetUUID));
 
-        for (KeyValueTask task : ServerQuestFile.INSTANCE.collect(KeyValueTask.class)) {
-            task.progress(teamData, key, amount, ignore);
-        }
+        KeyValueUtil.addProgress(source.getServer().getPlayerList().getPlayer(targetUUID), teamData, key, amount, ignore);
 
         source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getAddKeyValue()
                 .replace("%player%", target)
@@ -73,11 +71,11 @@ public class ExtraQuestsCommand {
             ExtraQuests.getInstance().loadConfig();
         } catch (Exception e) {
             source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getErrorReload()));
-            ExtraQuests.getLogger().error(e.getMessage());
+            ExtraQuests.getLogger().error("Failed to reload ExtraQuests configuration.", e);
             return 0;
         }
 
-        source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getReload()));
+        source.sendSystemMessage(TextUtil.formatMessage(ExtraQuests.getInstance().getLocaleConfig().getReload()));
         return 1;
     }
 }
