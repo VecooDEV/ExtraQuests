@@ -40,7 +40,7 @@ public class ConsoleCommandUtil {
     }
 
     private static boolean matches(@NotNull String command, @NotNull String blocked) {
-        String name = command.toLowerCase(Locale.ROOT);
+        val name = command.toLowerCase(Locale.ROOT);
         String entry = blocked.trim().toLowerCase(Locale.ROOT);
 
         if (entry.startsWith("/")) {

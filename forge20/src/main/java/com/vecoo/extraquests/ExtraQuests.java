@@ -1,10 +1,10 @@
 package com.vecoo.extraquests;
 
-import com.mojang.logging.LogUtils;
 import com.vecoo.extralib.loader.YamlLoader;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
+import com.vecoo.extraquests.internal.ExtraQuestsLogger;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.task.KeyValueTask;
 import com.vecoo.extraquests.util.PermissionNodes;
@@ -19,6 +19,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.permission.events.PermissionGatherEvent;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -26,12 +27,18 @@ import java.io.IOException;
 @Mod(ExtraQuests.MOD_ID)
 public class ExtraQuests {
     public static final String MOD_ID = "extraquests";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = ExtraQuestsLogger.getLogger();
 
     @Getter
+    @NotNull
     private static ExtraQuests instance;
 
+    @Getter
+    @NotNull
     private ServerConfig serverConfig;
+
+    @Getter
+    @NotNull
     private LocaleConfig localeConfig;
 
     public ExtraQuests() {
@@ -44,12 +51,12 @@ public class ExtraQuests {
     }
 
     @SubscribeEvent
-    public void onPermissionGather(PermissionGatherEvent.Nodes event) {
+    public void onPermissionGather(@NotNull PermissionGatherEvent.Nodes event) {
         PermissionNodes.registerPermission(event);
     }
 
     @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event) {
+    public void onRegisterCommands(@NotNull RegisterCommandsEvent event) {
         ExtraQuestsCommand.register(event.getDispatcher());
     }
 
@@ -57,6 +64,14 @@ public class ExtraQuests {
         try {
             val serverConfig = YamlLoader.load(ServerConfig.class, "config/extraquests/config.yml", false);
             val localeConfig = YamlLoader.load(LocaleConfig.class, "config/extraquests/locale.yml", false);
+
+            if (serverConfig == null) {
+                throw new IOException("Failed to load config/extraquests/config.yml: loader returned null.");
+            }
+
+            if (localeConfig == null) {
+                throw new IOException("Failed to load config/extraquests/locale.yml: loader returned null.");
+            }
 
             this.serverConfig = serverConfig;
             this.localeConfig = localeConfig;
@@ -72,15 +87,8 @@ public class ExtraQuests {
                 KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
     }
 
+    @NotNull
     public static Logger getLogger() {
         return LOGGER;
-    }
-
-    public ServerConfig getServerConfig() {
-        return instance.serverConfig;
-    }
-
-    public LocaleConfig getLocaleConfig() {
-        return instance.localeConfig;
     }
 }

@@ -16,6 +16,7 @@ public class KeyValueUtil {
 
         if (currentPlayer != null && currentPlayer != player) {
             file.server.tell(new TickTask(file.server.getTickCount(), () -> addProgress(player, teamData, key, value, ignore)));
+
             return;
         }
 

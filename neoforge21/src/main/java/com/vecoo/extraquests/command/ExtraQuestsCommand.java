@@ -20,7 +20,7 @@ import net.minecraft.commands.Commands;
 import org.jetbrains.annotations.NotNull;
 
 public class ExtraQuestsCommand {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(@NotNull CommandDispatcher<CommandSourceStack> dispatcher) {
         for (String command : Sets.newHashSet("extraquests", "equests")) {
             dispatcher.register(Commands.literal(command)
                     .requires(s -> PermissionUtil.hasPermission(s, PermissionNodes.EXTRAQUESTS_COMMAND))
@@ -46,8 +46,7 @@ public class ExtraQuestsCommand {
         val targetUUID = PlayerUtil.findUUID(target);
 
         if (targetUUID == null) {
-            source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getPlayerNotFound()
-                    .replace("%player%", target)));
+            source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getPlayerNotFound().replace("%player%", target)));
             return 0;
         }
 
@@ -61,6 +60,7 @@ public class ExtraQuestsCommand {
                 .replace("%player%", target)
                 .replace("%key%", key)
                 .replace("%value%", String.valueOf(amount))));
+
         return 1;
     }
 

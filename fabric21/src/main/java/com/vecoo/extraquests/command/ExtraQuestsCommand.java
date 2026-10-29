@@ -21,7 +21,7 @@ import net.minecraft.commands.Commands;
 import org.jetbrains.annotations.NotNull;
 
 public class ExtraQuestsCommand {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection commandSelection) {
+    public static void register(@NotNull CommandDispatcher<CommandSourceStack> dispatcher, @NotNull CommandBuildContext context, @NotNull Commands.CommandSelection commandSelection) {
         for (String command : Sets.newHashSet("extraquests", "equests")) {
             dispatcher.register(Commands.literal(command)
                     .requires(s -> PermissionUtil.hasPermission(s, PermissionNodes.EXTRAQUESTS_COMMAND))
@@ -49,6 +49,7 @@ public class ExtraQuestsCommand {
         if (targetUUID == null) {
             source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getPlayerNotFound()
                     .replace("%player%", target)));
+
             return 0;
         }
 
@@ -62,6 +63,7 @@ public class ExtraQuestsCommand {
                 .replace("%player%", target)
                 .replace("%key%", key)
                 .replace("%value%", String.valueOf(amount))));
+
         return 1;
     }
 
@@ -73,10 +75,12 @@ public class ExtraQuestsCommand {
         } catch (Exception e) {
             source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getErrorReload()));
             ExtraQuests.getLogger().error("Failed to reload ExtraQuests configuration.", e);
+
             return 0;
         }
 
         source.sendSystemMessage(TextUtil.formatMessage(ExtraQuests.getInstance().getLocaleConfig().getReload()));
+
         return 1;
     }
 }

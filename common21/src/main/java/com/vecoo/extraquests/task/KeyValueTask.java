@@ -14,22 +14,25 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class KeyValueTask extends Task implements ISingleLongValueTask {
     public static TaskType TYPE;
 
+    @NotNull
     private String key;
     @Setter
     private long value;
 
-    public KeyValueTask(long id, Quest quest) {
+    public KeyValueTask(long id, @NotNull Quest quest) {
         super(id, quest);
         this.key = "key";
         this.value = 100L;
     }
 
     @Override
+    @NotNull
     public TaskType getType() {
         return TYPE;
     }
@@ -40,51 +43,53 @@ public class KeyValueTask extends Task implements ISingleLongValueTask {
     }
 
     @Override
-    public void writeData(CompoundTag compoundTag, HolderLookup.Provider provider) {
+    public void writeData(@NotNull CompoundTag compoundTag, @NotNull HolderLookup.Provider provider) {
         super.writeData(compoundTag, provider);
         compoundTag.putString("key", this.key);
         compoundTag.putLong("value", this.value);
     }
 
     @Override
-    public void readData(CompoundTag compoundTag, HolderLookup.Provider provider) {
+    public void readData(@NotNull CompoundTag compoundTag, @NotNull HolderLookup.Provider provider) {
         super.readData(compoundTag, provider);
         this.key = compoundTag.getString("key");
         this.value = compoundTag.getLong("value");
     }
 
     @Override
-    public void writeNetData(RegistryFriendlyByteBuf byteBuf) {
+    public void writeNetData(@NotNull RegistryFriendlyByteBuf byteBuf) {
         super.writeNetData(byteBuf);
         byteBuf.writeUtf(this.key, Short.MAX_VALUE);
         byteBuf.writeVarLong(this.value);
     }
 
     @Override
-    public void readNetData(RegistryFriendlyByteBuf byteBuf) {
+    public void readNetData(@NotNull RegistryFriendlyByteBuf byteBuf) {
         super.readNetData(byteBuf);
         this.key = byteBuf.readUtf(Short.MAX_VALUE);
         this.value = byteBuf.readVarLong();
     }
 
     @Override
+    @NotNull
     public MutableComponent getAltTitle() {
         return Component.translatable("extraquests.key_value.title", this.key, this.value);
     }
 
     @Override
+    @NotNull
     public MutableComponent getButtonText() {
         return Component.translatable(String.valueOf(this.value));
     }
 
     @Override
-    public void fillConfigGroup(ConfigGroup config) {
+    public void fillConfigGroup(@NotNull ConfigGroup config) {
         super.fillConfigGroup(config);
         config.addString("key", this.key, value -> this.key = value, this.key).setNameKey("extraquests.key_value.key");
         config.addLong("value", this.value, value -> this.value = value, 100L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
     }
 
-    public void progress(TeamData teamData, String key, long value, boolean ignore) {
+    public void progress(@NotNull TeamData teamData, @NotNull String key, long value, boolean ignore) {
         if (this.key.equals(key) && value > 0L && !teamData.isCompleted(this)
                 && teamData.getMilliSecondsUntilRepeatable(getQuest()) == 0L
                 && (ignore || checkTaskSequence(teamData) && teamData.canStartTasks(getQuest()))) {

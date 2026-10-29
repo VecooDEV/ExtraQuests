@@ -12,16 +12,18 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class KeyValueReward extends Reward {
     public static RewardType TYPE;
 
+    @NotNull
     private String key;
     private long value;
     private boolean ignore;
 
-    public KeyValueReward(long id, Quest quest) {
+    public KeyValueReward(long id, @NotNull Quest quest) {
         super(id, quest);
         this.key = "key";
         this.value = 5L;
@@ -29,12 +31,13 @@ public class KeyValueReward extends Reward {
     }
 
     @Override
+    @NotNull
     public RewardType getType() {
         return TYPE;
     }
 
     @Override
-    public void writeData(CompoundTag compoundTag) {
+    public void writeData(@NotNull CompoundTag compoundTag) {
         super.writeData(compoundTag);
         compoundTag.putString("key", this.key);
         compoundTag.putLong("value", this.value);
@@ -42,7 +45,7 @@ public class KeyValueReward extends Reward {
     }
 
     @Override
-    public void readData(CompoundTag compoundTag) {
+    public void readData(@NotNull CompoundTag compoundTag) {
         super.readData(compoundTag);
         this.key = compoundTag.getString("key");
         this.value = compoundTag.getLong("value");
@@ -50,7 +53,7 @@ public class KeyValueReward extends Reward {
     }
 
     @Override
-    public void writeNetData(FriendlyByteBuf byteBuf) {
+    public void writeNetData(@NotNull FriendlyByteBuf byteBuf) {
         super.writeNetData(byteBuf);
         byteBuf.writeUtf(this.key, Short.MAX_VALUE);
         byteBuf.writeVarLong(this.value);
@@ -58,7 +61,7 @@ public class KeyValueReward extends Reward {
     }
 
     @Override
-    public void readNetData(FriendlyByteBuf byteBuf) {
+    public void readNetData(@NotNull FriendlyByteBuf byteBuf) {
         super.readNetData(byteBuf);
         this.key = byteBuf.readUtf(Short.MAX_VALUE);
         this.value = byteBuf.readVarLong();
@@ -66,17 +69,19 @@ public class KeyValueReward extends Reward {
     }
 
     @Override
+    @NotNull
     public MutableComponent getAltTitle() {
         return Component.translatable("extraquests.key_value.title", this.key, this.value);
     }
 
     @Override
+    @NotNull
     public String getButtonText() {
         return "+" + this.value;
     }
 
     @Override
-    public void fillConfigGroup(ConfigGroup config) {
+    public void fillConfigGroup(@NotNull ConfigGroup config) {
         super.fillConfigGroup(config);
         config.addString("key", this.key, value -> this.key = value, this.key).setNameKey("extraquests.key_value.key");
         config.addLong("value", this.value, value -> this.value = value, 5L, 1L, Long.MAX_VALUE).setNameKey("extraquests.key_value.value");
@@ -84,7 +89,7 @@ public class KeyValueReward extends Reward {
     }
 
     @Override
-    public void claim(ServerPlayer player, boolean notify) {
+    public void claim(@NotNull ServerPlayer player, boolean notify) {
         KeyValueUtil.addProgress(player, ServerQuestFile.INSTANCE.getOrCreateTeamData(player), this.key, this.value, this.ignore);
     }
 }

@@ -3,6 +3,19 @@
   "package": "com.vecoo.extraquests.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "CommandRewardMixin"
+    "CommandRewardMixin",
+    "FeatureTeamDataMixin",
+    "FeatureTaskMixin",
+    "FeatureQuestMixin",
+    "FeatureRewardMixin",
+    "FeatureStatTaskMixin",
+    "FeatureItemTaskMixin",
+    "FeatureEventContextMixin"
+  ],
+  "client": [
+    "FeatureTaskClientMixin",
+    "FeatureTaskButtonMixin",
+    "FeatureQuestClientMixin",
+    "FeatureQuestButtonMixin"
   ]
 }

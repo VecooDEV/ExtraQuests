@@ -10,6 +10,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +27,7 @@ public abstract class CommandRewardMixin {
             method = "writeData",
             at = @At("TAIL")
     )
-    public void writeData(CompoundTag compoundTag, HolderLookup.Provider provider, CallbackInfo ci) {
+    public void writeData(@NotNull CompoundTag compoundTag, @NotNull HolderLookup.Provider provider, @NotNull CallbackInfo ci) {
         if (this.extraQuests$console) {
             compoundTag.putBoolean("console", true);
         }
@@ -36,7 +37,7 @@ public abstract class CommandRewardMixin {
             method = "readData",
             at = @At("TAIL")
     )
-    public void readData(CompoundTag compoundTag, HolderLookup.Provider provider, CallbackInfo ci) {
+    public void readData(@NotNull CompoundTag compoundTag, @NotNull HolderLookup.Provider provider, @NotNull CallbackInfo ci) {
         this.extraQuests$console = compoundTag.getBoolean("console");
     }
 
@@ -44,7 +45,7 @@ public abstract class CommandRewardMixin {
             method = "writeNetData",
             at = @At("TAIL")
     )
-    public void writeNetData(RegistryFriendlyByteBuf byteBuf, CallbackInfo ci) {
+    public void writeNetData(@NotNull RegistryFriendlyByteBuf byteBuf, @NotNull CallbackInfo ci) {
         byteBuf.writeBoolean(this.extraQuests$console);
     }
 
@@ -52,7 +53,7 @@ public abstract class CommandRewardMixin {
             method = "readNetData",
             at = @At("TAIL")
     )
-    public void readNetData(RegistryFriendlyByteBuf byteBuf, CallbackInfo ci) {
+    public void readNetData(@NotNull RegistryFriendlyByteBuf byteBuf, @NotNull CallbackInfo ci) {
         this.extraQuests$console = byteBuf.readBoolean();
     }
 
@@ -60,7 +61,7 @@ public abstract class CommandRewardMixin {
             method = "fillConfigGroup",
             at = @At("TAIL")
     )
-    public void fillConfigGroup(ConfigGroup config, CallbackInfo ci) {
+    public void fillConfigGroup(@NotNull ConfigGroup config, @NotNull CallbackInfo ci) {
         config.addBool("console", this.extraQuests$console, v -> this.extraQuests$console = v, false).setNameKey("extraquests.reward.command.console");
     }
 
@@ -72,7 +73,7 @@ public abstract class CommandRewardMixin {
             ),
             remap = true
     )
-    public void claim(Commands instance, CommandSourceStack source, String command) {
+    public void claim(@NotNull Commands instance, @NotNull CommandSourceStack source, @NotNull String command) {
         if (this.extraQuests$console) {
             val serverConfig = ExtraQuests.getInstance().getServerConfig();
 
