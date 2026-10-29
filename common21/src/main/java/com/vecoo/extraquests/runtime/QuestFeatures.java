@@ -9,6 +9,7 @@ import com.vecoo.extraquests.reward.AttributeReward;
 import com.vecoo.extraquests.reward.CalendarStreakReward;
 import com.vecoo.extraquests.reward.KeyValueReward;
 import com.vecoo.extraquests.task.KeyValueTask;
+import com.vecoo.extraquests.task.PlayerNbtTask;
 import com.vecoo.extraquests.task.TaskSettings;
 import com.vecoo.extraquests.util.CalendarSchedule;
 import dev.ftb.mods.ftblibrary.icon.Icon;
@@ -54,6 +55,7 @@ public class QuestFeatures {
     public static void register(@NotNull BiConsumer<ServerPlayer, QuestStatePayload> sender) {
         stateSender = Objects.requireNonNull(sender);
 
+        PlayerNbtTask.TYPE = TaskTypes.register(id("player_nbt"), PlayerNbtTask::new, () -> Icon.getIcon("minecraft:item/name_tag"));
         AttributeReward.TYPE = RewardTypes.register(id("attribute"), AttributeReward::new, () -> Icon.getIcon("minecraft:item/golden_apple"));
         CalendarStreakReward.TYPE = RewardTypes.register(id("calendar_streak"), CalendarStreakReward::new, () -> Icon.getIcon("minecraft:item/diamond"));
     }
