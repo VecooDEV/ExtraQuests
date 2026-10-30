@@ -39,7 +39,7 @@ public class TaskProgress {
         val file = ServerQuestFile.INSTANCE;
         val server = file == null ? null : file.server;
 
-        return teamData.getFile().isServerSide() && server != null ? server : null;
+        return server != null && teamData.getFile() != null && teamData.getFile().isServerSide() ? server : null;
     }
 
     @NotNull
@@ -110,9 +110,14 @@ public class TaskProgress {
     @Nullable
     public static Long sharedProgress(@NotNull TeamData data, long taskId) {
         val server = server(data);
+
+        if (server == null || !server.isSameThread()) {
+            return null;
+        }
+
         val task = data.getFile().getTask(taskId);
 
-        if (server == null || !server.isSameThread() || task == null || internal(task)) {
+        if (task == null || internal(task)) {
             return null;
         }
 

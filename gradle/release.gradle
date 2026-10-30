@@ -3,7 +3,7 @@ tasks.register('versionedRelease', Copy) {
     description = 'Collects the current mod JAR and removes previous releases of this module.'
 
     dependsOn {
-        tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name.startsWith('fabric') ? 'remapJar' : 'jar')
+        tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name in ['fabric20', 'fabric21'] ? 'remapJar' : 'jar')
     }
 
     def moduleProject = project

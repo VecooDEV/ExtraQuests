@@ -1,7 +1,81 @@
+plugins {
+    id 'fabric-loom'
+}
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-description = 'Reserved for Fabric 1.20.1. The mod has not been ported yet.'
+version = "${project_version}-1.20.1-Fabric"
 
-jar {
-    enabled = false
+loom {
+    mixin {
+        useLegacyMixinAp = true
+        defaultRefmapName = 'extraquests.mixins.refmap.json'
+    }
+
+    mods {
+        extraquests {
+            sourceSet sourceSets.main
+        }
+    }
+
+    runs {
+        client {
+            runDir 'run/client'
+        }
+
+        server {
+            runDir 'run/server'
+        }
+    }
 }
+
+sourceSets.main.java.srcDir(rootProject.file('common20/src/main/java'))
+sourceSets.main.resources.srcDir(rootProject.file('common20/src/main/resources'))
+
+repositories {
+    maven { url = 'https://maven.ftb.dev/releases' }
+}
+
+dependencies {
+    minecraft 'com.mojang:minecraft:1.20.1'
+    mappings loom.officialMojangMappings()
+
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_20}"
+
+    modImplementation("dev.ftb.mods:ftb-quests-fabric:${ftbquests_common_20}") {
+        transitive = false
+    }
+    modImplementation("dev.ftb.mods:ftb-library-fabric:${ftblibrary_common_20}") {
+        transitive = false
+    }
+    modImplementation("dev.ftb.mods:ftb-teams-fabric:${ftbteams_common_20}") {
+        transitive = false
+    }
+    modImplementation "maven.modrinth:extralib:${extralib}-fabric,1.20.1"
+
+    modImplementation "maven.modrinth:architectury-api:${architectury_20}+fabric"
+    modRuntimeOnly("teamreborn:energy:${fabric_energy_api_20}") {
+        transitive = false
+    }
+    modRuntimeOnly "me.lucko:fabric-permissions-api:${fabric_permissions_api_20}"
+}
+
+tasks.named('runServer', JavaExec) {
+    standardInput = System.in
+}
+
+processResources {
+    filesMatching('fabric.mod.json') {
+        expand(
+                'project_name': project_name,
+                'project_version': project_version,
+                'extralib': extralib
+        )
+    }
+}
+
+build.finalizedBy('versionedRelease')
+
+apply from: rootProject.file('gradle/modrinth.gradle')
+apply from: rootProject.file('gradle/curseforge.gradle')

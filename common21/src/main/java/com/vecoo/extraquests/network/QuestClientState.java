@@ -4,7 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
 public class QuestClientState {
-    private static CompoundTag DATA = new CompoundTag();
+    private static volatile CompoundTag DATA = new CompoundTag();
 
     public static void update(@NotNull CompoundTag state) {
         DATA = state;

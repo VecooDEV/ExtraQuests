@@ -2,22 +2,24 @@ package com.vecoo.extraquests;
 
 import com.vecoo.extralib.loader.YamlLoader;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
+import com.vecoo.extraquests.command.FeatureCommands;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
+import com.vecoo.extraquests.listener.ExtraQuestsListener;
 import com.vecoo.extraquests.internal.ExtraQuestsLogger;
-import com.vecoo.extraquests.reward.KeyValueReward;
-import com.vecoo.extraquests.task.KeyValueTask;
+import com.vecoo.extraquests.network.ExtraQuestsClientListener;
+import com.vecoo.extraquests.network.QuestStatePayload;
+import com.vecoo.extraquests.runtime.QuestFeatures;
 import com.vecoo.extraquests.util.PermissionNodes;
-import dev.ftb.mods.ftblibrary.icon.Icon;
-import dev.ftb.mods.ftbquests.quest.reward.RewardTypes;
-import dev.ftb.mods.ftbquests.quest.task.TaskTypes;
 import lombok.Getter;
 import lombok.val;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.server.permission.events.PermissionGatherEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -26,26 +28,31 @@ import java.io.IOException;
 
 @Mod(ExtraQuests.MOD_ID)
 public class ExtraQuests {
-    public static final String MOD_ID = "extraquests";
+    public static final String MOD_ID = ExtraQuestsConstants.MOD_ID;
     private static final Logger LOGGER = ExtraQuestsLogger.getLogger();
 
     @Getter
-    @NotNull
     private static ExtraQuests instance;
 
     @Getter
-    @NotNull
     private ServerConfig serverConfig;
-
     @Getter
-    @NotNull
     private LocaleConfig localeConfig;
 
     public ExtraQuests() {
         instance = this;
 
         loadConfig();
-        registerQuests();
+
+        QuestFeatures.registerBase();
+        QuestFeatures.register((player, payload) -> payload.sendTo(player));
+        QuestStatePayload.register();
+
+        MinecraftForge.EVENT_BUS.register(new ExtraQuestsListener());
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            MinecraftForge.EVENT_BUS.register(new ExtraQuestsClientListener());
+        }
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -58,6 +65,13 @@ public class ExtraQuests {
     @SubscribeEvent
     public void onRegisterCommands(@NotNull RegisterCommandsEvent event) {
         ExtraQuestsCommand.register(event.getDispatcher());
+        FeatureCommands.register(event.getDispatcher());
+    }
+
+
+    @SubscribeEvent
+    public void onStopped(@NotNull ServerStoppedEvent event) {
+        QuestFeatures.stopped();
     }
 
     public void loadConfig() {
@@ -78,13 +92,6 @@ public class ExtraQuests {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-    }
-
-    private void registerQuests() {
-        KeyValueTask.TYPE = TaskTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "key_value"),
-                KeyValueTask::new, () -> Icon.getIcon("minecraft:item/paper"));
-        KeyValueReward.TYPE = RewardTypes.register(new ResourceLocation(ExtraQuests.MOD_ID, "key_value"),
-                KeyValueReward::new, () -> Icon.getIcon("minecraft:item/paper"));
     }
 
     @NotNull

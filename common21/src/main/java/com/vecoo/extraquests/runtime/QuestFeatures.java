@@ -75,7 +75,7 @@ public class QuestFeatures {
         val file = ServerQuestFile.INSTANCE;
         val server = file == null ? null : file.server;
 
-        if (server != null && data.getFile().isServerSide()) {
+        if (server != null && data.getFile() != null && data.getFile().isServerSide()) {
             val state = QuestFeatureData.get(server).getTeamQuest(data.getTeamId(), quest.id);
 
             return state.getBoolean("active") && state.contains("period") && state.getLong("period") == calendar.period(System.currentTimeMillis());
@@ -96,7 +96,7 @@ public class QuestFeatures {
         val file = ServerQuestFile.INSTANCE;
         val server = file == null ? null : file.server;
 
-        if (server != null && data.getFile().isServerSide() && QuestSettings.get(quest).isCalendarEnabled()) {
+        if (server != null && data.getFile() != null && data.getFile().isServerSide() && QuestSettings.get(quest).isCalendarEnabled()) {
             QuestSettings.get(quest).onCompleted(quest, data, server);
         }
     }

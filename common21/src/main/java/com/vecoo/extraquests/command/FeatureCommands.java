@@ -47,14 +47,14 @@ public class FeatureCommands {
         }
 
         if (task == null) {
-            source.sendFailure(Component.translatable("extraquests.shared.invalid_task", id));
+            source.sendSystemMessage(Component.translatable("extraquests.shared.invalid_task", id));
 
             return 0;
         }
 
         for (val data : file.getAllTeamData()) {
             if (data.isLocked() && data.isStarted(task.getQuest())) {
-                source.sendFailure(Component.translatable("extraquests.shared.locked_team"));
+                source.sendSystemMessage(Component.translatable("extraquests.shared.locked_team"));
 
                 return 0;
             }

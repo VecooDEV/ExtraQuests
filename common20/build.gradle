@@ -12,6 +12,12 @@ dependencies {
     minecraft 'com.mojang:minecraft:1.20.1'
     mappings loom.officialMojangMappings()
 
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    modCompileOnly "maven.modrinth:architectury-api:${architectury_20}+fabric"
+    compileOnly 'net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7'
     compileOnly 'org.jetbrains:annotations:26.0.2'
     compileOnly "net.fabricmc:fabric-loader:${fabric_loader}"
 
@@ -29,4 +35,8 @@ dependencies {
 
 tasks.named('remapJar') {
     enabled = false
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
 }

@@ -1,7 +1,71 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
-description = 'Reserved for NeoForge 26.1. The mod has not been ported yet.'
+version = "${project_version}-26.1-NeoForge"
 
-jar {
-    enabled = false
+neoForge {
+    version = "${neoforge_261}"
+
+    mods {
+        extraquests {
+            sourceSet sourceSets.main
+        }
+    }
+
+    runs {
+        client {
+            client()
+            gameDirectory = layout.projectDirectory.dir('run/client')
+        }
+
+        server {
+            server()
+            gameDirectory = layout.projectDirectory.dir('run/server')
+            programArgument '--nogui'
+        }
+    }
 }
+
+sourceSets.main.java.srcDir(rootProject.file('common261/src/main/java'))
+sourceSets.main.resources.srcDir(rootProject.file('common261/src/main/resources'))
+
+repositories {
+    maven { url = 'https://maven.ftb.dev/releases' }
+}
+
+dependencies {
+    implementation("dev.ftb.mods:ftb-quests-neoforge:${ftbquests_261}") {
+        transitive = false
+    }
+    implementation("dev.ftb.mods:ftb-library-neoforge:${ftblibrary_261}") {
+        transitive = false
+    }
+    implementation("dev.ftb.mods:ftb-teams-neoforge:${ftbteams_261}") {
+        transitive = false
+    }
+    implementation 'de.marhali:json5-java:3.0.0'
+    implementation "maven.modrinth:extralib:${extralib}-neoforge,26.1"
+
+}
+
+tasks.named('runServer', JavaExec) {
+    standardInput = System.in
+}
+
+processResources {
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand(
+                'project_name': project_name,
+                'project_version': project_version,
+                'extralib': extralib
+        )
+    }
+}
+
+build.finalizedBy('versionedRelease')
+
+apply from: rootProject.file('gradle/modrinth.gradle')
+apply from: rootProject.file('gradle/curseforge.gradle')

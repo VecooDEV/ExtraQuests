@@ -1,0 +1,84 @@
+package com.vecoo.extraquests.command;
+
+import com.google.common.collect.Sets;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.vecoo.extralib.util.CommandUtil;
+import com.vecoo.extralib.util.PermissionUtil;
+import com.vecoo.extralib.util.PlayerUtil;
+import com.vecoo.extralib.util.TextUtil;
+import com.vecoo.extraquests.ExtraQuests;
+import com.vecoo.extraquests.util.KeyValueUtil;
+import com.vecoo.extraquests.util.PermissionNodes;
+import dev.ftb.mods.ftbquests.quest.ServerQuestFile;
+import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
+import lombok.val;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import org.jetbrains.annotations.NotNull;
+
+public class ExtraQuestsCommand {
+    public static void register(@NotNull CommandDispatcher<CommandSourceStack> dispatcher, @NotNull CommandBuildContext context, @NotNull Commands.CommandSelection commandSelection) {
+        for (String command : Sets.newHashSet("extraquests", "equests")) {
+            dispatcher.register(Commands.literal(command)
+                    .requires(s -> PermissionUtil.hasPermission(s, PermissionNodes.EXTRAQUESTS_COMMAND))
+                    .then(Commands.literal("key_value")
+                            .then(Commands.literal("add")
+                                    .then(Commands.argument("player", StringArgumentType.string())
+                                            .suggests(CommandUtil.suggestOnlinePlayers())
+                                            .then(Commands.argument("key", StringArgumentType.string())
+                                                    .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                                                            .suggests(CommandUtil.suggestAmount(Sets.newHashSet(10, 50, 100)))
+                                                            .then(Commands.argument("ignore", BoolArgumentType.bool())
+                                                                    .executes(e -> executeKeyValueAdd(e.getSource(), StringArgumentType.getString(e, "player"),
+                                                                            StringArgumentType.getString(e, "key"), IntegerArgumentType.getInteger(e, "amount"), BoolArgumentType.getBool(e, "ignore")))))))))
+
+                    .then(Commands.literal("reload")
+                            .executes(e -> executeReload(e.getSource()))));
+        }
+    }
+
+    private static int executeKeyValueAdd(@NotNull CommandSourceStack source, @NotNull String target,
+                                          @NotNull String key, int amount, boolean ignore) {
+        val localeConfig = ExtraQuests.getInstance().getLocaleConfig();
+        val targetUUID = PlayerUtil.findUUID(target);
+
+        if (targetUUID == null) {
+            source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getPlayerNotFound()
+                    .replace("%player%", target)));
+
+            return 0;
+        }
+
+        val file = ServerQuestFile.exists() ? ServerQuestFile.getInstance() : null;
+        val teamData = FTBTeamsAPI.api().getManager().getTeamForPlayerID(targetUUID).map(file::getOrCreateTeamData)
+                .orElseGet(() -> file.getOrCreateTeamData(targetUUID));
+
+        KeyValueUtil.addProgress(source.getServer().getPlayerList().getPlayer(targetUUID), teamData, key, amount, ignore);
+        source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getAddKeyValue()
+                .replace("%player%", target)
+                .replace("%key%", key)
+                .replace("%value%", String.valueOf(amount))));
+
+        return 1;
+    }
+
+    private static int executeReload(@NotNull CommandSourceStack source) {
+        val localeConfig = ExtraQuests.getInstance().getLocaleConfig();
+
+        try {
+            ExtraQuests.getInstance().loadConfig();
+        } catch (Exception e) {
+            source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getErrorReload()));
+            ExtraQuests.getLogger().error("Failed to reload ExtraQuests configuration.", e);
+
+            return 0;
+        }
+
+        source.sendSystemMessage(TextUtil.formatMessage(ExtraQuests.getInstance().getLocaleConfig().getReload()));
+        return 1;
+    }
+}

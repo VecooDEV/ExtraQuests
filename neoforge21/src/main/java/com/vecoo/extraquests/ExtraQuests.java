@@ -8,7 +8,7 @@ import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.listener.ExtraQuestsListener;
 import com.vecoo.extraquests.internal.ExtraQuestsLogger;
-import com.vecoo.extraquests.network.QuestClientEvents;
+import com.vecoo.extraquests.network.ExtraQuestsClientListener;
 import com.vecoo.extraquests.network.QuestClientState;
 import com.vecoo.extraquests.network.QuestStatePayload;
 import com.vecoo.extraquests.runtime.QuestFeatures;
@@ -39,11 +39,8 @@ public class ExtraQuests {
     private static ExtraQuests instance;
 
     @Getter
-    @NotNull
     private ServerConfig serverConfig;
-
     @Getter
-    @NotNull
     private LocaleConfig localeConfig;
 
     public ExtraQuests(IEventBus modEventBus) {
@@ -57,7 +54,7 @@ public class ExtraQuests {
         NeoForge.EVENT_BUS.register(new ExtraQuestsListener());
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            NeoForge.EVENT_BUS.register(new QuestClientEvents());
+            NeoForge.EVENT_BUS.register(new ExtraQuestsClientListener());
         }
 
         modEventBus.addListener(this::onRegisterPayloads);

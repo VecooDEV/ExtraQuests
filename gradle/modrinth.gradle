@@ -11,7 +11,7 @@ def modrinthToken = providers.environmentVariable('MODRINTH_API_KEY').orElse(pro
     gradleProperties.getProperty('MODRINTH_API_KEY')
 })
 
-def releaseTask = tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name.startsWith('fabric') ? 'remapJar' : 'jar')
+def releaseTask = tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name in ['fabric20', 'fabric21'] ? 'remapJar' : 'jar')
 
 modrinth {
     token = modrinthToken.orNull
@@ -21,7 +21,7 @@ modrinth {
     versionType = 'release'
     changelog = rootProject.file('changelog.md').text
     uploadFile = project.name == 'forge20' ? layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar") : releaseTask
-    gameVersions = [project.name == 'forge20' ? '1.20.1' : '1.21.1']
+    gameVersions = project.name.endsWith('261') ? ['26.1.2'] : [project.name.endsWith('20') ? '1.20.1' : '1.21.1']
     loaders = [project.name == 'forge20' ? 'forge' : project.name.startsWith('fabric') ? 'fabric' : 'neoforge']
 
     dependencies {

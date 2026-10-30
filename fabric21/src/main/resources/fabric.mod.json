@@ -13,6 +13,9 @@
   "entrypoints": {
     "main": [
       "com.vecoo.extraquests.ExtraQuests"
+    ],
+    "client": [
+      "com.vecoo.extraquests.ExtraQuestsClient"
     ]
   },
   "mixins": [
@@ -21,7 +24,7 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.21",
+    "minecraft": "1.21.1",
     "java": ">=21",
     "ftbquests": ">=2101.1.37",
     "extralib": ">=${extralib}"

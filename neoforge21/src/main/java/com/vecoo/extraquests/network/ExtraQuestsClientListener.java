@@ -5,9 +5,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class QuestClientEvents {
+public class ExtraQuestsClientListener {
     @SubscribeEvent
-    public void onLogout(@NotNull ClientPlayerNetworkEvent.LoggingOut event) {
+    public void onClientPlayerNetworkLoggingOut(@NotNull ClientPlayerNetworkEvent.LoggingOut event) {
         QuestClientState.update(new CompoundTag());
     }
 }

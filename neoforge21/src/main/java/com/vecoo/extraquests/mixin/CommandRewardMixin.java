@@ -59,7 +59,8 @@ public abstract class CommandRewardMixin {
 
     @Inject(
             method = "fillConfigGroup",
-            at = @At("TAIL")
+            at = @At("TAIL"),
+            require = 0
     )
     public void fillConfigGroup(@NotNull ConfigGroup config, @NotNull CallbackInfo ci) {
         config.addBool("console", this.extraQuests$console, v -> this.extraQuests$console = v, false).setNameKey("extraquests.reward.command.console");

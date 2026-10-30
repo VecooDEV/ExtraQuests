@@ -50,7 +50,7 @@ dependencies {
     implementation renamer.dependency("curse.maven:ftb-teams-forge-404468:${ftbteams_forge_20}")
     implementation renamer.dependency("maven.modrinth:extralib:${extralib}-forge,1.20.1")
 
-    runtimeOnly renamer.dependency("maven.modrinth:architectury-api:${architectury_20}+forge")
+    implementation renamer.dependency("maven.modrinth:architectury-api:${architectury_20}+forge")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }

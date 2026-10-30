@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "extraquests",
+  "version": "${project_version}",
+  "name": "${project_name} [FTB Quests]",
+  "icon": "assets/extraquests/icon.png",
+  "description": "Addon adds new tasks, rewards and functions.",
+  "authors": [
+    "Vecoo"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.vecoo.extraquests.ExtraQuests"
+    ],
+    "client": [
+      "com.vecoo.extraquests.ExtraQuestsClient"
+    ]
+  },
+  "mixins": [
+    "extraquests.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric-api": "*",
+    "minecraft": ">=26.1 <=26.1.2",
+    "java": ">=25",
+    "ftbquests": ">=26.1.2.9",
+    "extralib": ">=${extralib}",
+    "ftblibrary": ">=26.1.2.11"
+  }
+}

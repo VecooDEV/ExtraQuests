@@ -27,7 +27,7 @@ side = "BOTH"
 [[dependencies.extraquests]]
 modId = "ftbquests"
 mandatory = true
-versionRange = "[2001.4.18,)"
+versionRange = "[2001.4.22,)"
 ordering = "NONE"
 side = "BOTH"
 

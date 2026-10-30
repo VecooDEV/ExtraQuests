@@ -58,7 +58,8 @@ public abstract class CommandRewardMixin {
 
     @Inject(
             method = "fillConfigGroup",
-            at = @At("TAIL")
+            at = @At("TAIL"),
+            require = 0
     )
     public void fillConfigGroup(@NotNull ConfigGroup config, @NotNull CallbackInfo ci) {
         config.addBool("console", this.extraQuests$console, v -> this.extraQuests$console = v, false).setNameKey("extraquests.reward.command.console");
@@ -68,8 +69,9 @@ public abstract class CommandRewardMixin {
             method = "claim",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/commands/Commands;m_230957_(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"
-            )
+                    target = "Lnet/minecraft/commands/Commands;performPrefixedCommand(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)I"
+            ),
+            remap = true
     )
     public int claim(@NotNull Commands instance, @NotNull CommandSourceStack source, @NotNull String command) {
         if (this.extraQuests$console) {

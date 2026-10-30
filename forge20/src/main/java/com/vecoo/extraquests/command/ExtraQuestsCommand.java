@@ -57,7 +57,6 @@ public class ExtraQuestsCommand {
                 .orElseGet(() -> file.getOrCreateTeamData(targetUUID));
 
         KeyValueUtil.addProgress(source.getServer().getPlayerList().getPlayer(targetUUID), teamData, key, amount, ignore);
-
         source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getAddKeyValue()
                 .replace("%player%", target)
                 .replace("%key%", key)
@@ -79,7 +78,6 @@ public class ExtraQuestsCommand {
         }
 
         source.sendSystemMessage(TextUtil.formatMessage(ExtraQuests.getInstance().getLocaleConfig().getReload()));
-
         return 1;
     }
 }

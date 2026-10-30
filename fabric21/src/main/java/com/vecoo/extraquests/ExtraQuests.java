@@ -1,15 +1,20 @@
 package com.vecoo.extraquests;
 
 import com.vecoo.extralib.loader.YamlLoader;
+import com.vecoo.extralib.util.PacketUtil;
 import com.vecoo.extraquests.command.ExtraQuestsCommand;
+import com.vecoo.extraquests.command.FeatureCommands;
 import com.vecoo.extraquests.config.LocaleConfig;
 import com.vecoo.extraquests.config.ServerConfig;
 import com.vecoo.extraquests.internal.ExtraQuestsLogger;
+import com.vecoo.extraquests.listener.ExtraQuestsListener;
+import com.vecoo.extraquests.network.QuestStatePayload;
 import com.vecoo.extraquests.runtime.QuestFeatures;
 import lombok.Getter;
 import lombok.val;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -20,15 +25,11 @@ public class ExtraQuests implements ModInitializer {
     private static final Logger LOGGER = ExtraQuestsLogger.getLogger();
 
     @Getter
-    @NotNull
     private static ExtraQuests instance;
 
     @Getter
-    @NotNull
     private ServerConfig serverConfig;
-
     @Getter
-    @NotNull
     private LocaleConfig localeConfig;
 
     @Override
@@ -36,9 +37,14 @@ public class ExtraQuests implements ModInitializer {
         instance = this;
 
         loadConfig();
+
         QuestFeatures.registerBase();
+        QuestFeatures.register(PacketUtil::sendToPlayer);
+        PayloadTypeRegistry.playS2C().register(QuestStatePayload.TYPE, QuestStatePayload.CODEC);
+        ExtraQuestsListener.register();
 
         CommandRegistrationCallback.EVENT.register(ExtraQuestsCommand::register);
+        CommandRegistrationCallback.EVENT.register((dispatcher, registry, environment) -> FeatureCommands.register(dispatcher));
     }
 
     public void loadConfig() {

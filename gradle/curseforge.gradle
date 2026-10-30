@@ -14,7 +14,7 @@ def curseforgeToken = providers.environmentVariable('CURSEFORGE_API_KEY').orElse
 })
 def curseforgeDryRun = providers.gradleProperty('curseforgeDryRun').map { it.toBoolean() }.orElse(false)
 
-def releaseTask = tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name.startsWith('fabric') ? 'remapJar' : 'jar')
+def releaseTask = tasks.named(project.name == 'forge20' ? 'renameJarToSrg' : project.name in ['fabric20', 'fabric21'] ? 'remapJar' : 'jar')
 
 publishMods {
     if (project.name == 'forge20') {
@@ -38,7 +38,7 @@ publishMods {
         client = true
         server = true
 
-        requires('extralib', project.name == 'fabric21' ? 'ftb-quests-fabric' : 'ftb-quests-forge')
+        requires('extralib', project.name.startsWith('fabric') ? 'ftb-quests-fabric' : 'ftb-quests-forge')
 
         if (project.name.startsWith('fabric')) {
             requires('fabric-api')

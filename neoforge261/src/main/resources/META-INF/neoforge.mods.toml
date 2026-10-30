@@ -1,0 +1,49 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "extraquests"
+version = "${project_version}"
+displayName = "${project_name} [FTB Quests]"
+logoFile = "logo.png"
+authors = "Vecoo"
+description = "Addon adds new tasks, rewards and functions."
+
+[[mixins]]
+config = "extraquests.mixins.json"
+
+[[dependencies.extraquests]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.1,26.1.2]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extraquests]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.1.2.71,26.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extraquests]]
+modId = "ftbquests"
+type = "required"
+versionRange = "[26.1.2.9,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extraquests]]
+modId = "ftblibrary"
+type = "required"
+versionRange = "[26.1.2.11,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.extraquests]]
+modId = "extralib"
+type = "required"
+versionRange = "[${extralib},)"
+ordering = "NONE"
+side = "BOTH"

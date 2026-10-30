@@ -55,7 +55,6 @@ public class ExtraQuestsCommand {
                 .orElseGet(() -> file.getOrCreateTeamData(targetUUID));
 
         KeyValueUtil.addProgress(source.getServer().getPlayerList().getPlayer(targetUUID), teamData, key, amount, ignore);
-
         source.sendSystemMessage(TextUtil.formatMessage(localeConfig.getAddKeyValue()
                 .replace("%player%", target)
                 .replace("%key%", key)
