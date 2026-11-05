@@ -40,6 +40,12 @@ def loaderModules = subprojects.findAll {
 }
 
 configure(loaderModules) {
+    if (name.startsWith('fabric')) {
+        configurations.named('compileClasspath') {
+            resolutionStrategy.force 'net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7'
+        }
+    }
+
     tasks.named('processResources') {
         inputs.properties(project_name: project_name, project_version: project_version, extralib: extralib)
     }

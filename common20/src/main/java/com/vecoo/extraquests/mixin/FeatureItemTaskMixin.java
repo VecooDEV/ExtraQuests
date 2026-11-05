@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(value = ItemTask.class, remap = false)
+@Mixin(value = ItemTask.class, priority = 1100, remap = false)
 public abstract class FeatureItemTaskMixin {
     @Redirect(method = "submitTask", at = @At(value = "INVOKE", target = "Ldev/ftb/mods/ftbquests/quest/TeamData;getProgress(Ldev/ftb/mods/ftbquests/quest/task/Task;)J"))
     private long extraQuests$compareInventorySample(@NotNull TeamData data, @NotNull Task task, @NotNull TeamData parent, @NotNull ServerPlayer player, @NotNull ItemStack stack) {
