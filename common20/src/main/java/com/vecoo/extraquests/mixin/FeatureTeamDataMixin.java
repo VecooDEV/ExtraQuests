@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Desc;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -61,7 +62,11 @@ public abstract class FeatureTeamDataMixin {
         }
     }
 
-    @Inject(method = "claimReward(Lnet/minecraft/server/level/ServerPlayer;Ldev/ftb/mods/ftbquests/quest/reward/Reward;ZJ)V", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            target = @Desc(value = "claimReward", args = {ServerPlayer.class, Reward.class, boolean.class, long.class}),
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void extraQuests$validateReward(@NotNull ServerPlayer player, @NotNull Reward reward, boolean notify, long time, @NotNull CallbackInfo ci) {
         if (reward instanceof AttributeReward attribute && !attribute.canClaim(player)
                 || reward instanceof CalendarStreakReward streak && !streak.canClaim((TeamData) (Object) this)) {

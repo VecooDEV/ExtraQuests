@@ -1,2 +1,1 @@
-* Fix compatibility with FTB Quests Optimizer when applying shared inventory progress to its overwritten Item task.
-* Fix Fabric startup crashes with older MixinExtras versions by compiling against a compatible Mixin annotation API.
+* Fix starting fabric 1.20.1.
